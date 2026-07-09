@@ -74,6 +74,20 @@ export function Footer() {
             © {new Date().getFullYear()} Digital Technology Associates Inc. (DTAI). All rights reserved.
           </p>
         </div>
+        <div className="flex items-center gap-5">
+          <Link
+            href="/privacy-policy"
+            className="text-xs text-neutral-300 transition-colors duration-micro hover:text-tech-blue"
+          >
+            Privacy Policy
+          </Link>
+          <Link
+            href="/terms-of-service"
+            className="text-xs text-neutral-300 transition-colors duration-micro hover:text-tech-blue"
+          >
+            Terms of Service
+          </Link>
+        </div>
       </Container>
     </footer>
   );
