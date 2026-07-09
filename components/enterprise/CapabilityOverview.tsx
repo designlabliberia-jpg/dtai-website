@@ -1,4 +1,13 @@
-﻿import { Container } from "@/components/layout/Container";
+import {
+  Code2,
+  Server,
+  ShieldCheck,
+  Database,
+  Cloud,
+  Map,
+  Repeat,
+} from "lucide-react";
+import { Container } from "@/components/layout/Container";
 import { CapabilityCard } from "@/components/enterprise/CapabilityCard";
 
 const capabilities = [
@@ -6,36 +15,43 @@ const capabilities = [
     title: "Software Engineering",
     description: "Production-grade systems built on disciplined engineering practice, not prototypes.",
     href: "/capabilities/software-engineering",
+    icon: Code2,
   },
   {
     title: "Digital Infrastructure",
     description: "Resilient infrastructure foundations designed for national-scale reliability.",
     href: "/capabilities/digital-infrastructure",
+    icon: Server,
   },
   {
     title: "Cybersecurity",
     description: "Security engineered in from architecture, not layered on after deployment.",
     href: "/capabilities/cybersecurity",
+    icon: ShieldCheck,
   },
   {
     title: "Data Platforms",
     description: "Structured, governed data systems that institutions can act on with confidence.",
     href: "/capabilities/data-platforms",
+    icon: Database,
   },
   {
     title: "Cloud Solutions",
     description: "Scalable cloud architecture matched to sovereignty and compliance requirements.",
     href: "/capabilities/cloud-solutions",
+    icon: Cloud,
   },
   {
     title: "GIS & Spatial Technology",
     description: "Geographic and spatial systems that turn location data into decisions.",
     href: "/capabilities/gis-spatial-technology",
+    icon: Map,
   },
   {
     title: "Digital Transformation",
     description: "Structured modernization of institutional systems and workflows.",
     href: "/capabilities/digital-transformation",
+    icon: Repeat,
   },
 ];
 

@@ -40,3 +40,15 @@ body {
   color: var(--color-text-primary);
   font-family: var(--font-primary);
 }
+/* Accessible focus states, applied globally */
+:focus-visible {
+  outline: 2px solid var(--color-tech-blue);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Subtle film-grain texture on dark sections for material depth */
+.bg-infra-midnight,
+.bg-neutral-950 {
+  position: relative;
+}

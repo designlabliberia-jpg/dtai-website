@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Container } from "./Container";
 
 const footerColumns = [
@@ -60,10 +61,19 @@ export function Footer() {
           </div>
         ))}
       </Container>
-      <Container className="border-t border-white/10 py-6">
-        <p className="text-xs text-neutral-300">
-          © {new Date().getFullYear()} Digital Technology Associates Inc. (DTAI). All rights reserved.
-        </p>
+      <Container className="flex flex-col items-center justify-between gap-4 border-t border-white/10 py-6 sm:flex-row">
+        <div className="flex items-center gap-2">
+          <Image
+            src="/assets/dtai-logo.png"
+            alt="DTAI"
+            width={28}
+            height={28}
+            className="h-7 w-7 object-contain"
+          />
+          <p className="text-xs text-neutral-300">
+            © {new Date().getFullYear()} Digital Technology Associates Inc. (DTAI). All rights reserved.
+          </p>
+        </div>
       </Container>
     </footer>
   );

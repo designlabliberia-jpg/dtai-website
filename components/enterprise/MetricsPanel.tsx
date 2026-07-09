@@ -9,7 +9,7 @@ interface MetricsPanelProps {
 
 export function MetricsPanel({ metrics }: MetricsPanelProps) {
   return (
-    <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+    <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-4">
       {metrics.map((metric) => (
         <div key={metric.label} className="border-l-2 border-tech-blue pl-4">
           <div className="font-technical text-2xl font-semibold text-neutral-900 md:text-3xl">
