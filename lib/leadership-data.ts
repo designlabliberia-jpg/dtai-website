@@ -6,6 +6,7 @@ export interface LeadershipMember {
   focus: string;
   bio: string;
   image: string | null;
+  linkedin: string;
 }
 
 export const leadershipTeam: LeadershipMember[] = [
@@ -16,7 +17,8 @@ export const leadershipTeam: LeadershipMember[] = [
     division: "Executive",
     focus: "Strategic Direction & Institutional Partnerships",
     bio: "Leads DTAI's strategic direction and institutional partnerships, guiding the company's mission to engineer trusted digital infrastructure across Africa.",
-    image: null,
+    image: "/assets/team/Floyd.jpeg",
+    linkedin: "",
   },
   {
     id: "DTAI-L02",
@@ -26,6 +28,7 @@ export const leadershipTeam: LeadershipMember[] = [
     focus: "Technical Delivery & Engineering Standards",
     bio: "Leads technical delivery and engineering standards across DTAI's software and infrastructure projects.",
     image: "/assets/team/Garrison.jpeg",
+    linkedin: "",
   },
   {
     id: "DTAI-L03",
@@ -35,5 +38,6 @@ export const leadershipTeam: LeadershipMember[] = [
     focus: "Systems Reliability & IT Governance",
     bio: "Oversees IT operations, systems reliability, and internal technology governance at DTAI.",
     image: "/assets/team/Emmanuel.jpeg",
+    linkedin: "",
   },
 ];

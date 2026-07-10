@@ -87,7 +87,7 @@ export function ContactForm() {
 
         <div>
           <label htmlFor="phone" className="block text-sm font-medium text-neutral-900">
-            Phone <span className="text-neutral-400">(optional)</span>
+            Phone <span className="text-neutral-600">(optional)</span>
           </label>
           <input
             id="phone"
@@ -149,7 +149,7 @@ export function ContactForm() {
         )}
       </button>
 
-      <p className="font-technical text-[11px] text-neutral-400">
+      <p className="font-technical text-[11px] text-neutral-600">
         Fields marked <span className="text-tech-blue">*</span> are required.
         Submissions are not yet connected to a live email service — this is
         currently a UI preview.

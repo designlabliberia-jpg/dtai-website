@@ -36,7 +36,7 @@ export function EngineeringPhilosophy() {
           <div className="space-y-8">
             {principles.map((p, i) => (
               <div key={p.title} className="flex gap-5">
-                <span className="font-technical text-sm text-tech-blue">
+                <span className="font-technical text-sm text-brand">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <div>

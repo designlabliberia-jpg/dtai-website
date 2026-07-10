@@ -86,7 +86,7 @@ export default function ContactPage() {
                     key={a.tag}
                     className="rounded-lg border border-neutral-300/60 p-4"
                   >
-                    <span className="font-technical text-[11px] uppercase tracking-wide text-tech-blue">
+                    <span className="font-technical text-[11px] uppercase tracking-wide text-brand">
                       {a.tag}
                     </span>
                     <p className="mt-1.5 text-sm leading-relaxed text-neutral-600">

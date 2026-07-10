@@ -27,13 +27,13 @@ export default function SolutionsPage() {
               href={`/solutions/${s.slug}`}
               className="group block rounded-lg border border-neutral-300/60 bg-white p-6 transition-all duration-standard hover:border-tech-blue hover:shadow-md"
             >
-              <h3 className="font-primary text-lg font-semibold text-neutral-900 transition-colors duration-micro group-hover:text-brand">
+              <h2 className="font-primary text-lg font-semibold text-neutral-900 transition-colors duration-micro group-hover:text-brand">
                 {s.title}
-              </h3>
+              </h2>
               <p className="mt-2 text-sm leading-relaxed text-neutral-600">
                 {s.summary}
               </p>
-              <span className="mt-4 inline-block font-technical text-xs uppercase tracking-wide text-tech-blue">
+              <span className="mt-4 inline-block font-technical text-xs uppercase tracking-wide text-brand">
                 View solution &rarr;
               </span>
             </Link>

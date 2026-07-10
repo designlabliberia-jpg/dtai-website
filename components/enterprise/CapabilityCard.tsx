@@ -28,7 +28,7 @@ export function CapabilityCard({ title, description, href, icon: Icon }: Capabil
       <p className="mt-2 text-sm leading-relaxed text-neutral-600">
         {description}
       </p>
-      <span className="mt-4 inline-flex items-center gap-1 font-technical text-xs uppercase tracking-wide text-tech-blue">
+      <span className="mt-4 inline-flex items-center gap-1 font-technical text-xs uppercase tracking-wide text-brand">
         View capability
         <span className="transition-transform duration-micro group-hover:translate-x-1">&rarr;</span>
       </span>

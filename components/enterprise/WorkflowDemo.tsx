@@ -75,7 +75,7 @@ export function WorkflowDemo() {
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
             >
-              <span className="font-technical text-xs uppercase tracking-wide text-tech-blue">
+              <span className="font-technical text-xs uppercase tracking-wide text-brand">
                 Stage {active + 1} of {stages.length}
               </span>
               <h3 className="mt-2 font-primary text-xl font-semibold text-neutral-900">

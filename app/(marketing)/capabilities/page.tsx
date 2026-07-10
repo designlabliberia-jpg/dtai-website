@@ -39,6 +39,7 @@ export default function CapabilitiesPage() {
             Engineering across the full digital stack
           </h1>
         </div>
+        <h2 className="sr-only">All capabilities</h2>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {capabilities.map((cap) => (
             <CapabilityCard

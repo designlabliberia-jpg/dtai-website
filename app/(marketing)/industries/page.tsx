@@ -55,13 +55,13 @@ export default function IndustriesPage() {
                   <Icon size={20} className="text-tech-blue transition-colors duration-standard group-hover:text-white" strokeWidth={1.75} />
                 </div>
 
-                <h3 className="mt-5 font-primary text-lg font-semibold text-neutral-900 transition-colors duration-micro group-hover:text-brand">
+                <h2 className="mt-5 font-primary text-lg font-semibold text-neutral-900 transition-colors duration-micro group-hover:text-brand">
                   {ind.title}
-                </h3>
+                </h2>
                 <p className="mt-2 text-sm leading-relaxed text-neutral-600">
                   {ind.summary}
                 </p>
-                <span className="mt-4 inline-flex items-center gap-1 font-technical text-xs uppercase tracking-wide text-tech-blue">
+                <span className="mt-4 inline-flex items-center gap-1 font-technical text-xs uppercase tracking-wide text-brand">
                   View industry
                   <span className="transition-transform duration-micro group-hover:translate-x-1">&rarr;</span>
                 </span>
