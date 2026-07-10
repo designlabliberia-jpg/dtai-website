@@ -113,7 +113,7 @@ export function LiberiaMapDemo() {
   }
 
   return (
-    <section className="bg-neutral-950 py-24 text-white">
+    <section data-ambient-zone className="bg-neutral-950 py-24 text-white">
       <Container>
         <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-2xl">

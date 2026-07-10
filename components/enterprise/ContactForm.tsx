@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Loader2, CheckCircle2 } from "lucide-react";
+import { Loader2, CheckCircle2, AlertCircle } from "lucide-react";
+import { submitLead } from "@/lib/web3forms";
 
 const inquiryTypes = [
   { value: "government", label: "Government Executive" },
@@ -11,16 +12,27 @@ const inquiryTypes = [
   { value: "other", label: "Other" },
 ];
 
-type Status = "idle" | "submitting" | "submitted";
+type Status = "idle" | "submitting" | "submitted" | "error";
 
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("submitting");
-    // TODO: wire to backend/email service — see outstanding item #4
-    setTimeout(() => setStatus("submitted"), 600);
+
+    const form = new FormData(e.currentTarget);
+    const success = await submitLead({
+      name: String(form.get("name") ?? ""),
+      email: String(form.get("email") ?? ""),
+      organization: String(form.get("organization") ?? ""),
+      phone: String(form.get("phone") ?? ""),
+      category: String(form.get("inquiryType") ?? "other"),
+      message: String(form.get("message") ?? ""),
+      source: "contact-form",
+    });
+
+    setStatus(success ? "submitted" : "error");
   }
 
   if (status === "submitted") {
@@ -134,6 +146,13 @@ export function ContactForm() {
         />
       </div>
 
+      {status === "error" && (
+        <div className="flex items-start gap-2 rounded-md border border-red-400/30 bg-red-400/5 p-3 text-sm text-red-700">
+          <AlertCircle size={16} className="mt-0.5 shrink-0" />
+          <span>Something went wrong sending your message. Please try again, or email us directly.</span>
+        </div>
+      )}
+
       <button
         type="submit"
         disabled={status === "submitting"}
@@ -151,8 +170,6 @@ export function ContactForm() {
 
       <p className="font-technical text-[11px] text-neutral-600">
         Fields marked <span className="text-tech-blue">*</span> are required.
-        Submissions are not yet connected to a live email service — this is
-        currently a UI preview.
       </p>
     </form>
   );

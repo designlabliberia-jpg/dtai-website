@@ -18,7 +18,7 @@ const focusAreas = [
 
 export function GovernmentTechnology() {
   return (
-    <section className="bg-neutral-950 py-24 text-white">
+    <section data-ambient-zone className="bg-neutral-950 py-24 text-white">
       <Container>
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <div>

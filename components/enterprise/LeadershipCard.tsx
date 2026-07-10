@@ -34,6 +34,7 @@ export function LeadershipCard({ member }: { member: LeadershipMember }) {
               src={member.image}
               alt={member.name}
               fill
+              priority
               sizes="(min-width: 640px) 208px, 100vw"
               className="object-cover object-top grayscale-[15%] transition-all duration-[var(--duration-standard)] group-hover:grayscale-0"
             />

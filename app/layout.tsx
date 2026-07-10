@@ -4,6 +4,9 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageTransition } from "@/components/layout/PageTransition";
 import { RouteProgressBar } from "@/components/layout/RouteProgressBar";
+import { ScrollToTop } from "@/components/layout/ScrollToTop";
+import { AmbientField } from "@/components/layout/AmbientField";
+import { ChatWidget } from "@/components/layout/ChatWidget";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://dtai.designlab.technology"),
@@ -56,6 +59,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <AmbientField />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
@@ -66,6 +70,8 @@ export default function RootLayout({
           <PageTransition>{children}</PageTransition>
         </main>
         <Footer />
+        <ScrollToTop />
+        <ChatWidget />
       </body>
     </html>
   );

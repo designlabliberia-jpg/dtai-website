@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
@@ -33,7 +33,7 @@ const navItems: NavItem[] = [
       href: `/industries/${industry.slug}`,
     })),
   },
-    {
+  {
     label: "Solutions",
     href: "/solutions",
     children: solutions.map((solution) => ({
@@ -78,8 +78,14 @@ export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const [hoveredDropdown, setHoveredDropdown] = useState<string | null>(null);
   const pathname = usePathname();
+
+  // A single pending-close timer, cancelled on any re-entry into the
+  // trigger or the panel — this is what actually fixes the "closes before
+  // I can reach it" bug. The previous version scheduled a close but never
+  // cancelled it on re-entry, so a stale timer could close the dropdown
+  // even after the mouse had successfully moved into the panel.
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -91,8 +97,13 @@ export function Header() {
   useEffect(() => {
     setMobileOpen(false);
     setOpenDropdown(null);
-    setHoveredDropdown(null);
   }, [pathname]);
+
+  useEffect(() => {
+    return () => {
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+    };
+  }, []);
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -101,25 +112,29 @@ export function Header() {
     if (item.href && isActive(item.href)) {
       return true;
     }
-
     return item.children?.some((child) => isActive(child.href)) ?? false;
   };
 
   const closeDropdowns = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
     setOpenDropdown(null);
-    setHoveredDropdown(null);
+  };
+
+  const openDropdownNow = (label: string) => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setOpenDropdown(label);
+  };
+
+  const scheduleClose = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    closeTimer.current = setTimeout(() => {
+      setOpenDropdown(null);
+    }, 250);
   };
 
   const handleDropdownToggle = (label: string) => {
-    setHoveredDropdown((current) => (current === label ? null : label));
+    if (closeTimer.current) clearTimeout(closeTimer.current);
     setOpenDropdown((current) => (current === label ? null : label));
-  };
-
-  const handleDropdownLeave = (label: string) => {
-    window.setTimeout(() => {
-      setOpenDropdown((current) => (current === label ? null : current));
-      setHoveredDropdown((current) => (current === label ? null : current));
-    }, 180);
   };
 
   return (
@@ -170,11 +185,8 @@ export function Header() {
                 <div
                   key={item.label}
                   className="relative"
-                  onMouseEnter={() => {
-                    setHoveredDropdown(item.label);
-                    setOpenDropdown(item.label);
-                  }}
-                  onMouseLeave={() => handleDropdownLeave(item.label)}
+                  onMouseEnter={() => openDropdownNow(item.label)}
+                  onMouseLeave={scheduleClose}
                 >
                   <button
                     type="button"
@@ -193,12 +205,20 @@ export function Header() {
                     <span className={getActiveIndicatorClasses(active)} />
                   </button>
 
-                  {isOpen ? (
-                    <div
-                      className="absolute left-0 top-full mt-2 w-72 rounded-xl border border-neutral-200 bg-white p-2 shadow-lg"
-                      onMouseEnter={() => setHoveredDropdown(item.label)}
-                      onMouseLeave={() => handleDropdownLeave(item.label)}
-                    >
+                  {/* No margin gap between trigger and panel — instead the
+                      panel's own wrapper starts flush (top-full, no mt-*)
+                      and uses internal pt-2 for the visual gap. Since that
+                      padding is inside this hoverable wrapper (not empty
+                      space outside it), the mouse never leaves a tracked
+                      element while moving from the button into the panel. */}
+                  <div
+                    className={`absolute left-0 top-full pt-2 transition-opacity duration-150 ${
+                      isOpen
+                        ? "pointer-events-auto opacity-100"
+                        : "pointer-events-none opacity-0"
+                    }`}
+                  >
+                    <div className="w-72 rounded-xl border border-neutral-200 bg-white p-2 shadow-lg">
                       {item.children.map((child) => (
                         <Link
                           key={child.href}
@@ -214,7 +234,7 @@ export function Header() {
                         </Link>
                       ))}
                     </div>
-                  ) : null}
+                  </div>
                 </div>
               );
             }
@@ -294,7 +314,9 @@ export function Header() {
                   >
                     <button
                       type="button"
-                      onClick={() => setOpenDropdown((current) => (current === item.label ? null : item.label))}
+                      onClick={() =>
+                        setOpenDropdown((current) => (current === item.label ? null : item.label))
+                      }
                       className={getMobileLinkClasses(active)}
                     >
                       <span>{item.label}</span>

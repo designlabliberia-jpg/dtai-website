@@ -26,7 +26,7 @@ const audiences = [
 
 export function FinalConversion() {
   return (
-    <section className="bg-infra-midnight py-24 text-white">
+    <section data-ambient-zone className="bg-infra-midnight py-24 text-white">
       <Container>
         <div className="mb-14 max-w-2xl">
           <span className="font-technical text-xs uppercase tracking-wide text-tech-blue">
