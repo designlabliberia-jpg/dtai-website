@@ -37,6 +37,19 @@ function tierFor(mode: Mode, c: CountyData) {
 
 const FALLBACK_VIEWBOX = "0 0 1000 1000";
 
+// Sparse ambient background nodes — decorative only, positioned around the
+// map's edges rather than a full-canvas grid, so it reads as atmosphere
+// rather than a container boundary.
+const ambientNodes = [
+  { x: "6%", y: "18%", delay: 0 },
+  { x: "92%", y: "12%", delay: 0.4 },
+  { x: "88%", y: "70%", delay: 0.8 },
+  { x: "10%", y: "78%", delay: 1.2 },
+  { x: "50%", y: "8%", delay: 1.6 },
+  { x: "4%", y: "48%", delay: 2 },
+  { x: "95%", y: "45%", delay: 2.4 },
+];
+
 export function LiberiaMapDemo() {
   const [hovered, setHovered] = useState<CountyData | null>(null);
   const [selected, setSelected] = useState<CountyData | null>(null);
@@ -46,9 +59,6 @@ export function LiberiaMapDemo() {
 
   const mapGroupRef = useRef<SVGGElement | null>(null);
 
-  // Measure the actual rendered geometry of the real county paths and set
-  // the SVG viewBox to fit it, with generous padding — avoids hand-guessing
-  // bounds and gives zoom room to work without pushing content off-canvas.
   useLayoutEffect(() => {
     if (!mapGroupRef.current) return;
     try {
@@ -76,6 +86,20 @@ export function LiberiaMapDemo() {
     const [x, y, w, h] = viewBox.split(" ").map(Number);
     return { x: x + w / 2, y: y + h / 2 };
   }, [viewBox]);
+
+  // Real aggregate stats, computed directly from the county dataset —
+  // not invented figures, just a rollup of what's already there.
+  const stats = useMemo(() => {
+    const totalPopulation = liberiaCounties.reduce((sum, c) => sum + c.populationValue, 0);
+    const totalProjects = liberiaCounties.reduce((sum, c) => sum + c.activeProjects, 0);
+    const highConnectivity = liberiaCounties.filter((c) => c.connectivityScore === "High").length;
+    return {
+      counties: liberiaCounties.length,
+      totalPopulation,
+      totalProjects,
+      highConnectivity,
+    };
+  }, []);
 
   function handleCountyClick(county: CountyData) {
     setSelected(county);
@@ -117,12 +141,56 @@ export function LiberiaMapDemo() {
             ))}
           </div>
         </div>
+
+        {/* Real aggregate stats row, filling space above the map with
+            genuine derived data rather than decoration */}
+        <div className="mb-8 grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-white/10 sm:grid-cols-4">
+          {[
+            { label: "Counties Mapped", value: stats.counties },
+            { label: "High Connectivity", value: stats.highConnectivity },
+            { label: "Active Projects, All Counties", value: stats.totalProjects },
+            { label: "Population Represented (est.)", value: stats.totalPopulation.toLocaleString() },
+          ].map((s) => (
+            <div key={s.label} className="bg-white/[0.03] px-5 py-4">
+              <div className="font-technical text-xl font-semibold text-white md:text-2xl">
+                {s.value}
+              </div>
+              <div className="mt-1 text-xs leading-snug text-neutral-400">{s.label}</div>
+            </div>
+          ))}
+        </div>
       </Container>
 
-      {/* Full-bleed map: intentionally outside Container so it spans the
-          full viewport width rather than sitting in the constrained
-          content column — reads as open, not boxed. */}
+      {/* Full-bleed map with sparse ambient background — spans full
+          viewport width so it never feels boxed in */}
       <div className="relative w-full">
+        {/* Ambient atmosphere: soft glow + a few slow-pulsing nodes around
+            the edges, filling the surrounding dark space without forming
+            a grid or boundary shape */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(0,166,255,0.06), transparent 70%)",
+            }}
+          />
+          {ambientNodes.map((n, i) => (
+            <motion.span
+              key={i}
+              className="absolute h-1.5 w-1.5 rounded-full bg-tech-blue/40"
+              style={{ left: n.x, top: n.y }}
+              animate={{ opacity: [0.2, 0.7, 0.2], scale: [1, 1.4, 1] }}
+              transition={{
+                duration: 4 + (i % 3),
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: n.delay,
+              }}
+            />
+          ))}
+        </div>
+
         {zoomed && (
           <button
             onClick={() => setZoomed(null)}
@@ -134,7 +202,7 @@ export function LiberiaMapDemo() {
 
         <motion.svg
           viewBox={viewBox}
-          className="h-[560px] w-full md:h-[720px] lg:h-[820px]"
+          className="relative h-[560px] w-full md:h-[720px] lg:h-[820px]"
           style={{ overflow: "visible" }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -225,56 +293,76 @@ export function LiberiaMapDemo() {
       </div>
 
       <Container>
-        <div className="mt-8">
-          <div className="mb-4 flex flex-wrap gap-x-4 gap-y-2 text-xs text-neutral-400">
-            <span className="flex items-center gap-1.5">
-              <span className="h-2.5 w-2.5 rounded-full" style={{ background: tierColor.High }}/>
-              High
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="h-2.5 w-2.5 rounded-full" style={{ background: tierColor.Moderate }} />
-              Moderate
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="h-2.5 w-2.5 rounded-full" style={{ background: tierColor.Low }} />
-              Low
-            </span>
+        <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_1fr]">
+          <div>
+            <div className="mb-4 flex flex-wrap gap-x-4 gap-y-2 text-xs text-neutral-400">
+              <span className="flex items-center gap-1.5">
+                <span className="h-2.5 w-2.5 rounded-full" style={{ background: tierColor.High }}/>
+                High
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="h-2.5 w-2.5 rounded-full" style={{ background: tierColor.Moderate }} />
+                Moderate
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="h-2.5 w-2.5 rounded-full" style={{ background: tierColor.Low }} />
+                Low
+              </span>
+            </div>
+
+            <div className="min-h-[160px] rounded-lg border border-white/10 bg-white/5 p-6">
+              <AnimatePresence mode="wait">
+                {display ? (
+                  <motion.div
+                    key={display.id}
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <h3 className="font-primary text-lg font-semibold text-white">
+                      {display.name}
+                    </h3>
+                    <dl className="mt-4 space-y-3 text-sm">
+                      <div className="flex justify-between border-b border-white/10 pb-2">
+                        <dt className="text-neutral-400">Population (est.)</dt>
+                        <dd className="font-technical text-white">{display.population}</dd>
+                      </div>
+                      <div className="flex justify-between border-b border-white/10 pb-2">
+                        <dt className="text-neutral-400">Connectivity</dt>
+                        <dd className="font-technical text-white">{display.connectivityScore}</dd>
+                      </div>
+                      <div className="flex justify-between">
+                        <dt className="text-neutral-400">Active Projects</dt>
+                        <dd className="font-technical text-white">{display.activeProjects}</dd>
+                      </div>
+                    </dl>
+                  </motion.div>
+                ) : (
+                  <p className="text-sm text-neutral-400">
+                    Hover or click a county to view its data. Click again to zoom in.
+                  </p>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
 
-          <div className="min-h-[160px] max-w-md rounded-lg border border-white/10 bg-white/5 p-6">
-            <AnimatePresence mode="wait">
-              {display ? (
-                <motion.div
-                  key={display.id}
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <h3 className="font-primary text-lg font-semibold text-white">
-                    {display.name}
-                  </h3>
-                  <dl className="mt-4 space-y-3 text-sm">
-                    <div className="flex justify-between border-b border-white/10 pb-2">
-                      <dt className="text-neutral-400">Population (est.)</dt>
-                      <dd className="font-technical text-white">{display.population}</dd>
-                    </div>
-                    <div className="flex justify-between border-b border-white/10 pb-2">
-                      <dt className="text-neutral-400">Connectivity</dt>
-                      <dd className="font-technical text-white">{display.connectivityScore}</dd>
-                    </div>
-                    <div className="flex justify-between">
-                      <dt className="text-neutral-400">Active Projects</dt>
-                      <dd className="font-technical text-white">{display.activeProjects}</dd>
-                    </div>
-                  </dl>
-                </motion.div>
-              ) : (
-                <p className="text-sm text-neutral-400">
-                  Hover or click a county to view its data. Click again to zoom in.
-                </p>
-              )}
-            </AnimatePresence>
+          <div className="rounded-lg border border-white/10 bg-white/5 p-6">
+            <span className="font-technical text-[10px] uppercase tracking-wide text-neutral-500">
+              About This Demonstration
+            </span>
+            <p className="mt-3 text-sm leading-relaxed text-neutral-300">
+              This map uses real Liberia county boundary data to demonstrate
+              DTAI&rsquo;s GIS and spatial technology capability &mdash; the
+              same class of tooling used for infrastructure planning,
+              service-gap analysis, and regional decision support.
+            </p>
+            <p className="mt-3 text-sm leading-relaxed text-neutral-400">
+              Population, connectivity, and project figures shown here are
+              illustrative placeholders. In a production deployment, this
+              same interface would be backed by verified, continuously
+              updated data sources.
+            </p>
           </div>
         </div>
       </Container>
