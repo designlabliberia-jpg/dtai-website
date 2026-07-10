@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://dtai.example.com/sitemap.xml",
+    sitemap: "https://dtai.designlab.technology/sitemap.xml",
   };
 }

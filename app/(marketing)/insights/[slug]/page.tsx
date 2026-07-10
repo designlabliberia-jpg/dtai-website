@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { Clock } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { RelatedInsights } from "@/components/enterprise/RelatedInsights";
@@ -8,6 +9,34 @@ import { capabilities } from "@/lib/capabilities-data";
 
 export function generateStaticParams() {
   return insights.map((i) => ({ slug: i.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const insight = getInsightBySlug(slug);
+  if (!insight) return {};
+
+  return {
+    title: insight.title,
+    description: insight.summary,
+    authors: [{ name: insight.author }],
+    openGraph: {
+      title: insight.title,
+      description: insight.summary,
+      type: "article",
+      publishedTime: insight.publishDate,
+      authors: [insight.author],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: insight.title,
+      description: insight.summary,
+    },
+  };
 }
 
 function formatDate(dateStr: string) {

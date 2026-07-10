@@ -5,7 +5,7 @@ import { industries } from "@/lib/industries-data";
 import { caseStudies } from "@/lib/case-studies-data";
 import { insights } from "@/lib/insights-data";
 
-const baseUrl = "https://dtai.example.com";
+const baseUrl = "https://dtai.designlab.technology";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [

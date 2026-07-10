@@ -1,9 +1,39 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { Container } from "@/components/layout/Container";
 import { caseStudies, getCaseStudyBySlug } from "@/lib/case-studies-data";
 
 export function generateStaticParams() {
   return caseStudies.map((c) => ({ slug: c.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const cs = getCaseStudyBySlug(slug);
+  if (!cs) return {};
+
+  const description = cs.challenge.length > 155
+    ? `${cs.challenge.slice(0, 155).trim()}...`
+    : cs.challenge;
+
+  return {
+    title: cs.title,
+    description,
+    openGraph: {
+      title: `${cs.title} | DTAI`,
+      description,
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${cs.title} | DTAI`,
+      description,
+    },
+  };
 }
 
 export default async function CaseStudyDetailPage({
