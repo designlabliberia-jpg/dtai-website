@@ -22,13 +22,13 @@ export const leadershipTeam: LeadershipMember[] = [
   },
   {
     id: "DTAI-L02",
-    name: "Garrison N. Sayor",
+    name: "Garrison Nyunti Sayor III",
     title: "Senior Software Engineer",
     division: "Engineering",
     focus: "Technical Delivery & Engineering Standards",
     bio: "Leads technical delivery and engineering standards across DTAI's software and infrastructure projects.",
     image: "/assets/team/Garrison.jpeg",
-    linkedin: "",
+    linkedin: "http://linkedin.com/in/garrison-sayor-iii-aa3699313",
   },
   {
     id: "DTAI-L03",
@@ -38,6 +38,6 @@ export const leadershipTeam: LeadershipMember[] = [
     focus: "Systems Reliability & IT Governance",
     bio: "Oversees IT operations, systems reliability, and internal technology governance at DTAI.",
     image: "/assets/team/Emmanuel.jpeg",
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/in/emmanuelcheeseman",
   },
 ];

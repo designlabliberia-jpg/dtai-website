@@ -1,23 +1,84 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { ChevronRight } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { Container } from "./Container";
+import { capabilities } from "@/lib/capabilities-data";
+import { industries } from "@/lib/industries-data";
+import { solutions } from "@/lib/solutions-data";
 
-const navItems = [
-  { label: "Capabilities", href: "/capabilities" },
-  { label: "Solutions", href: "/solutions" },
-  { label: "Industries", href: "/industries" },
+type NavItem = {
+  label: string;
+  href?: string;
+  children?: { title: string; href: string }[];
+};
+
+const navItems: NavItem[] = [
+  {
+    label: "Services",
+    href: "/capabilities",
+    children: capabilities.map((capability) => ({
+      title: capability.title,
+      href: `/capabilities/${capability.slug}`,
+    })),
+  },
+  {
+    label: "Industries",
+    href: "/industries",
+    children: industries.map((industry) => ({
+      title: industry.title,
+      href: `/industries/${industry.slug}`,
+    })),
+  },
+    {
+    label: "Solutions",
+    href: "/solutions",
+    children: solutions.map((solution) => ({
+      title: solution.title,
+      href: `/solutions/${solution.slug}`,
+    })),
+  },
   { label: "Case Studies", href: "/case-studies" },
   { label: "Insights", href: "/insights" },
-  { label: "Company", href: "/company" },
+  { label: "Company", href: "/company/overview" },
 ];
+
+function getDesktopLinkClasses(active: boolean) {
+  return `group relative px-3.5 py-2 text-sm font-medium transition-colors duration-micro ${
+    active ? "text-brand" : "text-neutral-800 hover:text-brand"
+  }`;
+}
+
+function getMobileLinkClasses(active: boolean) {
+  return `flex items-center justify-between rounded-md px-3 py-3 text-sm font-medium transition-colors duration-micro ${
+    active
+      ? "bg-white/5 text-tech-blue"
+      : "text-neutral-200 hover:bg-white/5 hover:text-white"
+  }`;
+}
+
+function getActiveIndicatorClasses(active: boolean) {
+  return `absolute inset-x-3 -bottom-[1px] h-[2px] rounded-full bg-tech-blue transition-transform duration-[var(--duration-standard)] ease-[var(--ease-standard)] ${
+    active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+  }`;
+}
+
+function getDropdownLinkClasses(active: boolean) {
+  return `rounded-md px-3 py-2 text-sm transition-colors ${
+    active
+      ? "bg-tech-blue/10 text-tech-blue"
+      : "text-neutral-300 hover:bg-white/5 hover:text-white"
+  }`;
+}
 
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [hoveredDropdown, setHoveredDropdown] = useState<string | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -29,10 +90,37 @@ export function Header() {
 
   useEffect(() => {
     setMobileOpen(false);
+    setOpenDropdown(null);
+    setHoveredDropdown(null);
   }, [pathname]);
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
+
+  const isDropdownActive = (item: NavItem) => {
+    if (item.href && isActive(item.href)) {
+      return true;
+    }
+
+    return item.children?.some((child) => isActive(child.href)) ?? false;
+  };
+
+  const closeDropdowns = () => {
+    setOpenDropdown(null);
+    setHoveredDropdown(null);
+  };
+
+  const handleDropdownToggle = (label: string) => {
+    setHoveredDropdown((current) => (current === label ? null : label));
+    setOpenDropdown((current) => (current === label ? null : label));
+  };
+
+  const handleDropdownLeave = (label: string) => {
+    window.setTimeout(() => {
+      setOpenDropdown((current) => (current === label ? null : current));
+      setHoveredDropdown((current) => (current === label ? null : current));
+    }, 180);
+  };
 
   return (
     <header
@@ -59,7 +147,6 @@ export function Header() {
             alt="DTAI — Digital Technology Associates Inc."
             width={40}
             height={40}
-            priority
             className="h-10 w-10 object-contain"
           />
           <div className="flex flex-col leading-none">
@@ -74,36 +161,78 @@ export function Header() {
 
         <nav className="hidden items-center gap-1 md:flex">
           {navItems.map((item) => {
-            const active = isActive(item.href);
+            const active = isDropdownActive(item);
+
+            if (item.children) {
+              const isOpen = openDropdown === item.label;
+
+              return (
+                <div
+                  key={item.label}
+                  className="relative"
+                  onMouseEnter={() => {
+                    setHoveredDropdown(item.label);
+                    setOpenDropdown(item.label);
+                  }}
+                  onMouseLeave={() => handleDropdownLeave(item.label)}
+                >
+                  <button
+                    type="button"
+                    aria-expanded={isOpen}
+                    onClick={() => handleDropdownToggle(item.label)}
+                    className={`group relative flex items-center gap-2 px-3.5 py-2 text-sm font-medium transition-colors duration-micro ${
+                      active ? "text-brand" : "text-neutral-800 hover:text-brand"
+                    }`}
+                  >
+                    {item.label}
+                    <ChevronRight
+                      className={`h-5 w-5 transition-transform duration-micro ${
+                        isOpen ? "rotate-90" : ""
+                      }`}
+                    />
+                    <span className={getActiveIndicatorClasses(active)} />
+                  </button>
+
+                  {isOpen ? (
+                    <div
+                      className="absolute left-0 top-full mt-2 w-72 rounded-xl border border-neutral-200 bg-white p-2 shadow-lg"
+                      onMouseEnter={() => setHoveredDropdown(item.label)}
+                      onMouseLeave={() => handleDropdownLeave(item.label)}
+                    >
+                      {item.children.map((child) => (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          onClick={closeDropdowns}
+                          className={`block rounded-lg px-3 py-2.5 text-sm transition-colors ${
+                            isActive(child.href)
+                              ? "bg-brand/10 text-brand"
+                              : "text-neutral-700 hover:bg-neutral-50 hover:text-brand"
+                          }`}
+                        >
+                          {child.title}
+                        </Link>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+              );
+            }
+
             return (
               <Link
                 key={item.href}
-                href={item.href}
-                className={`group relative px-3.5 py-2 text-sm font-medium transition-colors duration-micro ${
-                  active ? "text-brand" : "text-neutral-800 hover:text-brand"
-                }`}
+                href={item.href ?? "/"}
+                className={getDesktopLinkClasses(active)}
               >
                 {item.label}
-                <span
-                  className={`absolute inset-x-3 -bottom-[1px] h-[2px] rounded-full bg-tech-blue transition-transform duration-[var(--duration-standard)] ease-[var(--ease-standard)] ${
-                    active
-                      ? "scale-x-100"
-                      : "scale-x-0 group-hover:scale-x-100"
-                  }`}
-                />
+                <span className={getActiveIndicatorClasses(active)} />
               </Link>
             );
           })}
         </nav>
 
         <div className="flex items-center gap-3">
-          <div className="hidden items-center gap-1.5 border-r border-neutral-300/60 pr-4 lg:flex">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-tech-blue" />
-            <span className="font-technical text-[10px] uppercase tracking-wide text-neutral-500">
-              Systems Online
-            </span>
-          </div>
-
           <Link
             href="/contact"
             className="hidden items-center gap-2 rounded-md bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-micro hover:bg-tech-blue sm:inline-flex"
@@ -115,7 +244,7 @@ export function Header() {
             type="button"
             aria-label="Toggle navigation menu"
             aria-expanded={mobileOpen}
-            onClick={() => setMobileOpen((v) => !v)}
+            onClick={() => setMobileOpen((value) => !value)}
             className="relative flex h-11 w-11 items-center justify-center rounded-md border border-neutral-300 md:hidden"
           >
             <span className="sr-only">Menu</span>
@@ -154,21 +283,53 @@ export function Header() {
           </div>
 
           <div className="flex flex-col gap-1">
-            {navItems.map((item, i) => {
-              const active = isActive(item.href);
+            {navItems.map((item, index) => {
+              const active = isDropdownActive(item);
+
+              if (item.children) {
+                return (
+                  <div
+                    key={item.label}
+                    className="rounded-md border border-white/10 bg-white/5"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setOpenDropdown((current) => (current === item.label ? null : item.label))}
+                      className={getMobileLinkClasses(active)}
+                    >
+                      <span>{item.label}</span>
+                      <span className="font-technical text-[10px] text-neutral-500">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                    </button>
+
+                    {openDropdown === item.label ? (
+                      <div className="flex flex-col gap-1 border-t border-white/10 px-2 pb-2 pt-2">
+                        {item.children.map((child) => (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            onClick={() => setOpenDropdown(null)}
+                            className={getDropdownLinkClasses(isActive(child.href))}
+                          >
+                            {child.title}
+                          </Link>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+                );
+              }
+
               return (
                 <Link
                   key={item.href}
-                  href={item.href}
-                  className={`flex items-center justify-between rounded-md px-3 py-3 text-sm font-medium transition-colors duration-micro ${
-                    active
-                      ? "bg-white/5 text-tech-blue"
-                      : "text-neutral-200 hover:bg-white/5 hover:text-white"
-                  }`}
+                  href={item.href ?? "/"}
+                  className={getMobileLinkClasses(active)}
                 >
                   <span>{item.label}</span>
                   <span className="font-technical text-[10px] text-neutral-500">
-                    {String(i + 1).padStart(2, "0")}
+                    {String(index + 1).padStart(2, "0")}
                   </span>
                 </Link>
               );
