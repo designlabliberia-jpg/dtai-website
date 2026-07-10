@@ -2,32 +2,43 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { FileText, LayoutGrid, Zap, TrendingUp } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 
-const stages = [
+const stages: {
+  label: string;
+  title: string;
+  detail: string;
+  icon: LucideIcon;
+}[] = [
   {
     label: "Manual Process",
     title: "Paper-based, siloed record keeping",
     detail:
       "Requests move on paper between offices. Status is tracked in ledgers. Errors and delays are discovered only when someone asks.",
+    icon: FileText,
   },
   {
     label: "Digital Workflow",
     title: "Structured, trackable digital process",
     detail:
       "The same steps are captured in a defined digital workflow. Every request has a status, an owner, and a timestamp.",
+    icon: LayoutGrid,
   },
   {
     label: "Automation",
     title: "Routing and validation handled automatically",
     detail:
       "Rules-based routing moves requests to the right reviewer automatically. Validation catches missing data before it reaches a human.",
+    icon: Zap,
   },
   {
     label: "Outcome",
     title: "Faster, auditable, accountable",
     detail:
       "Processing time drops, every action is logged, and institutional leadership can see exactly where a request stands at any moment.",
+    icon: TrendingUp,
   },
 ];
 
@@ -50,7 +61,71 @@ export function WorkflowDemo() {
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-3">
+        {/* Animated flow diagram */}
+        <div className="rounded-lg border border-neutral-300/60 bg-white p-6 sm:p-8">
+          <div className="flex items-center">
+            {stages.map((s, i) => {
+              const Icon = s.icon;
+              const isDone = i < active;
+              const isActive = i === active;
+              const isReached = i <= active;
+
+              return (
+                <div key={s.label} className="flex flex-1 items-center last:flex-none">
+                  <button
+                    onClick={() => setActive(i)}
+                    className="flex flex-col items-center gap-2 outline-none"
+                    aria-label={`View stage ${i + 1}: ${s.label}`}
+                    aria-current={isActive}
+                  >
+                    <div className="relative flex h-12 w-12 items-center justify-center sm:h-14 sm:w-14">
+                      {isActive && (
+                        <motion.span
+                          className="absolute inset-0 rounded-full bg-tech-blue/20"
+                          animate={{ scale: [1, 1.35, 1], opacity: [0.6, 0, 0.6] }}
+                          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                        />
+                      )}
+                      <div
+                        className={`relative flex h-12 w-12 items-center justify-center rounded-full border-2 transition-colors duration-standard sm:h-14 sm:w-14 ${
+                          isReached
+                            ? "border-tech-blue bg-tech-blue/10"
+                            : "border-neutral-300 bg-neutral-50"
+                        }`}
+                      >
+                        <Icon
+                          size={20}
+                          className={isReached ? "text-tech-blue" : "text-neutral-400"}
+                          strokeWidth={1.75}
+                        />
+                      </div>
+                    </div>
+                    <span
+                      className={`hidden max-w-[80px] text-center font-technical text-[10px] uppercase tracking-wide sm:block ${
+                        isReached ? "text-neutral-900" : "text-neutral-400"
+                      }`}
+                    >
+                      {s.label}
+                    </span>
+                  </button>
+
+                  {i < stages.length - 1 && (
+                    <div className="relative mx-2 h-0.5 flex-1 overflow-hidden rounded-full bg-neutral-200 sm:mx-3">
+                      <motion.div
+                        className="absolute inset-y-0 left-0 bg-tech-blue"
+                        initial={false}
+                        animate={{ width: isDone ? "100%" : "0%" }}
+                        transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+                      />
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="mt-8 flex flex-wrap gap-3">
           {stages.map((s, i) => (
             <button
               key={s.label}
