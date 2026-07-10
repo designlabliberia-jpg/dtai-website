@@ -56,9 +56,14 @@ export function LiberiaMapDemo() {
   const [mode, setMode] = useState<Mode>("connectivity");
   const [zoomed, setZoomed] = useState<CountyData | null>(null);
   const [viewBox, setViewBox] = useState(FALLBACK_VIEWBOX);
+  const [mapAspectRatio, setMapAspectRatio] = useState<number | null>(null);
 
   const mapGroupRef = useRef<SVGGElement | null>(null);
 
+  // Measure the real map geometry and size the container by its actual
+  // aspect ratio (rather than fixed per-breakpoint pixel heights) so it
+  // never letterboxes on narrow screens where width shrinks but a fixed
+  // height wouldn't shrink to match.
   useLayoutEffect(() => {
     if (!mapGroupRef.current) return;
     try {
@@ -69,6 +74,7 @@ export function LiberiaMapDemo() {
         setViewBox(
           `${bbox.x - padX} ${bbox.y - padY} ${bbox.width + padX * 2} ${bbox.height + padY * 2}`
         );
+        setMapAspectRatio((bbox.width + padX * 2) / (bbox.height + padY * 2));
       }
     } catch {
       // getBBox can throw in some SSR/edge rendering paths — fall back silently
@@ -125,7 +131,7 @@ export function LiberiaMapDemo() {
             </p>
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             {modes.map((m) => (
               <button
                 key={m.id}
@@ -194,7 +200,7 @@ export function LiberiaMapDemo() {
         {zoomed && (
           <button
             onClick={() => setZoomed(null)}
-            className="absolute right-6 top-6 z-10 rounded-md border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm transition-colors duration-micro hover:border-tech-blue"
+            className="absolute right-3 top-3 z-10 rounded-md border border-white/20 bg-white/10 px-2.5 py-1.5 text-[11px] font-medium text-white backdrop-blur-sm transition-colors duration-micro hover:border-tech-blue sm:right-6 sm:top-6 sm:px-3 sm:text-xs"
           >
             Reset View
           </button>
@@ -202,8 +208,11 @@ export function LiberiaMapDemo() {
 
         <motion.svg
           viewBox={viewBox}
-          className="relative h-[560px] w-full md:h-[720px] lg:h-[820px]"
-          style={{ overflow: "visible" }}
+          className="relative w-full max-h-[70vh] min-h-[380px] sm:min-h-[460px] md:max-h-[720px] lg:max-h-[820px]"
+          style={{
+            overflow: "visible",
+            aspectRatio: mapAspectRatio ? String(mapAspectRatio) : undefined,
+          }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.3 }}
