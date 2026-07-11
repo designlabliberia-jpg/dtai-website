@@ -49,6 +49,55 @@ export const industries: Industry[] = [
     keyNeeds: ["Operational scalability", "Integration with existing systems", "Internal workflow efficiency"],
     relatedCapabilities: ["cloud-solutions", "digital-transformation", "software-engineering"],
   },
+  {
+    slug: "retail-ecommerce",
+    title: "Retail and E-commerce",
+    summary: "Digital storefronts and back-office systems for retailers managing online and in-person sales.",
+    keyNeeds: ["Reliable transaction handling", "Inventory and order visibility", "Scalable customer-facing platforms"],
+    relatedCapabilities: ["web-application-development", "mobile-application-development", "data-platforms"],
+  },
+  {
+    slug: "logistics-transportation",
+    title: "Logistics and Transportation",
+    summary: "Systems for organizations coordinating the movement of goods, fleets, and personnel.",
+    keyNeeds: ["Route and asset visibility", "Integration with field operations", "Dependable infrastructure at scale"],
+    relatedCapabilities: ["gis-spatial-technology", "digital-infrastructure", "data-platforms"],
+  },
+  {
+    slug: "agriculture-agribusiness",
+    title: "Agriculture and Agribusiness",
+    summary: "Technology supporting agricultural producers and agribusinesses from field data to supply chain.",
+    keyNeeds: ["Field and land data mapping", "Supply chain tracking", "Access in low-connectivity areas"],
+    relatedCapabilities: ["gis-spatial-technology", "data-platforms", "mobile-application-development"],
+  },
+  {
+    slug: "hospitality-tourism",
+    title: "Hospitality and Tourism",
+    summary: "Platforms for hospitality and tourism operators managing bookings, guests, and visitor services.",
+    keyNeeds: ["Booking and reservation reliability", "Guest-facing digital experience", "Seasonal scalability"],
+    relatedCapabilities: ["web-application-development", "mobile-application-development", "cloud-solutions"],
+  },
+  {
+    slug: "ngos",
+    title: "NGOs",
+    summary: "Systems for non-governmental organizations managing programs, beneficiaries, and donor reporting.",
+    keyNeeds: ["Program and beneficiary data management", "Donor-ready reporting", "Cost-conscious, sustainable systems"],
+    relatedCapabilities: ["data-platforms", "digital-transformation", "cloud-solutions"],
+  },
+  {
+    slug: "smes",
+    title: "SMEs",
+    summary: "Right-sized digital systems for small and medium enterprises formalizing or growing their operations.",
+    keyNeeds: ["Affordable, right-sized systems", "Room to scale without rebuilding", "Practical integration with existing tools"],
+    relatedCapabilities: ["it-consulting-systems-integration", "cloud-solutions", "software-engineering"],
+  },
+  {
+    slug: "international-development-partners",
+    title: "International Development Partners",
+    summary: "Technical systems for development partners and implementing agencies running programs on the ground.",
+    keyNeeds: ["Rigorous monitoring and evaluation data", "Interoperability across partner systems", "Geographic and demographic data accuracy"],
+    relatedCapabilities: ["data-platforms", "digital-transformation", "gis-spatial-technology"],
+  },
 ];
 
 export function getIndustryBySlug(slug: string) {
