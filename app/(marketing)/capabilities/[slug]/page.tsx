@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { FadeInImage } from "@/components/enterprise/FadeInImage";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/layout/Container";
 import { MethodologyFlow } from "@/components/enterprise/MethodologyFlow";
@@ -33,8 +33,8 @@ export default async function CapabilityDetailPage({
           {capability.summary}
         </p>
 
-        <div className="relative mt-10 aspect-[16/9] overflow-hidden rounded-lg">
-          <Image
+        <div className="relative mt-10 w-full aspect-[21/9] overflow-hidden rounded-lg">
+          <FadeInImage
             src={`/assets/capabilities/${capability.slug}.jpg`}
             alt={capability.title}
             fill

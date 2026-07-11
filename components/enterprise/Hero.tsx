@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Container } from "@/components/layout/Container";
+import { HeroCodeDemo } from "@/components/enterprise/HeroCodeDemo";
 
 const nodes = [
   { cx: 150, cy: 200, r: 4 },
@@ -27,22 +26,7 @@ const connections = [
   { x1: 700, y1: 180, x2: 1050, y2: 200 },
 ];
 
-const heroImages = [
-  { src: "/assets/hero/team-at-work1.jpg", alt: "DTAI engineering team at work" },
-  { src: "/assets/hero/team-at-work2.jpg", alt: "DTAI engineering team at work" },
-];
-
 export function Hero() {
-  const [activeImage, setActiveImage] = useState(0);
-
-  useEffect(() => {
-    if (heroImages.length <= 1) return;
-    const interval = setInterval(() => {
-      setActiveImage((i) => (i + 1) % heroImages.length);
-    }, 6000);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <section data-ambient-zone className="relative overflow-hidden bg-infra-midnight text-white">
       {/* Ambient background layer */}
@@ -122,75 +106,25 @@ export function Hero() {
         />
       </div>
 
-      {/* Real photo panel, right side, fading into background, auto-rotating */}
+      {/* Continuously-typing code panel, right side — replaces the earlier
+          rotating photo carousel entirely. This is the direct fix for
+          "doesn't look like a tech company at first glance": it's the
+          first thing visible, never stops, and cycles through real,
+          representative code across the actual range of services DTAI
+          offers (infrastructure/security, mobile, AI, backend). */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 0.4 }}
-        className="pointer-events-none absolute inset-y-0 right-0 z-[1] hidden w-[44%] lg:block"
+        initial={{ opacity: 0, x: 24 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.7, delay: 0.5, ease: [0.2, 0, 0, 1] }}
+        className="pointer-events-auto absolute inset-y-0 right-0 z-[1] hidden w-[46%] items-center lg:flex"
       >
-        <div className="relative h-full w-full overflow-hidden">
-          <AnimatePresence mode="sync">
-            <motion.div
-              key={heroImages[activeImage].src}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.4, ease: [0.4, 0, 0.2, 1] }}
-              className="absolute inset-0"
-            >
-              <Image
-                src={heroImages[activeImage].src}
-                alt={heroImages[activeImage].alt}
-                fill
-                priority
-                sizes="44vw"
-                className="object-cover object-center"
-              />
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Fade into background: left edge */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(90deg, var(--color-infra-midnight) 0%, rgba(7,24,39,0.75) 12%, rgba(7,24,39,0) 45%)",
-            }}
-          />
-          {/* Fade into background: top edge */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(180deg, var(--color-infra-midnight) 0%, rgba(7,24,39,0) 22%)",
-            }}
-          />
-          {/* Fade into background: bottom edge */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(0deg, var(--color-infra-midnight) 0%, rgba(7,24,39,0) 30%)",
-            }}
-          />
-          {/* Corner fix: reinforces blend specifically at top-left, where the
-              two linear fades above don't fully overlap and a hard edge can
-              otherwise remain visible */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(220px 220px at 0% 0%, var(--color-infra-midnight) 0%, rgba(7,24,39,0.6) 45%, rgba(7,24,39,0) 75%)",
-            }}
-          />
-          {/* Subtle brand-blue tint for cohesion with the rest of the Hero */}
-          <div className="absolute inset-0 bg-dtai-blue/10 mix-blend-overlay" />
+        <div className="w-full px-8 py-16 xl:px-12">
+          <HeroCodeDemo />
         </div>
       </motion.div>
 
       <Container className="relative z-10 py-28 md:py-36">
-        <div className="lg:max-w-[54%]">
+        <div className="lg:max-w-[52%]">
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
