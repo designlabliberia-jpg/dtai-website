@@ -56,6 +56,12 @@ export default function CompanyOverviewPage() {
                 priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-infra-midnight via-infra-midnight/50 to-transparent" />
+              <div className="pointer-events-none absolute inset-4">
+                <span className="absolute left-0 top-0 h-3 w-3 border-l border-t border-tech-blue/60" />
+                <span className="absolute right-0 top-0 h-3 w-3 border-r border-t border-tech-blue/60" />
+                <span className="absolute bottom-0 left-0 h-3 w-3 border-b border-l border-tech-blue/60" />
+                <span className="absolute bottom-0 right-0 h-3 w-3 border-b border-r border-tech-blue/60" />
+              </div>
               <div className="absolute inset-x-0 bottom-0 p-8">
                 <span className="font-technical text-xs uppercase tracking-wide text-tech-blue">
                   Company Profile

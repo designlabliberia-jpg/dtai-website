@@ -181,7 +181,7 @@ export function Header() {
             alt="DTAI — Digital Technology Associates Inc."
             width={40}
             height={40}
-            className="h-10 w-10 object-contain"
+            className="h-10 w-auto object-contain"
           />
           <div className="flex flex-col leading-none">
             <span className="font-technical text-sm tracking-wide text-neutral-900">

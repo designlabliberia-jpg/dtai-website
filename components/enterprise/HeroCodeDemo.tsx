@@ -425,7 +425,7 @@ export function HeroCodeDemo() {
                     alt="DTAI"
                     width={64}
                     height={64}
-                    className="object-contain"
+                    className="h-16 w-auto object-contain"
                   />
                 </div>
               )}

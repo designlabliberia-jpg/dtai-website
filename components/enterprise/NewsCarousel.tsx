@@ -52,7 +52,7 @@ export function NewsCarousel({ items }: NewsCarouselProps) {
               alt={item.title}
               fill
               className="object-cover"
-              sizes="100vw"
+              sizes="(min-width: 1280px) 1280px, 100vw"
               priority={i === 0}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-infra-midnight via-infra-midnight/50 to-transparent" />

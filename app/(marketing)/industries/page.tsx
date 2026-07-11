@@ -6,9 +6,17 @@ import {
   GraduationCap,
   HeartPulse,
   Briefcase,
+  ShoppingCart,
+  Truck,
+  Wheat,
+  Palmtree,
+  HandHeart,
+  Building2,
+  Globe2,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Container } from "@/components/layout/Container";
+import { PageHeroBanner } from "@/components/enterprise/PageHeroBanner";
 import { industries } from "@/lib/industries-data";
 
 export const metadata = {
@@ -23,19 +31,26 @@ const industryIcons: Record<string, LucideIcon> = {
   education: GraduationCap,
   healthcare: HeartPulse,
   enterprise: Briefcase,
+  "retail-ecommerce": ShoppingCart,
+  "logistics-transportation": Truck,
+  "agriculture-agribusiness": Wheat,
+  "hospitality-tourism": Palmtree,
+  ngos: HandHeart,
+  smes: Building2,
+  "international-development-partners": Globe2,
 };
 
 export default function IndustriesPage() {
   return (
     <section className="bg-white py-24">
       <Container>
-        <div className="mb-14 max-w-2xl">
-          <span className="font-technical text-xs uppercase tracking-wide text-brand">
-            Industries
-          </span>
-          <h1 className="mt-3 font-primary text-3xl font-semibold tracking-tight text-neutral-900 md:text-4xl">
-            Sectors we build for
-          </h1>
+        <div className="mb-14">
+          <PageHeroBanner
+            eyebrow="Industries"
+            title="Sectors we build for"
+            subtitle="Every sector has different constraints — regulatory, operational, or infrastructural. We design systems around the realities of each one, not a one-size-fits-all template."
+            icon={Globe2}
+          />
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
