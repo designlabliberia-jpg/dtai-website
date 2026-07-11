@@ -6,6 +6,7 @@ import { governancePages } from "@/lib/governance-data";
 import { partnerCategories } from "@/lib/partners-data";
 import { insights } from "@/lib/insights-data";
 import { caseStudies } from "@/lib/case-studies-data";
+import { products } from "@/lib/products-data";
 
 // Builds the grounding context for DTAI Agent directly from the same data
 // that powers the website's own pages. This means the agent's knowledge
@@ -51,6 +52,12 @@ export function buildDtaiKnowledgeBase(): string {
         .join("\n")
   );
 
+  sections.push(
+    "FLAGSHIP PRODUCTS:\n" +
+      products
+        .map((p) => `- ${p.name}: ${p.description} Features: ${p.features.join(", ")}.`)
+        .join("\n")
+  );
   sections.push(
     "SECURITY & GOVERNANCE:\n" +
       governancePages

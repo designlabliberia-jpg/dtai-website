@@ -9,6 +9,7 @@ import { Container } from "./Container";
 import { capabilities } from "@/lib/capabilities-data";
 import { industries } from "@/lib/industries-data";
 import { solutions } from "@/lib/solutions-data";
+import { products } from "@/lib/products-data";
 
 type NavItem = {
   label: string;
@@ -23,6 +24,14 @@ const navItems: NavItem[] = [
     children: capabilities.map((capability) => ({
       title: capability.title,
       href: `/capabilities/${capability.slug}`,
+    })),
+  },
+  {
+    label: "Products",
+    href: "/products",
+    children: products.map((product) => ({
+      title: product.name,
+      href: `/products/${product.slug}`,
     })),
   },
   {
