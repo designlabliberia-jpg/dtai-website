@@ -3,6 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { Clock } from "lucide-react";
+import { LikeButton } from "@/components/enterprise/LikeButton";
 import { Container } from "@/components/layout/Container";
 import { RelatedInsights } from "@/components/enterprise/RelatedInsights";
 import { getInsights, getInsightBySlug, getReadTimeMinutes, coverImageUrl } from "@/sanity/lib/insights";
@@ -86,6 +87,10 @@ export default async function InsightDetailPage({
             <Clock size={12} />
             {getReadTimeMinutes(insight)} min read
           </span>
+        </div>
+
+        <div className="mt-6">
+          <LikeButton slug={insight.slug} initialLikes={insight.likes ?? 0} />
         </div>
 
         <div className="relative mt-8 h-64 w-full overflow-hidden rounded-lg sm:h-96">

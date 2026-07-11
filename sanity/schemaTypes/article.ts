@@ -77,6 +77,14 @@ export const article = defineType({
       initialValue: false,
     }),
     defineField({
+      name: 'likes',
+      title: 'Likes',
+      type: 'number',
+      readOnly: true,
+      initialValue: 0,
+      description: 'Automatically incremented by visitors clicking the like button. Not manually editable.',
+    }),
+    defineField({
       name: 'sections',
       title: 'Article Sections',
       type: 'array',

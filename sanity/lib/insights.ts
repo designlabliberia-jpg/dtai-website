@@ -20,6 +20,7 @@ export interface Insight {
   summary: string;
   sections: InsightSection[];
   relatedCapabilities: string[];
+  likes?: number;
   coverImage: SanityImageRef;
 }
 
@@ -32,7 +33,8 @@ const insightFields = `
   summary,
   sections,
   relatedCapabilities,
-  coverImage
+  coverImage,
+  likes
 `;
 
 export async function getInsights(): Promise<Insight[]> {
