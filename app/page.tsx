@@ -1,4 +1,5 @@
 import { Hero } from "@/components/enterprise/Hero";
+import { LatestNews } from "@/components/enterprise/LatestNews";
 import { CapabilityOverview } from "@/components/enterprise/CapabilityOverview";
 import { GovernmentTechnology } from "@/components/enterprise/GovernmentTechnology";
 import { Evidence } from "@/components/enterprise/Evidence";
@@ -12,6 +13,7 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <LatestNews />
       <CapabilityOverview />
       <GovernmentTechnology />
       <Evidence />

@@ -1,5 +1,4 @@
 import { Container } from "@/components/layout/Container";
-import { CompanyNav } from "@/components/enterprise/CompanyNav";
 
 export const metadata = {
   title: "Engineering Philosophy — DTAI",
@@ -33,9 +32,7 @@ export default function EngineeringPhilosophyPage() {
   return (
     <section className="bg-white py-24">
       <Container>
-        <div className="grid gap-12 lg:grid-cols-[240px_1fr]">
-          <CompanyNav activeSlug="engineering-philosophy" />
-          <div className="max-w-2xl">
+        <div className="mx-auto max-w-2xl">
             <span className="font-technical text-xs uppercase tracking-wide text-brand">
               Company
             </span>
@@ -70,7 +67,6 @@ export default function EngineeringPhilosophyPage() {
               </div>
             </div>
           </div>
-        </div>
       </Container>
     </section>
   );

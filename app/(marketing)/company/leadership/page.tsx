@@ -1,5 +1,4 @@
 import { Container } from "@/components/layout/Container";
-import { CompanyNav } from "@/components/enterprise/CompanyNav";
 import { LeadershipCard } from "@/components/enterprise/LeadershipCard";
 import { leadershipTeam } from "@/lib/leadership-data";
 
@@ -13,9 +12,7 @@ export default function LeadershipPage() {
   return (
     <section className="bg-white py-24">
       <Container>
-        <div className="grid gap-12 lg:grid-cols-[240px_1fr]">
-          <CompanyNav activeSlug="leadership" />
-          <div>
+        <div className="mx-auto max-w-3xl">
             <span className="font-technical text-xs uppercase tracking-wide text-brand">
               Company
             </span>
@@ -47,7 +44,6 @@ export default function LeadershipPage() {
               ))}
             </div>
           </div>
-        </div>
       </Container>
     </section>
   );

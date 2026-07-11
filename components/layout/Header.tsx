@@ -51,8 +51,18 @@ const navItems: NavItem[] = [
     })),
   },
   { label: "Case Studies", href: "/case-studies" },
-  { label: "Insights", href: "/insights" },
-  { label: "Company", href: "/company/overview" },
+  { label: "News", href: "/insights" },
+  {
+    label: "About",
+    href: "/company/overview",
+    children: [
+      { title: "Overview", href: "/company/overview" },
+      { title: "Leadership", href: "/company/leadership" },
+      { title: "Engineering Philosophy", href: "/company/engineering-philosophy" },
+      { title: "Our Approach", href: "/company/approach" },
+      { title: "Careers", href: "/company/careers" },
+    ],
+  },
 ];
 
 function getDesktopLinkClasses(active: boolean) {
@@ -266,7 +276,7 @@ export function Header() {
             href="/contact"
             className="hidden items-center gap-2 rounded-md bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-micro hover:bg-tech-blue sm:inline-flex"
           >
-            Talk to DTAI
+            Contact Us
           </Link>
 
           <button
@@ -370,7 +380,7 @@ export function Header() {
               href="/contact"
               className="mt-3 rounded-md bg-tech-blue px-5 py-3 text-center text-sm font-semibold text-infra-midnight"
             >
-              Talk to DTAI
+              Contact Us
             </Link>
 
             <div className="mt-4 flex items-center gap-1.5 border-t border-white/10 pt-4">

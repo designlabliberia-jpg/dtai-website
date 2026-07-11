@@ -1,5 +1,15 @@
+import Image from "next/image";
+import {
+  Lightbulb,
+  Code2,
+  ShieldCheck,
+  Globe,
+  LifeBuoy,
+  Settings2,
+  Award,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { Container } from "@/components/layout/Container";
-import { CompanyNav } from "@/components/enterprise/CompanyNav";
 
 export const metadata = {
   title: "Company Overview — DTAI",
@@ -7,14 +17,14 @@ export const metadata = {
     "Digital Technology Associates Incorporated (DTAI) — a Liberian technology company delivering innovative, secure, and scalable digital solutions across Africa.",
 };
 
-const whyChooseUs = [
-  "Innovative and customer-focused solutions",
-  "Experienced software engineering practices",
-  "Secure, scalable, and reliable systems",
-  "Modern technologies and international standards",
-  "Dedicated technical support and maintenance",
-  "Customized solutions tailored to client needs",
-  "Commitment to quality, integrity, and excellence",
+const whyChooseUs: { text: string; icon: LucideIcon }[] = [
+  { text: "Innovative and customer-focused solutions", icon: Lightbulb },
+  { text: "Experienced software engineering practices", icon: Code2 },
+  { text: "Secure, scalable, and reliable systems", icon: ShieldCheck },
+  { text: "Modern technologies and international standards", icon: Globe },
+  { text: "Dedicated technical support and maintenance", icon: LifeBuoy },
+  { text: "Customized solutions tailored to client needs", icon: Settings2 },
+  { text: "Commitment to quality, integrity, and excellence", icon: Award },
 ];
 
 const coreValues = [
@@ -34,17 +44,29 @@ export default function CompanyOverviewPage() {
   return (
     <section className="bg-white py-24">
       <Container>
-        <div className="grid gap-12 lg:grid-cols-[240px_1fr]">
-          <CompanyNav activeSlug="overview" />
+        <div className="mx-auto max-w-3xl">
+            {/* Hero banner */}
+            <div className="relative h-64 w-full overflow-hidden rounded-lg border border-neutral-300/60 sm:h-80">
+              <Image
+                src="/assets/hero/team-at-work1.jpg"
+                alt="The DTAI team at work"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 768px"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-infra-midnight via-infra-midnight/50 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 p-8">
+                <span className="font-technical text-xs uppercase tracking-wide text-tech-blue">
+                  Company Profile
+                </span>
+                <h1 className="mt-2 max-w-xl font-primary text-2xl font-semibold text-white sm:text-3xl md:text-4xl">
+                  Transforming Ideas into Digital Solutions
+                </h1>
+              </div>
+            </div>
 
-          <div className="max-w-2xl">
-            <span className="font-technical text-xs uppercase tracking-wide text-brand">
-              Company Profile
-            </span>
-            <h1 className="mt-3 font-primary text-3xl font-semibold tracking-tight text-neutral-900 md:text-4xl">
-              Transforming Ideas into Digital Solutions
-            </h1>
-            <p className="mt-5 text-lg leading-relaxed text-neutral-600">
+            <p className="mt-10 text-lg leading-relaxed text-neutral-600">
               Digital Technology Associates Incorporated (DTAI) is a
               Liberian technology company committed to delivering
               innovative, secure, and scalable digital solutions that
@@ -94,16 +116,19 @@ export default function CompanyOverviewPage() {
               <h2 className="font-primary text-xl font-semibold text-neutral-900">
                 Why Choose DTAI?
               </h2>
-              <ul className="mt-5 space-y-3">
-                {whyChooseUs.map((item) => (
-                  <li
-                    key={item}
-                    className="border-l-2 border-tech-blue pl-4 text-sm leading-relaxed text-neutral-700"
+              <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                {whyChooseUs.map(({ text, icon: Icon }) => (
+                  <div
+                    key={text}
+                    className="flex items-start gap-3 rounded-lg border border-neutral-300/60 p-4"
                   >
-                    {item}
-                  </li>
+                    <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand/10">
+                      <Icon size={16} strokeWidth={1.75} className="text-brand" />
+                    </span>
+                    <p className="text-sm leading-relaxed text-neutral-700">{text}</p>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
 
             <div className="mt-14">
@@ -114,7 +139,7 @@ export default function CompanyOverviewPage() {
                 {coreValues.map((v) => (
                   <span
                     key={v}
-                    className="rounded-full bg-neutral-100 px-3.5 py-1.5 text-sm font-medium text-neutral-700"
+                    className="rounded-full border border-neutral-300/60 bg-neutral-50 px-3.5 py-1.5 text-sm font-medium text-neutral-700"
                   >
                     {v}
                   </span>
@@ -144,7 +169,6 @@ export default function CompanyOverviewPage() {
               </p>
             </div>
           </div>
-        </div>
       </Container>
     </section>
   );
