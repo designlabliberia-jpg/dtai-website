@@ -1,7 +1,9 @@
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/layout/Container";
 import { MethodologyFlow } from "@/components/enterprise/MethodologyFlow";
 import { RelatedCapabilities } from "@/components/enterprise/RelatedCapabilities";
+import { CodeWindow } from "@/components/enterprise/CodeWindow";
 import { capabilities, getCapabilityBySlug } from "@/lib/capabilities-data";
 
 export function generateStaticParams() {
@@ -16,7 +18,6 @@ export default async function CapabilityDetailPage({
   const { slug } = await params;
   const capability = getCapabilityBySlug(slug);
   if (!capability) return notFound();
-
   const otherCapabilities = capabilities.filter((c) => c.slug !== slug);
 
   return (
@@ -32,6 +33,32 @@ export default async function CapabilityDetailPage({
           {capability.summary}
         </p>
 
+        <div className="relative mt-10 aspect-[16/9] overflow-hidden rounded-lg">
+          <Image
+            src={`/assets/capabilities/${capability.slug}.jpg`}
+            alt={capability.title}
+            fill
+            sizes="(max-width: 768px) 100vw, 768px"
+            quality={70}
+            className="object-cover"
+            priority
+          />
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background: "linear-gradient(180deg, rgba(7,24,39,0) 60%, rgba(7,24,39,0.5) 100%)",
+            }}
+          />
+        </div>
+
+        <div className="mt-6">
+          <CodeWindow
+            filename={capability.codeFilename}
+            language={capability.codeLang}
+            code={capability.codeSnippet}
+          />
+        </div>
+
         <div className="mt-12">
           <h2 className="font-primary text-xl font-semibold text-neutral-900">
             Methodology
@@ -40,7 +67,6 @@ export default async function CapabilityDetailPage({
             <MethodologyFlow steps={capability.methodology} />
           </div>
         </div>
-
         <div className="mt-12">
           <h2 className="font-primary text-xl font-semibold text-neutral-900">
             Proof Points
@@ -56,7 +82,6 @@ export default async function CapabilityDetailPage({
             ))}
           </ul>
         </div>
-
         <RelatedCapabilities items={otherCapabilities} />
       </Container>
     </section>

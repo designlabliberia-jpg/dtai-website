@@ -1,59 +1,36 @@
 import {
   Code2,
-  Server,
-  ShieldCheck,
-  Database,
+  Smartphone,
+  Globe,
+  Building2,
   Cloud,
-  Map,
+  Bot,
+  Database,
+  ShieldCheck,
+  Server,
+  Headset,
   Repeat,
+  Map,
+  type LucideIcon,
 } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { CapabilityCard } from "@/components/enterprise/CapabilityCard";
+import { capabilities } from "@/lib/capabilities-data";
 
-const capabilities = [
-  {
-    title: "Software Engineering",
-    description: "Production-grade systems built on disciplined engineering practice, not prototypes.",
-    href: "/capabilities/software-engineering",
-    icon: Code2,
-  },
-  {
-    title: "Digital Infrastructure",
-    description: "Resilient infrastructure foundations designed for national-scale reliability.",
-    href: "/capabilities/digital-infrastructure",
-    icon: Server,
-  },
-  {
-    title: "Cybersecurity",
-    description: "Security engineered in from architecture, not layered on after deployment.",
-    href: "/capabilities/cybersecurity",
-    icon: ShieldCheck,
-  },
-  {
-    title: "Data Platforms",
-    description: "Structured, governed data systems that institutions can act on with confidence.",
-    href: "/capabilities/data-platforms",
-    icon: Database,
-  },
-  {
-    title: "Cloud Solutions",
-    description: "Scalable cloud architecture matched to sovereignty and compliance requirements.",
-    href: "/capabilities/cloud-solutions",
-    icon: Cloud,
-  },
-  {
-    title: "GIS & Spatial Technology",
-    description: "Geographic and spatial systems that turn location data into decisions.",
-    href: "/capabilities/gis-spatial-technology",
-    icon: Map,
-  },
-  {
-    title: "Digital Transformation",
-    description: "Structured modernization of institutional systems and workflows.",
-    href: "/capabilities/digital-transformation",
-    icon: Repeat,
-  },
-];
+const ICONS: Record<string, LucideIcon> = {
+  "software-engineering": Code2,
+  "mobile-application-development": Smartphone,
+  "web-application-development": Globe,
+  "enterprise-systems-development": Building2,
+  "cloud-solutions": Cloud,
+  "artificial-intelligence-solutions": Bot,
+  "data-platforms": Database,
+  cybersecurity: ShieldCheck,
+  "digital-infrastructure": Server,
+  "it-consulting-systems-integration": Headset,
+  "digital-transformation": Repeat,
+  "gis-spatial-technology": Map,
+};
 
 export function CapabilityOverview() {
   return (
@@ -70,7 +47,13 @@ export function CapabilityOverview() {
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {capabilities.map((cap) => (
-            <CapabilityCard key={cap.href} {...cap} />
+            <CapabilityCard
+              key={cap.slug}
+              title={cap.title}
+              description={cap.summary}
+              href={`/capabilities/${cap.slug}`}
+              icon={ICONS[cap.slug] ?? Code2}
+            />
           ))}
         </div>
       </Container>
