@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import type { Insight } from "@/lib/insights-data";
+import type { Insight } from "@/sanity/lib/insights";
 
 interface RelatedInsightsProps {
   items: Insight[];

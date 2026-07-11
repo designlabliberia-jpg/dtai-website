@@ -105,6 +105,7 @@ export const article = defineType({
       type: 'array',
       of: [{ type: 'string' }],
       options: { list: CAPABILITY_OPTIONS },
+      initialValue: [],
     }),
   ],
   preview: {

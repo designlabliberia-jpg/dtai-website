@@ -1,13 +1,17 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { Clock } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { RelatedInsights } from "@/components/enterprise/RelatedInsights";
-import { insights, getInsightBySlug, getReadTimeMinutes } from "@/lib/insights-data";
+import { getInsights, getInsightBySlug, getReadTimeMinutes, coverImageUrl } from "@/sanity/lib/insights";
 import { capabilities } from "@/lib/capabilities-data";
 
-export function generateStaticParams() {
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  const insights = await getInsights();
   return insights.map((i) => ({ slug: i.slug }));
 }
 
@@ -17,7 +21,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const insight = getInsightBySlug(slug);
+  const insight = await getInsightBySlug(slug);
   if (!insight) return {};
 
   return {
@@ -30,6 +34,7 @@ export async function generateMetadata({
       type: "article",
       publishedTime: insight.publishDate,
       authors: [insight.author],
+      images: [coverImageUrl(insight, 1200)],
     },
     twitter: {
       card: "summary_large_image",
@@ -53,12 +58,13 @@ export default async function InsightDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const insight = getInsightBySlug(slug);
+  const insight = await getInsightBySlug(slug);
   if (!insight) return notFound();
 
-  const otherInsights = insights.filter((i) => i.slug !== slug);
+  const allInsights = await getInsights();
+  const otherInsights = allInsights.filter((i) => i.slug !== slug);
   const relatedCaps = capabilities.filter((c) =>
-    insight.relatedCapabilities.includes(c.slug)
+    (insight.relatedCapabilities ?? []).includes(c.slug)
   );
 
   return (
@@ -80,6 +86,17 @@ export default async function InsightDetailPage({
             <Clock size={12} />
             {getReadTimeMinutes(insight)} min read
           </span>
+        </div>
+
+        <div className="relative mt-8 h-64 w-full overflow-hidden rounded-lg sm:h-96">
+          <Image
+            src={coverImageUrl(insight, 1200)}
+            alt={insight.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 768px"
+            priority
+          />
         </div>
 
         <p className="mt-8 text-lg leading-relaxed text-neutral-600">
