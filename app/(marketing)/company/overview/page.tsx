@@ -42,37 +42,38 @@ const coreValues = [
 
 export default function CompanyOverviewPage() {
   return (
-    <section className="bg-white py-24">
-      <Container>
-        <div className="mx-auto max-w-3xl">
-            {/* Hero banner */}
-            <div className="relative h-64 w-full overflow-hidden rounded-lg border border-neutral-300/60 sm:h-80">
-              <Image
-                src="/assets/hero/team-at-work1.jpg"
-                alt="The DTAI team at work"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 768px"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-infra-midnight via-infra-midnight/50 to-transparent" />
-              <div className="pointer-events-none absolute inset-4">
-                <span className="absolute left-0 top-0 h-3 w-3 border-l border-t border-tech-blue/60" />
-                <span className="absolute right-0 top-0 h-3 w-3 border-r border-t border-tech-blue/60" />
-                <span className="absolute bottom-0 left-0 h-3 w-3 border-b border-l border-tech-blue/60" />
-                <span className="absolute bottom-0 right-0 h-3 w-3 border-b border-r border-tech-blue/60" />
-              </div>
-              <div className="absolute inset-x-0 bottom-0 p-8">
-                <span className="font-technical text-xs uppercase tracking-wide text-tech-blue">
-                  Company Profile
-                </span>
-                <h1 className="mt-2 max-w-xl font-primary text-2xl font-semibold text-white sm:text-3xl md:text-4xl">
-                  Transforming Ideas into Digital Solutions
-                </h1>
-              </div>
-            </div>
+    <>
+      {/* Full-bleed photo hero */}
+      <section className="relative h-72 w-full overflow-hidden sm:h-96">
+        <Image
+          src="/assets/hero/team-at-work1.jpg"
+          alt="The DTAI team at work"
+          fill
+          className="object-cover"
+          sizes="100vw"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-infra-midnight via-infra-midnight/50 to-transparent" />
+        <div className="pointer-events-none absolute inset-6">
+          <span className="absolute left-0 top-0 h-3 w-3 border-l border-t border-tech-blue/60" />
+          <span className="absolute right-0 top-0 h-3 w-3 border-r border-t border-tech-blue/60" />
+          <span className="absolute bottom-0 left-0 h-3 w-3 border-b border-l border-tech-blue/60" />
+          <span className="absolute bottom-0 right-0 h-3 w-3 border-b border-r border-tech-blue/60" />
+        </div>
+        <Container className="absolute inset-x-0 bottom-0 max-w-3xl pb-8">
+          <span className="font-technical text-xs uppercase tracking-wide text-tech-blue">
+            Company Profile
+          </span>
+          <h1 className="mt-2 max-w-xl font-primary text-2xl font-semibold text-white sm:text-3xl md:text-4xl">
+            Transforming Ideas into Digital Solutions
+          </h1>
+        </Container>
+      </section>
 
-            <p className="mt-10 text-lg leading-relaxed text-neutral-600">
+      <section className="bg-white py-24">
+        <Container>
+          <div className="mx-auto max-w-3xl">
+            <p className="text-lg leading-relaxed text-neutral-600">
               Digital Technology Associates Incorporated (DTAI) is a
               Liberian technology company committed to delivering
               innovative, secure, and scalable digital solutions that
@@ -175,7 +176,8 @@ export default function CompanyOverviewPage() {
               </p>
             </div>
           </div>
-      </Container>
-    </section>
+        </Container>
+      </section>
+    </>
   );
 }

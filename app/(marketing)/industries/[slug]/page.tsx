@@ -86,16 +86,16 @@ export default async function IndustryDetailPage({
   );
 
   return (
-    <section className="bg-white py-24">
-      <Container className="max-w-3xl">
-        {/* Hero */}
-        <div className="relative overflow-hidden rounded-lg bg-infra-midnight p-8 sm:p-10">
-          <div className="pointer-events-none absolute inset-4">
-            <span className="absolute left-0 top-0 h-3 w-3 border-l border-t border-tech-blue/40" />
-            <span className="absolute right-0 top-0 h-3 w-3 border-r border-t border-tech-blue/40" />
-            <span className="absolute bottom-0 left-0 h-3 w-3 border-b border-l border-tech-blue/40" />
-            <span className="absolute bottom-0 right-0 h-3 w-3 border-b border-r border-tech-blue/40" />
-          </div>
+    <>
+      {/* Full-bleed hero */}
+      <section className="relative overflow-hidden bg-infra-midnight py-20 text-white">
+        <div className="pointer-events-none absolute inset-6">
+          <span className="absolute left-0 top-0 h-3 w-3 border-l border-t border-tech-blue/40" />
+          <span className="absolute right-0 top-0 h-3 w-3 border-r border-t border-tech-blue/40" />
+          <span className="absolute bottom-0 left-0 h-3 w-3 border-b border-l border-tech-blue/40" />
+          <span className="absolute bottom-0 right-0 h-3 w-3 border-b border-r border-tech-blue/40" />
+        </div>
+        <Container className="max-w-3xl">
           <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-tech-blue/10">
             <Icon size={26} strokeWidth={1.75} className="text-tech-blue" />
           </div>
@@ -108,92 +108,96 @@ export default async function IndustryDetailPage({
           <p className="mt-4 max-w-xl text-sm leading-relaxed text-neutral-300 sm:text-base">
             {industry.summary}
           </p>
-        </div>
+        </Container>
+      </section>
 
-        {/* Why this matters */}
-        <div className="mt-12">
-          <h2 className="font-primary text-xl font-semibold text-neutral-900">
-            Why This Matters
-          </h2>
-          <p className="mt-4 text-base leading-relaxed text-neutral-600">
-            {industry.overview}
-          </p>
-        </div>
-
-        <div className="mt-12">
-          <IndustryFlow keyNeeds={industry.keyNeeds} />
-        </div>
-
-        {/* Key needs */}
-        <div className="mt-12">
-          <h2 className="font-primary text-xl font-semibold text-neutral-900">
-            What {industry.title} Organizations Need
-          </h2>
-          <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
-            {industry.keyNeeds.map((need) => (
-              <div
-                key={need}
-                className="flex items-start gap-3 rounded-lg border border-neutral-300/60 p-4"
-              >
-                <CheckCircle2
-                  size={18}
-                  strokeWidth={1.75}
-                  className="mt-0.5 shrink-0 text-tech-blue"
-                />
-                <p className="text-sm leading-relaxed text-neutral-700">{need}</p>
-              </div>
-            ))}
+      <section className="bg-white py-20">
+        <Container className="max-w-3xl">
+          {/* Why this matters */}
+          <div>
+            <h2 className="font-primary text-xl font-semibold text-neutral-900">
+              Why This Matters
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-neutral-600">
+              {industry.overview}
+            </p>
           </div>
-        </div>
 
-        {/* How DTAI helps */}
-        <div className="mt-12">
-          <h2 className="font-primary text-xl font-semibold text-neutral-900">
-            How DTAI Helps
-          </h2>
-          <p className="mt-4 text-base leading-relaxed text-neutral-600">
-            {industry.approach}
-          </p>
+          <div className="mt-12">
+            <IndustryFlow keyNeeds={industry.keyNeeds} />
+          </div>
 
-          {relatedCaps.length > 0 && (
-            <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-              {relatedCaps.map((cap) => (
-                <Link
-                  key={cap.slug}
-                  href={`/capabilities/${cap.slug}`}
-                  className="group rounded-md border border-neutral-300/60 p-4 transition-all duration-micro hover:border-tech-blue hover:shadow-sm"
+          {/* Key needs */}
+          <div className="mt-12">
+            <h2 className="font-primary text-xl font-semibold text-neutral-900">
+              What {industry.title} Organizations Need
+            </h2>
+            <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
+              {industry.keyNeeds.map((need) => (
+                <div
+                  key={need}
+                  className="flex items-start gap-3 rounded-lg border border-neutral-300/60 p-4"
                 >
-                  <span className="font-technical text-[10px] uppercase tracking-wide text-brand">
-                    Capability
-                  </span>
-                  <p className="mt-1.5 text-sm font-medium text-neutral-900 transition-colors duration-micro group-hover:text-brand">
-                    {cap.title}
-                  </p>
-                </Link>
+                  <CheckCircle2
+                    size={18}
+                    strokeWidth={1.75}
+                    className="mt-0.5 shrink-0 text-tech-blue"
+                  />
+                  <p className="text-sm leading-relaxed text-neutral-700">{need}</p>
+                </div>
               ))}
             </div>
-          )}
-        </div>
+          </div>
 
-        {/* CTA */}
-        <div className="mt-12 rounded-lg bg-infra-midnight p-8">
-          <p className="font-primary text-lg font-semibold text-white">
-            Working in {industry.title.toLowerCase()}?
-          </p>
-          <p className="mt-2 max-w-md text-sm leading-relaxed text-neutral-400">
-            Talk to DTAI about the specific requirements and constraints of
-            your project.
-          </p>
-          <Link
-            href="/contact"
-            className="mt-5 inline-flex items-center gap-2 rounded-md bg-tech-blue px-5 py-2.5 text-sm font-semibold text-infra-midnight transition-colors duration-micro hover:bg-white"
-          >
-            Contact Us
-          </Link>
-        </div>
+          {/* How DTAI helps */}
+          <div className="mt-12">
+            <h2 className="font-primary text-xl font-semibold text-neutral-900">
+              How DTAI Helps
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-neutral-600">
+              {industry.approach}
+            </p>
 
-        <RelatedIndustries items={otherIndustries} />
-      </Container>
-    </section>
+            {relatedCaps.length > 0 && (
+              <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+                {relatedCaps.map((cap) => (
+                  <Link
+                    key={cap.slug}
+                    href={`/capabilities/${cap.slug}`}
+                    className="group rounded-md border border-neutral-300/60 p-4 transition-all duration-micro hover:border-tech-blue hover:shadow-sm"
+                  >
+                    <span className="font-technical text-[10px] uppercase tracking-wide text-brand">
+                      Capability
+                    </span>
+                    <p className="mt-1.5 text-sm font-medium text-neutral-900 transition-colors duration-micro group-hover:text-brand">
+                      {cap.title}
+                    </p>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* CTA */}
+          <div className="mt-12 rounded-lg bg-infra-midnight p-8">
+            <p className="font-primary text-lg font-semibold text-white">
+              Working in {industry.title.toLowerCase()}?
+            </p>
+            <p className="mt-2 max-w-md text-sm leading-relaxed text-neutral-400">
+              Talk to DTAI about the specific requirements and constraints of
+              your project.
+            </p>
+            <Link
+              href="/contact"
+              className="mt-5 inline-flex items-center gap-2 rounded-md bg-tech-blue px-5 py-2.5 text-sm font-semibold text-infra-midnight transition-colors duration-micro hover:bg-white"
+            >
+              Contact Us
+            </Link>
+          </div>
+
+          <RelatedIndustries items={otherIndustries} />
+        </Container>
+      </section>
+    </>
   );
 }
