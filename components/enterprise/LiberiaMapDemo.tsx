@@ -5,14 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Container } from "@/components/layout/Container";
 import { liberiaCounties, getCountyById, type CountyData } from "@/lib/liberia-counties-data";
 
-type Mode = "connectivity" | "population" | "projects";
-
-const modes: { id: Mode; label: string }[] = [
-  { id: "connectivity", label: "Connectivity" },
-  { id: "population", label: "Population" },
-  { id: "projects", label: "Active Projects" },
-];
-
 const tierColor = {
   High: "var(--color-tech-blue)",
   Moderate: "#E0B84B",
@@ -23,16 +15,6 @@ function populationTier(c: CountyData): "High" | "Moderate" | "Low" {
   if (c.populationValue >= 400000) return "High";
   if (c.populationValue >= 150000) return "Moderate";
   return "Low";
-}
-function projectsTier(c: CountyData): "High" | "Moderate" | "Low" {
-  if (c.activeProjects >= 4) return "High";
-  if (c.activeProjects >= 2) return "Moderate";
-  return "Low";
-}
-function tierFor(mode: Mode, c: CountyData) {
-  if (mode === "connectivity") return c.connectivityScore;
-  if (mode === "population") return populationTier(c);
-  return projectsTier(c);
 }
 
 const FALLBACK_VIEWBOX = "0 0 1000 1000";
@@ -53,7 +35,6 @@ const ambientNodes = [
 export function LiberiaMapDemo() {
   const [hovered, setHovered] = useState<CountyData | null>(null);
   const [selected, setSelected] = useState<CountyData | null>(null);
-  const [mode, setMode] = useState<Mode>("connectivity");
   const [zoomed, setZoomed] = useState<CountyData | null>(null);
   const [viewBox, setViewBox] = useState(FALLBACK_VIEWBOX);
   const [mapAspectRatio, setMapAspectRatio] = useState<number | null>(null);
@@ -94,16 +75,12 @@ export function LiberiaMapDemo() {
   }, [viewBox]);
 
   // Real aggregate stats, computed directly from the county dataset —
-  // not invented figures, just a rollup of what's already there.
+  // sourced from the 2022 LISGIS National Population and Housing Census.
   const stats = useMemo(() => {
     const totalPopulation = liberiaCounties.reduce((sum, c) => sum + c.populationValue, 0);
-    const totalProjects = liberiaCounties.reduce((sum, c) => sum + c.activeProjects, 0);
-    const highConnectivity = liberiaCounties.filter((c) => c.connectivityScore === "High").length;
     return {
       counties: liberiaCounties.length,
       totalPopulation,
-      totalProjects,
-      highConnectivity,
     };
   }, []);
 
@@ -125,37 +102,20 @@ export function LiberiaMapDemo() {
             </h2>
             <p className="mt-4 text-base leading-relaxed text-neutral-300">
               Click a county to zoom in, hover to preview data. County
-              boundaries are sourced from real Liberia county-level geometry;
-              population, connectivity, and project figures shown are
-              illustrative placeholder data pending verified figures.
+              boundaries and population figures are sourced from real Liberia
+              geometry and the 2022 LISGIS National Population and Housing
+              Census &mdash; the same class of tooling DTAI applies to
+              infrastructure planning and service-gap analysis.
             </p>
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            {modes.map((m) => (
-              <button
-                key={m.id}
-                onClick={() => setMode(m.id)}
-                className={`rounded-md px-3.5 py-2 text-xs font-medium transition-colors duration-micro ${
-                  mode === m.id
-                    ? "bg-brand text-white"
-                    : "border border-white/20 text-neutral-300 hover:border-tech-blue"
-                }`}
-              >
-                {m.label}
-              </button>
-            ))}
           </div>
         </div>
 
         {/* Real aggregate stats row, filling space above the map with
             genuine derived data rather than decoration */}
-        <div className="mb-8 grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-white/10 sm:grid-cols-4">
+        <div className="mb-8 grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-white/10 sm:grid-cols-2">
           {[
             { label: "Counties Mapped", value: stats.counties },
-            { label: "High Connectivity", value: stats.highConnectivity },
-            { label: "Active Projects, All Counties", value: stats.totalProjects },
-            { label: "Population Represented (est.)", value: stats.totalPopulation.toLocaleString() },
+            { label: "Population Represented (2022 Census)", value: stats.totalPopulation.toLocaleString() },
           ].map((s) => (
             <div key={s.label} className="bg-white/[0.03] px-5 py-4">
               <div className="font-technical text-xl font-semibold text-white md:text-2xl">
@@ -249,7 +209,7 @@ export function LiberiaMapDemo() {
 
               {liberiaCounties.map((county) => {
                 const isActive = display?.id === county.id;
-                const tier = tierFor(mode, county);
+                const tier = populationTier(county);
                 return (
                   <g
                     key={county.id}
@@ -305,17 +265,18 @@ export function LiberiaMapDemo() {
         <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_1fr]">
           <div>
             <div className="mb-4 flex flex-wrap gap-x-4 gap-y-2 text-xs text-neutral-400">
+              <span className="text-neutral-500">Population tier:</span>
               <span className="flex items-center gap-1.5">
                 <span className="h-2.5 w-2.5 rounded-full" style={{ background: tierColor.High }}/>
-                High
+                High (400,000+)
               </span>
               <span className="flex items-center gap-1.5">
                 <span className="h-2.5 w-2.5 rounded-full" style={{ background: tierColor.Moderate }} />
-                Moderate
+                Moderate (150,000&ndash;399,999)
               </span>
               <span className="flex items-center gap-1.5">
                 <span className="h-2.5 w-2.5 rounded-full" style={{ background: tierColor.Low }} />
-                Low
+                Low (under 150,000)
               </span>
             </div>
 
@@ -334,18 +295,13 @@ export function LiberiaMapDemo() {
                     </h3>
                     <dl className="mt-4 space-y-3 text-sm">
                       <div className="flex justify-between border-b border-white/10 pb-2">
-                        <dt className="text-neutral-400">Population (est.)</dt>
+                        <dt className="text-neutral-400">Population (2022 Census)</dt>
                         <dd className="font-technical text-white">{display.population}</dd>
                       </div>
-                      <div className="flex justify-between border-b border-white/10 pb-2">
-                        <dt className="text-neutral-400">Connectivity</dt>
-                        <dd className="font-technical text-white">{display.connectivityScore}</dd>
-                      </div>
-                      <div className="flex justify-between">
-                        <dt className="text-neutral-400">Active Projects</dt>
-                        <dd className="font-technical text-white">{display.activeProjects}</dd>
-                      </div>
                     </dl>
+                    <p className="mt-4 text-sm leading-relaxed text-neutral-300">
+                      {display.history}
+                    </p>
                   </motion.div>
                 ) : (
                   <p className="text-sm text-neutral-400">
@@ -367,10 +323,10 @@ export function LiberiaMapDemo() {
               service-gap analysis, and regional decision support.
             </p>
             <p className="mt-3 text-sm leading-relaxed text-neutral-400">
-              Population, connectivity, and project figures shown here are
-              illustrative placeholders. In a production deployment, this
-              same interface would be backed by verified, continuously
-              updated data sources.
+              Population figures and county boundaries reflect the official
+              2022 LISGIS National Population and Housing Census. Population
+              tiers shown on the map are calculated directly from these
+              figures.
             </p>
           </div>
         </div>
