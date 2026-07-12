@@ -1,4 +1,6 @@
+import { Users } from "lucide-react";
 import { Container } from "@/components/layout/Container";
+import { PageHeroBanner } from "@/components/enterprise/PageHeroBanner";
 import { LeadershipCard } from "@/components/enterprise/LeadershipCard";
 import { leadershipTeam } from "@/lib/leadership-data";
 
@@ -10,22 +12,18 @@ export const metadata = {
 
 export default function LeadershipPage() {
   return (
-    <section className="bg-white py-24">
-      <Container>
-        <div className="mx-auto max-w-3xl">
-            <span className="font-technical text-xs uppercase tracking-wide text-brand">
-              Company
-            </span>
-            <h1 className="mt-3 font-primary text-3xl font-semibold tracking-tight text-neutral-900 md:text-4xl">
-              Leadership
-            </h1>
-            <p className="mt-5 max-w-2xl text-base leading-relaxed text-neutral-600">
-              DTAI&rsquo;s leadership team combines engineering, security,
-              and institutional delivery experience across government and
-              enterprise projects.
-            </p>
+    <>
+      <PageHeroBanner
+        eyebrow="Company"
+        title="Leadership"
+        subtitle="DTAI's leadership team combines engineering, security, and institutional delivery experience across government and enterprise projects."
+        icon={Users}
+      />
 
-            <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 border-y border-neutral-300/60 py-3 font-technical text-[11px] uppercase tracking-wide text-neutral-500">
+      <section className="bg-white py-24">
+        <Container>
+          <div className="mx-auto max-w-5xl">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 border-y border-neutral-300/60 py-3 font-technical text-[11px] uppercase tracking-wide text-neutral-500">
               <span>
                 Team Size: {String(leadershipTeam.length).padStart(2, "0")}
               </span>
@@ -44,7 +42,8 @@ export default function LeadershipPage() {
               ))}
             </div>
           </div>
-      </Container>
-    </section>
+        </Container>
+      </section>
+    </>
   );
 }

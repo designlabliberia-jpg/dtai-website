@@ -1,4 +1,6 @@
+import { Compass } from "lucide-react";
 import { Container } from "@/components/layout/Container";
+import { PageHeroBanner } from "@/components/enterprise/PageHeroBanner";
 
 export const metadata = {
   title: "Engineering Philosophy — DTAI",
@@ -30,44 +32,40 @@ const principles = [
 
 export default function EngineeringPhilosophyPage() {
   return (
-    <section className="bg-white py-24">
-      <Container>
-        <div className="mx-auto max-w-2xl">
-            <span className="font-technical text-xs uppercase tracking-wide text-brand">
-              Company
-            </span>
-            <h1 className="mt-3 font-primary text-3xl font-semibold tracking-tight text-neutral-900 md:text-4xl">
-              Engineering Philosophy
-            </h1>
-            <p className="mt-5 text-lg leading-relaxed text-neutral-600">
-              How we build matters as much as what we build. This is the
-              discipline institutions are relying on when they choose DTAI.
-            </p>
+    <>
+      <PageHeroBanner
+        eyebrow="Company"
+        title="Engineering Philosophy"
+        subtitle="How we build matters as much as what we build. This is the discipline institutions are relying on when they choose DTAI."
+        icon={Compass}
+      />
 
-            <div className="relative mt-12">
-              <div className="absolute bottom-2 left-[15px] top-2 w-px bg-neutral-200" />
-              <div className="space-y-8">
-                {principles.map((p, i) => (
-                  <div key={p.title} className="relative flex gap-5">
-                    <div className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-tech-blue/40 bg-white">
-                      <span className="font-technical text-xs text-tech-blue">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                    </div>
-                    <div className="pt-1">
-                      <h2 className="font-primary text-lg font-semibold text-neutral-900">
-                        {p.title}
-                      </h2>
-                      <p className="mt-1.5 text-sm leading-relaxed text-neutral-600">
-                        {p.detail}
-                      </p>
-                    </div>
+      <section className="bg-white py-24">
+        <Container className="max-w-3xl">
+          <div className="relative">
+            <div className="absolute bottom-2 left-[15px] top-2 w-px bg-neutral-200" />
+            <div className="space-y-8">
+              {principles.map((p, i) => (
+                <div key={p.title} className="relative flex gap-5">
+                  <div className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-tech-blue/40 bg-white">
+                    <span className="font-technical text-xs text-tech-blue">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
                   </div>
-                ))}
-              </div>
+                  <div className="pt-1">
+                    <h2 className="font-primary text-lg font-semibold text-neutral-900">
+                      {p.title}
+                    </h2>
+                    <p className="mt-1.5 text-sm leading-relaxed text-neutral-600">
+                      {p.detail}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-      </Container>
-    </section>
+        </Container>
+      </section>
+    </>
   );
 }

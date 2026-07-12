@@ -5,7 +5,7 @@ export interface LeadSubmission {
   phone?: string;
   category: string;
   message: string;
-  source: "contact-form" | "dtai-agent";
+  source: "contact-form" | "dtai-agent" | "careers-form";
 }
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -13,33 +13,42 @@ const CATEGORY_LABELS: Record<string, string> = {
   technical: "Technical Director / CIO",
   procurement: "Procurement Officer",
   partner: "International Partner",
+  careers: "Careers / Talent Interest",
   other: "General Inquiry",
+};
+
+const SOURCE_LABELS: Record<LeadSubmission["source"], string> = {
+  "contact-form": "Contact Form",
+  "dtai-agent": "DTAI Agent (chat)",
+  "careers-form": "Careers Page",
 };
 
 function buildFormattedMessage(lead: LeadSubmission): string {
   const categoryLabel = CATEGORY_LABELS[lead.category] ?? lead.category;
-  const sourceLabel = lead.source === "dtai-agent" ? "DTAI Agent (chat)" : "Contact Form";
+  const sourceLabel = SOURCE_LABELS[lead.source];
 
   return [
-    "════════════════════════════════════",
-    "  NEW INQUIRY — DTAI WEBSITE",
-    "════════════════════════════════════",
+    "DIGITAL TECHNOLOGY ASSOCIATES INCORPORATED (DTAI)",
+    "New Website Inquiry",
+    "────────────────────────────────────",
     "",
-    `CATEGORY:      ${categoryLabel}`,
-    `SOURCE:        ${sourceLabel}`,
+    `Category:      ${categoryLabel}`,
+    `Source:        ${sourceLabel}`,
     "",
-    "── CONTACT DETAILS ──────────────────",
+    "Contact Details",
+    "────────────────────────────────────",
     `Name:          ${lead.name}`,
     `Email:         ${lead.email}`,
     `Organization:  ${lead.organization?.trim() || "Not provided"}`,
     `Phone:         ${lead.phone?.trim() || "Not provided"}`,
     "",
-    "── MESSAGE ──────────────────────────",
+    "Message",
+    "────────────────────────────────────",
     lead.message,
     "",
-    "════════════════════════════════════",
+    "────────────────────────────────────",
     "Reply directly to this email to respond to the sender.",
-    "════════════════════════════════════",
+    "dtai.designlab.technology",
   ].join("\n");
 }
 

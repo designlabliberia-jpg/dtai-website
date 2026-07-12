@@ -1,40 +1,53 @@
+import Link from "next/link";
+import { Route } from "lucide-react";
 import { Container } from "@/components/layout/Container";
-import { ProcessTimeline } from "@/components/enterprise/ProcessTimeline";
+import { PageHeroBanner } from "@/components/enterprise/PageHeroBanner";
+import { ApproachStepper } from "@/components/enterprise/ApproachStepper";
 
 export const metadata = {
   title: "Our Approach — DTAI",
   description: "How DTAI delivers digital infrastructure projects from requirements to long-term operation.",
 };
 
-const steps = [
-  { title: "Requirements & Context", detail: "Understand the institutional, operational, and regulatory context before any design begins." },
-  { title: "Architecture & Review", detail: "Document the technical architecture and subject it to review before implementation." },
-  { title: "Build & Verify", detail: "Implement against documented standards, with security and testing gates at each stage." },
-  { title: "Deploy & Operate", detail: "Deploy with monitoring, documentation, and handover in place from day one." },
-  { title: "Maintain & Evolve", detail: "Support long-term operation and evolution as institutional needs change." },
-];
-
 export default function OurApproachPage() {
   return (
-    <section className="bg-white py-24">
-      <Container>
-        <div className="mx-auto max-w-2xl">
-            <span className="font-technical text-xs uppercase tracking-wide text-brand">
-              Company
-            </span>
-            <h1 className="mt-3 font-primary text-3xl font-semibold tracking-tight text-neutral-900 md:text-4xl">
-              Our Approach
-            </h1>
-            <p className="mt-5 text-lg leading-relaxed text-neutral-600">
-              A consistent delivery process applied across every engagement,
-              regardless of project size or sector.
-            </p>
+    <>
+      <PageHeroBanner
+        eyebrow="Company"
+        title="Our Approach"
+        subtitle="A consistent delivery process applied across every engagement, regardless of project size or sector. Click through each phase to see what it actually involves."
+        icon={Route}
+      />
 
-            <div className="mt-10">
-              <ProcessTimeline steps={steps} />
+      <section className="bg-white py-24">
+        <Container className="max-w-3xl">
+          <ApproachStepper />
+
+          <div className="mt-14 rounded-lg bg-infra-midnight p-8">
+            <p className="font-primary text-lg font-semibold text-white">
+              Want to see this applied to your project?
+            </p>
+            <p className="mt-2 max-w-md text-sm leading-relaxed text-neutral-400">
+              This same process runs across every DTAI engagement — from
+              government platforms to enterprise systems.
+            </p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link
+                href="/solutions"
+                className="inline-flex items-center gap-2 rounded-md border border-white/20 px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-micro hover:border-tech-blue hover:text-tech-blue"
+              >
+                View Solutions
+              </Link>
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 rounded-md bg-tech-blue px-5 py-2.5 text-sm font-semibold text-infra-midnight transition-colors duration-micro hover:bg-white"
+              >
+                Contact Us
+              </Link>
             </div>
           </div>
-      </Container>
-    </section>
+        </Container>
+      </section>
+    </>
   );
 }
