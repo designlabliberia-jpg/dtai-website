@@ -32,10 +32,10 @@ export function SecurityTrust() {
           <span className="font-technical text-xs uppercase tracking-wide text-tech-blue">
             Security &amp; Governance
           </span>
-          <h2 className="mt-3 font-primary text-3xl font-semibold tracking-tight md:text-4xl">
+          <h2 className="mt-3 font-primary font-semibold tracking-tight">
             Trust engineered into every layer
           </h2>
-          <p className="mt-5 text-base leading-relaxed text-neutral-300">
+          <p className="mt-5 leading-relaxed text-neutral-300">
             Institutions entrust DTAI with systems that must withstand
             scrutiny. Our governance model exists to make that trust
             verifiable, not assumed.
@@ -49,10 +49,10 @@ export function SecurityTrust() {
               href={pillar.href}
               className="group rounded-lg border border-white/10 bg-white/5 p-6 transition-colors duration-standard hover:border-tech-blue"
             >
-              <h3 className="font-primary text-lg font-semibold text-white transition-colors duration-micro group-hover:text-tech-blue">
+              <h3 className="font-primary font-semibold text-white transition-colors duration-micro group-hover:text-tech-blue">
                 {pillar.title}
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-neutral-300">
+              <p className="mt-2 leading-relaxed text-neutral-300">
                 {pillar.detail}
               </p>
               <span className="mt-4 inline-block font-technical text-xs uppercase tracking-wide text-tech-blue">

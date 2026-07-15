@@ -1,5 +1,7 @@
 import { getInsights } from "@/sanity/lib/insights";
 import { NewsCarousel } from "@/components/enterprise/NewsCarousel";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export async function LatestNews() {
   const insights = await getInsights();
@@ -8,23 +10,22 @@ export async function LatestNews() {
   if (latest.length === 0) return null;
 
   return (
-    <section className="bg-white py-20">
+    <section className="bg-white py-8">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mb-8 flex items-end justify-between">
           <div>
             <span className="font-technical text-xs uppercase tracking-wide text-brand">
-              DTAI News &amp; Blog
+              DTAI News & Blog
             </span>
-            <h2 className="mt-2 font-primary text-2xl font-semibold tracking-tight text-neutral-900 md:text-3xl">
+            <h2 className="mt-2 font-primary font-semibold tracking-tight text-neutral-900">
               Latest from DTAI
             </h2>
           </div>
-          <a
-            href="/insights"
+          <Link href="/insights"
             className="hidden font-technical text-xs uppercase tracking-wide text-tech-blue hover:text-brand sm:block"
           >
-            View all &rarr;
-          </a>
+            View all News<ArrowRight className="inline-block h-3 w-3" />
+          </Link>
         </div>
 
         <NewsCarousel items={latest} />

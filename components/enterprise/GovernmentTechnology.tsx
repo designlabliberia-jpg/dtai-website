@@ -25,10 +25,10 @@ export function GovernmentTechnology() {
             <span className="font-technical text-xs uppercase tracking-wide text-tech-blue">
               Government Technology
             </span>
-            <h2 className="mt-3 font-primary text-3xl font-semibold tracking-tight md:text-4xl">
+            <h2 className="mt-3 font-primary font-semibold tracking-tight">
               Built for institutions that cannot afford to fail
             </h2>
-            <p className="mt-5 max-w-lg text-base leading-relaxed text-neutral-300">
+            <p className="mt-5 max-w-lg leading-relaxed text-neutral-300">
               DTAI engineers systems for environments where reliability,
               auditability, and security are not optional features &mdash;
               they are the requirement. Every government-facing platform is
@@ -49,10 +49,10 @@ export function GovernmentTechnology() {
                 key={area.label}
                 className="rounded-lg border border-white/10 bg-white/5 p-6"
               >
-                <h3 className="font-technical text-sm uppercase tracking-wide text-tech-blue">
+                <h3 className="font-technical font-semibold uppercase tracking-wide text-tech-blue">
                   {area.label}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-neutral-300">
+                <p className="mt-2 leading-relaxed text-neutral-300">
                   {area.detail}
                 </p>
               </div>

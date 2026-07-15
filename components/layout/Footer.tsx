@@ -4,7 +4,7 @@ import { Container } from "./Container";
 
 const footerColumns = [
   {
-    title: "Capabilities",
+    title: "Services",
     links: [
       { label: "Software Engineering", href: "/capabilities/software-engineering" },
       { label: "Digital Infrastructure", href: "/capabilities/digital-infrastructure" },
@@ -23,16 +23,9 @@ const footerColumns = [
   {
     title: "Company",
     links: [
-      { label: "Overview", href: "/company/overview" },
+      { label: "About Us", href: "/company/overview" },
       { label: "Leadership", href: "/company/leadership" },
       { label: "Careers", href: "/company/careers" },
-    ],
-  },
-  {
-    title: "Governance",
-    links: [
-      { label: "Security Philosophy", href: "/security-and-governance/philosophy" },
-      { label: "Governance Model", href: "/security-and-governance/governance-model" },
     ],
   },
 ];

@@ -32,7 +32,7 @@ export function FinalConversion() {
           <span className="font-technical text-xs uppercase tracking-wide text-tech-blue">
             Get in Touch
           </span>
-          <h2 className="mt-3 font-primary text-3xl font-semibold tracking-tight md:text-4xl">
+          <h2 className="mt-3 font-primary font-semibold tracking-tight">
             Talk to DTAI
           </h2>
         </div>
@@ -45,10 +45,10 @@ export function FinalConversion() {
               className="group flex flex-col justify-between rounded-lg border border-white/10 bg-white/5 p-6 transition-colors duration-standard hover:border-tech-blue"
             >
               <div>
-                <h3 className="font-primary text-base font-semibold text-white">
+                <h3 className="font-primary font-semibold text-white">
                   {a.label}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-neutral-300">
+                <p className="mt-2 leading-relaxed text-neutral-300">
                   {a.prompt}
                 </p>
               </div>

@@ -97,10 +97,10 @@ export function LiberiaMapDemo() {
             <span className="font-technical text-xs uppercase tracking-wide text-tech-blue">
               GIS Demonstration &mdash; Liberia
             </span>
-            <h2 className="mt-3 font-primary text-3xl font-semibold tracking-tight md:text-4xl">
+            <h2 className="mt-3 font-primary font-semibold tracking-tight">
               Spatial data by county
             </h2>
-            <p className="mt-4 text-base leading-relaxed text-neutral-300">
+            <p className="mt-4 leading-relaxed text-neutral-300">
               Click a county to zoom in, hover to preview data. County
               boundaries and population figures are sourced from real Liberia
               geometry and the 2022 LISGIS National Population and Housing
@@ -290,7 +290,7 @@ export function LiberiaMapDemo() {
                     exit={{ opacity: 0, y: -6 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <h3 className="font-primary text-lg font-semibold text-white">
+                    <h3 className="font-primary font-semibold text-white">
                       {display.name}
                     </h3>
                     <dl className="mt-4 space-y-3 text-sm">
@@ -299,12 +299,12 @@ export function LiberiaMapDemo() {
                         <dd className="font-technical text-white">{display.population}</dd>
                       </div>
                     </dl>
-                    <p className="mt-4 text-sm leading-relaxed text-neutral-300">
+                    <p className="mt-4 leading-relaxed text-neutral-300">
                       {display.history}
                     </p>
                   </motion.div>
                 ) : (
-                  <p className="text-sm text-neutral-400">
+                  <p className="text-neutral-400">
                     Hover or click a county to view its data. Click again to zoom in.
                   </p>
                 )}
@@ -316,13 +316,13 @@ export function LiberiaMapDemo() {
             <span className="font-technical text-[10px] uppercase tracking-wide text-neutral-500">
               About This Demonstration
             </span>
-            <p className="mt-3 text-sm leading-relaxed text-neutral-300">
+            <p className="mt-3 leading-relaxed text-neutral-300">
               This map uses real Liberia county boundary data to demonstrate
               DTAI&rsquo;s GIS and spatial technology capability &mdash; the
               same class of tooling used for infrastructure planning,
               service-gap analysis, and regional decision support.
             </p>
-            <p className="mt-3 text-sm leading-relaxed text-neutral-400">
+            <p className="mt-3 leading-relaxed text-neutral-400">
               Population figures and county boundaries reflect the official
               2022 LISGIS National Population and Housing Census. Population
               tiers shown on the map are calculated directly from these

@@ -141,7 +141,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.75 }}
-            className="max-w-3xl font-primary text-[2.75rem] font-semibold leading-[1.05] tracking-tight md:text-6xl lg:text-5xl xl:text-6xl"
+            className="max-w-3xl font-primary font-semibold tracking-tight"
           >
             Engineering Africa&rsquo;s{" "}
             <span className="text-tech-blue">Digital Infrastructure</span>
@@ -151,7 +151,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.9 }}
-            className="mt-6 max-w-xl text-lg leading-relaxed text-neutral-300"
+            className="mt-6 max-w-xl leading-relaxed text-neutral-300"
           >
             DTAI designs, builds, and operates secure digital systems that
             enable governments, institutions, and enterprises to deliver

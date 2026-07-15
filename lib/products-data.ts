@@ -4,13 +4,11 @@ export interface Product {
   tagline: string;
   description: string;
   status: "In Development";
-  iconKey:
-    | "libgo"
-    | "hospital"
-    | "election-results"
-    | "party-agent";
+  iconKey: "libgo" | "hospital" | "election-results" | "party-agent";
+  image: string;
+  dark: boolean;
   features: string[];
-  relatedCapabilities: string[]; // real capability slugs from lib/capabilities-data.ts
+  relatedCapabilities: string[];
   builtFor: string[];
 }
 
@@ -18,18 +16,18 @@ export const products: Product[] = [
   {
     slug: "libgo",
     name: "LIBGO Super App",
-    tagline: "An all-in-one digital platform for everyday services",
+    tagline: "An all in one digital platform for everyday services",
     description:
-      "LIBGO connects people with the services they use every day, all in one place — marketplace shopping, transportation, food delivery, pharmacies, hotels, and courier services.",
+      "LIBGO connects people with the services they use every day, all in one place: marketplace shopping, transportation, food delivery, pharmacies, hotels, and courier services.",
     status: "In Development",
     iconKey: "libgo",
+    image: "/assets/MobileScreen.png",
+    dark: false,
     features: [
-      "Marketplace",
-      "Transportation",
-      "Food Delivery",
-      "Pharmacies",
-      "Hotels",
-      "Courier Services",
+      "One Stop App",
+      "Integrated Payments",
+      "Multiple Services",
+      "Enterprise Scalability",
     ],
     relatedCapabilities: [
       "mobile-application-development",
@@ -43,15 +41,15 @@ export const products: Product[] = [
     name: "Hospital & Clinical Management System",
     tagline: "A comprehensive platform for healthcare institutions",
     description:
-      "A complete healthcare management platform covering the full range of hospital operations — from patient care to administration.",
+      "A complete healthcare management platform covering the full range of hospital operations, from patient care to administration. A comprehensive platform for healthcare institutions.",
     status: "In Development",
     iconKey: "hospital",
+    image: "/assets/HmsImg.png",
+    dark: false,
     features: [
+      "Clinical Workflow",
+      "Secure EHR",
       "Patient Management",
-      "Electronic Medical Records",
-      "Pharmacy",
-      "Laboratory",
-      "Billing",
       "Hospital Administration",
     ],
     relatedCapabilities: [
@@ -66,14 +64,15 @@ export const products: Product[] = [
     name: "Election Results Management System",
     tagline: "A secure platform for election result integrity",
     description:
-      "A secure, end-to-end platform supporting the full election results lifecycle — from initial collection through public dissemination.",
+      "Engineered for absolute transparency and auditability. This system facilitates secure vote tabulation, real-time transmission, and public dissemination of results with multi-layered verification protocols to ensure democratic integrity.",
     status: "In Development",
     iconKey: "election-results",
+    image: "/assets/EmsImg.png",
+    dark: false,
     features: [
       "Result Collection",
       "Verification",
       "Tabulation",
-      "Reporting",
       "Public Result Dissemination",
     ],
     relatedCapabilities: [
@@ -91,6 +90,8 @@ export const products: Product[] = [
       "A digital accreditation and management solution for political party agents operating during elections.",
     status: "In Development",
     iconKey: "party-agent",
+    image: "/assets/MobileScreen.png",
+    dark: false,
     features: ["Digital Accreditation", "Agent Management"],
     relatedCapabilities: [
       "web-application-development",

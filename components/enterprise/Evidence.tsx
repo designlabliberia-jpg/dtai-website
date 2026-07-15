@@ -31,7 +31,7 @@ export function Evidence() {
           <span className="font-technical text-xs uppercase tracking-wide text-brand">
             Evidence
           </span>
-          <h2 className="mt-3 font-primary text-3xl font-semibold tracking-tight text-neutral-900 md:text-4xl">
+          <h2 className="mt-3 font-primary font-semibold tracking-tight text-neutral-900">
             Engineering discipline, not marketing claims
           </h2>
         </div>
@@ -42,10 +42,10 @@ export function Evidence() {
               key={pillar.title}
               className="rounded-lg border border-neutral-300/60 p-6"
             >
-              <h3 className="font-primary text-lg font-semibold text-neutral-900">
+              <h3 className="font-primary font-semibold text-neutral-900">
                 {pillar.title}
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-neutral-600">
+              <p className="mt-2 leading-relaxed text-neutral-600">
                 {pillar.detail}
               </p>
             </div>

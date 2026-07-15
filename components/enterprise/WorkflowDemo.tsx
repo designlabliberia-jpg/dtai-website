@@ -52,10 +52,10 @@ export function WorkflowDemo() {
           <span className="font-technical text-xs uppercase tracking-wide text-brand">
             Workflow Demonstration
           </span>
-          <h2 className="mt-3 font-primary text-3xl font-semibold tracking-tight text-neutral-900 md:text-4xl">
+          <h2 className="mt-3 font-primary font-semibold tracking-tight text-neutral-900">
             From manual process to measurable outcome
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-neutral-600">
+          <p className="mt-4 leading-relaxed text-neutral-600">
             A representative pattern from how DTAI digitizes institutional
             workflows. Step through each stage.
           </p>
@@ -153,10 +153,10 @@ export function WorkflowDemo() {
               <span className="font-technical text-xs uppercase tracking-wide text-brand">
                 Stage {active + 1} of {stages.length}
               </span>
-              <h3 className="mt-2 font-primary text-xl font-semibold text-neutral-900">
+              <h3 className="mt-2 font-primary font-semibold text-neutral-900">
                 {stages[active].title}
               </h3>
-              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-neutral-600">
+              <p className="mt-3 max-w-2xl leading-relaxed text-neutral-600">
                 {stages[active].detail}
               </p>
             </motion.div>

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 
 const principles = [
@@ -24,13 +25,19 @@ export function EngineeringPhilosophy() {
             <span className="font-technical text-xs uppercase tracking-wide text-brand">
               Engineering Philosophy
             </span>
-            <h2 className="mt-3 font-primary text-3xl font-semibold tracking-tight text-neutral-900 md:text-4xl">
+            <h2 className="mt-3 font-primary font-semibold tracking-tight text-neutral-900">
               How we build matters as much as what we build
             </h2>
-            <p className="mt-5 max-w-lg text-base leading-relaxed text-neutral-600">
+            <p className="mt-5 max-w-lg leading-relaxed text-neutral-600">
               DTAI&rsquo;s engineering discipline is the reason institutions
               can rely on what we deliver long after launch.
             </p>
+            <Link
+              href="/company/engineering-philosophy"
+              className="mt-8 inline-block rounded-md border border-neutral-300 px-6 py-3 text-sm font-semibold text-neutral-900 transition-colors duration-micro hover:border-brand hover:text-brand"
+            >
+              View Engineering Philosophy
+            </Link>
           </div>
 
           <div className="space-y-8">
@@ -40,10 +47,10 @@ export function EngineeringPhilosophy() {
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <div>
-                  <h3 className="font-primary text-lg font-semibold text-neutral-900">
+                  <h3 className="font-primary font-semibold text-neutral-900">
                     {p.title}
                   </h3>
-                  <p className="mt-1 text-sm leading-relaxed text-neutral-600">
+                  <p className="mt-1 leading-relaxed text-neutral-600">
                     {p.detail}
                   </p>
                 </div>

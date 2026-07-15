@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { FileText } from "lucide-react";
-import { Container } from "@/components/layout/Container";
+import { MarketingPageShell } from "@/components/enterprise/MarketingPageShell";
 import { caseStudies } from "@/lib/case-studies-data";
 
 export const metadata = {
@@ -10,16 +10,7 @@ export const metadata = {
 
 export default function CaseStudiesPage() {
   return (
-    <section className="bg-white py-24">
-      <Container>
-        <div className="mb-14 max-w-2xl">
-          <span className="font-technical text-xs uppercase tracking-wide text-brand">
-            Case Studies
-          </span>
-          <h1 className="mt-3 font-primary text-3xl font-semibold tracking-tight text-neutral-900 md:text-4xl">
-            Proof, documented
-          </h1>
-        </div>
+    <MarketingPageShell eyebrow="Case Studies" title="Proof, documented">
 
         {caseStudies.length > 0 ? (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -75,7 +66,6 @@ export default function CaseStudiesPage() {
             </Link>
           </div>
         )}
-      </Container>
-    </section>
+    </MarketingPageShell>
   );
 }
