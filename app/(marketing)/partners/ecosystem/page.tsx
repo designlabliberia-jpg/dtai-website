@@ -1,4 +1,10 @@
+import { createPageMetadata } from "@/lib/seo";
 import { getPartnerCategoryBySlug } from "@/lib/partners-data";
+
+export const metadata = createPageMetadata(
+  "Partner Ecosystem",
+  "The broader ecosystem of organizations and communities DTAI collaborates with."
+);
 import { PartnersNav } from "@/components/enterprise/PartnersNav";
 import { Container } from "@/components/layout/Container";
 

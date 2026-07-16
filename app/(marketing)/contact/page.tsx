@@ -1,12 +1,12 @@
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { ContactForm } from "@/components/enterprise/ContactForm";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Contact — DTAI",
-  description:
-    "Talk to DTAI about government, institutional, or enterprise digital infrastructure.",
-};
+export const metadata = createPageMetadata(
+  "Contact",
+  "Talk to DTAI about government, institutional, or enterprise digital infrastructure."
+);
 
 const channels = [
   {

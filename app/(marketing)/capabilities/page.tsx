@@ -1,11 +1,12 @@
 import { MarketingPageShell } from "@/components/enterprise/MarketingPageShell";
 import { CapabilityCard } from "@/components/enterprise/CapabilityCard";
 import { capabilities } from "@/lib/capabilities-data";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Core Services",
-  description: "Engineering domains DTAI builds and operates across.",
-};
+export const metadata = createPageMetadata(
+  "Core Services",
+  "Engineering domains DTAI builds and operates across."
+);
 
 export default function CapabilitiesPage() {
   return (

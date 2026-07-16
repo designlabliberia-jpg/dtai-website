@@ -1,4 +1,10 @@
+import { createPageMetadata } from "@/lib/seo";
 import { getGovernancePageBySlug } from "@/lib/governance-data";
+
+export const metadata = createPageMetadata(
+  "Reliability Practices",
+  "How DTAI ensures uptime, resilience, and continuity for mission-critical systems."
+);
 import { GovernanceNav } from "@/components/enterprise/GovernanceNav";
 import { Container } from "@/components/layout/Container";
 

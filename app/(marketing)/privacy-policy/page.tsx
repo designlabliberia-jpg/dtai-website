@@ -1,10 +1,11 @@
 import { Container } from "@/components/layout/Container";
 
-export const metadata = {
-  title: "Privacy Policy — DTAI",
-  description:
-    "How Digital Technology Associates Inc. (DTAI) collects, uses, and protects information.",
-};
+import { createPageMetadata } from "@/lib/seo";
+
+export const metadata = createPageMetadata(
+  "Privacy Policy",
+  "How Digital Technology Associates Inc. (DTAI) collects, uses, and protects information."
+);
 
 const sections: { heading: string; body: string[] }[] = [
   {

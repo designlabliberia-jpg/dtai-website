@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -7,49 +6,9 @@ import { RouteProgressBar } from "@/components/layout/RouteProgressBar";
 import { ScrollToTop } from "@/components/layout/ScrollToTop";
 import { AmbientField } from "@/components/layout/AmbientField";
 import { ChatWidget } from "@/components/layout/ChatWidget";
+import { siteMetadata, organizationSchema } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://dtai.designlab.technology"),
-  title: {
-    default: "DTAI — Engineering Africa's Digital Infrastructure",
-    template: "%s | DTAI",
-  },
-  description:
-    "DTAI designs, builds, and operates secure digital systems that enable governments, institutions, and enterprises to deliver critical services.",
-  openGraph: {
-    title: "DTAI — Engineering Africa's Digital Infrastructure",
-    description:
-      "DTAI designs, builds, and operates secure digital systems for governments, institutions, and enterprises.",
-    siteName: "DTAI",
-    type: "website",
-    images: [
-      {
-        url: "/assets/dtai-logo.png",
-        width: 488,
-        height: 511,
-        alt: "DTAI — Digital Technology Associates Inc.",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "DTAI — Engineering Africa's Digital Infrastructure",
-    description:
-      "DTAI designs, builds, and operates secure digital systems for governments, institutions, and enterprises.",
-    images: ["/assets/dtai-logo.png"],
-  },
-};
-
-const organizationSchema = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "Digital Technology Associates Inc.",
-  alternateName: "DTAI",
-  url: "https://dtai.designlab.technology",
-  logo: "https://dtai.designlab.technology/assets/dtai-logo.png",
-  description:
-    "DTAI designs, builds, and operates secure digital systems that enable governments, institutions, and enterprises to deliver critical services across Africa.",
-};
+export const metadata = siteMetadata;
 
 export default function RootLayout({
   children,

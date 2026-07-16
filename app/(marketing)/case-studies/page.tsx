@@ -3,10 +3,12 @@ import { FileText } from "lucide-react";
 import { MarketingPageShell } from "@/components/enterprise/MarketingPageShell";
 import { caseStudies } from "@/lib/case-studies-data";
 
-export const metadata = {
-  title: "Case Studies — DTAI",
-  description: "Documented engineering work across government and institutional projects.",
-};
+import { createPageMetadata } from "@/lib/seo";
+
+export const metadata = createPageMetadata(
+  "Case Studies",
+  "Documented engineering work across government and institutional projects."
+);
 
 export default function CaseStudiesPage() {
   return (

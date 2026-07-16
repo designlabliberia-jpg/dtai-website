@@ -1,4 +1,10 @@
+import { createPageMetadata } from "@/lib/seo";
 import { getPartnerCategoryBySlug } from "@/lib/partners-data";
+
+export const metadata = createPageMetadata(
+  "Technology Partners",
+  "Technology vendors and platforms DTAI works with to deliver digital infrastructure."
+);
 import { PartnersNav } from "@/components/enterprise/PartnersNav";
 import { Container } from "@/components/layout/Container";
 

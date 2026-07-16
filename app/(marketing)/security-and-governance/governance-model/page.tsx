@@ -1,4 +1,10 @@
+import { createPageMetadata } from "@/lib/seo";
 import { getGovernancePageBySlug } from "@/lib/governance-data";
+
+export const metadata = createPageMetadata(
+  "Governance Model",
+  "How DTAI structures accountability, oversight, and decision-making across its systems."
+);
 import { GovernanceNav } from "@/components/enterprise/GovernanceNav";
 import { Container } from "@/components/layout/Container";
 

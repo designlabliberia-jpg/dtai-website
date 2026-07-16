@@ -1,10 +1,11 @@
 import { Container } from "@/components/layout/Container";
 
-export const metadata = {
-  title: "Terms of Service — DTAI",
-  description:
-    "Terms governing use of the Digital Technology Associates Inc. (DTAI) website.",
-};
+import { createPageMetadata } from "@/lib/seo";
+
+export const metadata = createPageMetadata(
+  "Terms of Service",
+  "Terms governing use of the Digital Technology Associates Inc. (DTAI) website."
+);
 
 const sections: { heading: string; body: string[] }[] = [
   {

@@ -2,10 +2,12 @@ import { Compass } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { PageHeroBanner } from "@/components/enterprise/PageHeroBanner";
 
-export const metadata = {
-  title: "Engineering Philosophy — DTAI",
-  description: "How DTAI approaches the engineering of mission-critical digital systems.",
-};
+import { createPageMetadata } from "@/lib/seo";
+
+export const metadata = createPageMetadata(
+  "Engineering Philosophy",
+  "How DTAI approaches the engineering of mission-critical digital systems."
+);
 
 const principles = [
   {

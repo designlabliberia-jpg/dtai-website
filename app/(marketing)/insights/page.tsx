@@ -4,10 +4,12 @@ import { Clock } from "lucide-react";
 import { MarketingPageShell } from "@/components/enterprise/MarketingPageShell";
 import { getInsights, getReadTimeMinutes, coverImageUrl } from "@/sanity/lib/insights";
 
-export const metadata = {
-  title: "DTAI News & Blog",
-  description: "Technical papers, engineering insight, and research from DTAI.",
-};
+import { createPageMetadata } from "@/lib/seo";
+
+export const metadata = createPageMetadata(
+  "News & Blog",
+  "Technical papers, engineering insight, and research from DTAI."
+);
 
 export const revalidate = 60;
 

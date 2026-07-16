@@ -5,10 +5,12 @@ import { Container } from "@/components/layout/Container";
 import { PageHeroBanner } from "@/components/enterprise/PageHeroBanner";
 import { solutions } from "@/lib/solutions-data";
 
-export const metadata = {
-  title: "Solutions — DTAI",
-  description: "Digital solutions DTAI builds for governments, institutions, and enterprises.",
-};
+import { createPageMetadata } from "@/lib/seo";
+
+export const metadata = createPageMetadata(
+  "Solutions",
+  "Digital solutions DTAI builds for governments, institutions, and enterprises."
+);
 
 const solutionIcons: Record<string, LucideIcon> = {
   "government-technology": Landmark,

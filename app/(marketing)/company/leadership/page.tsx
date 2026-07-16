@@ -4,11 +4,12 @@ import { PageHeroBanner } from "@/components/enterprise/PageHeroBanner";
 import { LeadershipCard } from "@/components/enterprise/LeadershipCard";
 import { leadershipTeam } from "@/lib/leadership-data";
 
-export const metadata = {
-  title: "Leadership — DTAI",
-  description:
-    "The leadership team guiding DTAI's engineering and institutional direction.",
-};
+import { createPageMetadata } from "@/lib/seo";
+
+export const metadata = createPageMetadata(
+  "Leadership",
+  "The leadership team guiding DTAI's engineering and institutional direction."
+);
 
 export default function LeadershipPage() {
   return (

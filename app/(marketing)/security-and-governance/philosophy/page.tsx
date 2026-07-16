@@ -1,4 +1,10 @@
+import { createPageMetadata } from "@/lib/seo";
 import { getGovernancePageBySlug } from "@/lib/governance-data";
+
+export const metadata = createPageMetadata(
+  "Security Philosophy",
+  "DTAI's foundational approach to security across all digital systems and engagements."
+);
 import { GovernanceNav } from "@/components/enterprise/GovernanceNav";
 import { Container } from "@/components/layout/Container";
 

@@ -5,10 +5,12 @@ import { Container } from "@/components/layout/Container";
 import { PageHeroBanner } from "@/components/enterprise/PageHeroBanner";
 import { CareersInterestForm } from "@/components/enterprise/CareersInterestForm";
 
-export const metadata = {
-  title: "Careers — DTAI",
-  description: "Join the engineering team building Africa's digital infrastructure.",
-};
+import { createPageMetadata } from "@/lib/seo";
+
+export const metadata = createPageMetadata(
+  "Careers",
+  "Join the engineering team building Africa's digital infrastructure."
+);
 
 const traits: { icon: LucideIcon; title: string; detail: string }[] = [
   {

@@ -11,11 +11,12 @@ import {
 import type { LucideIcon } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 
-export const metadata = {
-  title: "Company Overview — DTAI",
-  description:
-    "Digital Technology Associates Incorporated (DTAI) — a Liberian technology company delivering innovative, secure, and scalable digital solutions across Africa.",
-};
+import { createPageMetadata } from "@/lib/seo";
+
+export const metadata = createPageMetadata(
+  "Company Overview",
+  "Digital Technology Associates Incorporated (DTAI) — a Liberian technology company delivering innovative, secure, and scalable digital solutions across Africa."
+);
 
 const whyChooseUs: { text: string; icon: LucideIcon }[] = [
   { text: "Innovative and customer-focused solutions", icon: Lightbulb },

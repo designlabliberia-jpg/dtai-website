@@ -11,10 +11,12 @@ const ICONS = {
   "party-agent": UserCheck,
 };
 
-export const metadata = {
-  title: "Products — DTAI",
-  description: "DTAI's flagship digital products, built for governments, institutions, and everyday life.",
-};
+import { createPageMetadata } from "@/lib/seo";
+
+export const metadata = createPageMetadata(
+  "Products",
+  "DTAI's flagship digital products, built for governments, institutions, and everyday life."
+);
 
 export default function ProductsPage() {
   return (

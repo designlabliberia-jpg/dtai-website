@@ -4,10 +4,12 @@ import { Container } from "@/components/layout/Container";
 import { PageHeroBanner } from "@/components/enterprise/PageHeroBanner";
 import { ApproachStepper } from "@/components/enterprise/ApproachStepper";
 
-export const metadata = {
-  title: "Our Approach — DTAI",
-  description: "How DTAI delivers digital infrastructure projects from requirements to long-term operation.",
-};
+import { createPageMetadata } from "@/lib/seo";
+
+export const metadata = createPageMetadata(
+  "Our Approach",
+  "How DTAI delivers digital infrastructure projects from requirements to long-term operation."
+);
 
 export default function OurApproachPage() {
   return (

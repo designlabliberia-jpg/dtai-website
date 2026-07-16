@@ -1,4 +1,10 @@
+import { createPageMetadata } from "@/lib/seo";
 import { getGovernancePageBySlug } from "@/lib/governance-data";
+
+export const metadata = createPageMetadata(
+  "Data Protection",
+  "How DTAI handles, stores, and protects data across government and enterprise deployments."
+);
 import { GovernanceNav } from "@/components/enterprise/GovernanceNav";
 import { Container } from "@/components/layout/Container";
 

@@ -1,4 +1,10 @@
+import { createPageMetadata } from "@/lib/seo";
 import { getGovernancePageBySlug } from "@/lib/governance-data";
+
+export const metadata = createPageMetadata(
+  "Development Standards",
+  "The engineering standards and practices DTAI applies to every system it builds."
+);
 import { GovernanceNav } from "@/components/enterprise/GovernanceNav";
 import { Container } from "@/components/layout/Container";
 

@@ -8,10 +8,12 @@ import { Container } from "@/components/layout/Container";
 import { PageHeroBanner } from "@/components/enterprise/PageHeroBanner";
 import { industries } from "@/lib/industries-data";
 
-export const metadata = {
-  title: "Industries — DTAI",
-  description: "Industries DTAI builds and operates digital systems for.",
-};
+import { createPageMetadata } from "@/lib/seo";
+
+export const metadata = createPageMetadata(
+  "Industries",
+  "Industries DTAI builds and operates digital systems for."
+);
 
 const industryIcons: Record<string, LucideIcon> = {
   government: Landmark,
