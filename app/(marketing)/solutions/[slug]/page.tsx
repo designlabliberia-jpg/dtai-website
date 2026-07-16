@@ -4,7 +4,6 @@ import type { Metadata } from "next";
 import { Landmark, ClipboardCheck, Building2, Network, Layers, ListChecks, ShieldCheck } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Container } from "@/components/layout/Container";
-import { CodeWindow } from "@/components/enterprise/CodeWindow";
 import { RelatedSolutions } from "@/components/enterprise/RelatedSolutions";
 import { solutions, getSolutionBySlug } from "@/lib/solutions-data";
 
@@ -94,19 +93,6 @@ export default async function SolutionDetailPage({
             <p className="mt-4 text-base leading-relaxed text-neutral-600">
               {solution.overview}
             </p>
-          </div>
-
-          {/* Live code panel */}
-          <div className="mt-10">
-            <span className="mb-3 flex items-center gap-2 font-technical text-[10px] uppercase tracking-wide text-neutral-400">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-tech-blue" />
-              Representative Implementation Pattern
-            </span>
-            <CodeWindow
-              filename={solution.snippet.filename}
-              language={solution.snippet.language}
-              code={solution.snippet.code}
-            />
           </div>
 
           {/* Focus areas */}

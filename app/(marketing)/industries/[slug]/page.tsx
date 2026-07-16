@@ -22,7 +22,7 @@ import { Container } from "@/components/layout/Container";
 import { RelatedIndustries } from "@/components/enterprise/RelatedIndustries";
 import { IndustryFlow } from "@/components/enterprise/IndustryFlow";
 import { industries, getIndustryBySlug } from "@/lib/industries-data";
-import { capabilities } from "@/lib/capabilities-data";
+import { services } from "@/lib/services-data";
 
 const industryIcons: Record<string, LucideIcon> = {
   government: Landmark,
@@ -81,7 +81,7 @@ export default async function IndustryDetailPage({
 
   const Icon = industryIcons[industry.slug] ?? Briefcase;
   const otherIndustries = industries.filter((i) => i.slug !== slug);
-  const relatedCaps = capabilities.filter((c) =>
+  const relatedCaps = services.filter((c) =>
     industry.relatedCapabilities.includes(c.slug)
   );
 
@@ -160,17 +160,17 @@ export default async function IndustryDetailPage({
 
             {relatedCaps.length > 0 && (
               <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-                {relatedCaps.map((cap) => (
+                {relatedCaps.map((ser) => (
                   <Link
-                    key={cap.slug}
-                    href={`/capabilities/${cap.slug}`}
+                    key={ser.slug}
+                    href={`/services/${ser.slug}`}
                     className="group rounded-md border border-neutral-300/60 p-4 transition-all duration-micro hover:border-tech-blue hover:shadow-sm"
                   >
                     <span className="font-technical text-[10px] uppercase tracking-wide text-brand">
-                      Capability
+                      Service
                     </span>
                     <p className="mt-1.5 text-sm font-medium text-neutral-900 transition-colors duration-micro group-hover:text-brand">
-                      {cap.title}
+                      {ser.title}
                     </p>
                   </Link>
                 ))}

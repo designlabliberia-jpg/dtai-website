@@ -17,7 +17,7 @@ const sections: { heading: string; body: string[] }[] = [
   {
     heading: "2. Purpose of This Site",
     body: [
-      "This website is provided for informational purposes to describe DTAI's capabilities, solutions, and engagement process, and to facilitate inquiries from prospective clients, partners, and institutions. Nothing on this site constitutes a binding offer, contract, or guarantee of services absent a separately executed agreement.",
+      "This website is provided for informational purposes to describe DTAI's services, solutions, and engagement process, and to facilitate inquiries from prospective clients, partners, and institutions. Nothing on this site constitutes a binding offer, contract, or guarantee of services absent a separately executed agreement.",
     ],
   },
   {

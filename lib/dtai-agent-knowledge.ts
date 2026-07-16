@@ -1,4 +1,4 @@
-import { capabilities } from "@/lib/capabilities-data";
+import { services } from "@/lib/services-data";
 import { industries } from "@/lib/industries-data";
 import { solutions } from "@/lib/solutions-data";
 import { leadershipTeam } from "@/lib/leadership-data";
@@ -10,7 +10,7 @@ import { products } from "@/lib/products-data";
 
 // Builds the grounding context for DTAI Agent directly from the same data
 // that powers the website's own pages. This means the agent's knowledge
-// never drifts out of sync with the site — if a capability, industry, or
+// never drifts out of sync with the site — if a service, industry, or
 // solution is added/edited/removed in its data file, the agent picks it
 // up automatically on the next request with no separate content to
 // maintain.
@@ -23,7 +23,7 @@ export function buildDtaiKnowledgeBase(): string {
 
   sections.push(
     "ENGINEERING CAPABILITIES:\n" +
-      capabilities
+      services
         .map((c) => `- ${c.title}: ${c.summary}`)
         .join("\n")
   );

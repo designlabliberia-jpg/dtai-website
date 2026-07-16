@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Clock, ArrowRight } from "lucide-react";
 import { coverImageUrl, getReadTimeMinutes, type Insight } from "@/sanity/lib/insights";
 
-interface NewsCarouselProps {
+export interface NewsCarouselProps {
   items: Insight[];
 }
 
@@ -43,7 +43,7 @@ export function NewsCarousel({ items }: NewsCarouselProps) {
           <Link
             key={item.slug}
             href={`/insights/${item.slug}`}
-            className={`absolute inset-0 transition-opacity duration-700 ${
+            className={`group absolute inset-0 transition-opacity duration-700 ${
               i === active ? "opacity-100" : "pointer-events-none opacity-0"
             }`}
           >
@@ -74,12 +74,9 @@ export function NewsCarousel({ items }: NewsCarouselProps) {
                   {getReadTimeMinutes(item)} min read
                 </span>
               </div>
-              <Link
-                href={`/insights/${item.slug}`}
-                className="mt-4 inline-flex items-center gap-2 font-technical text-xs uppercase tracking-wide text-white transition-colors hover:text-tech-blue"
-              >
+              <span className="mt-4 inline-flex items-center gap-2 font-technical text-xs uppercase tracking-wide text-white transition-colors group-hover:text-tech-blue">
                 Learn More <ArrowRight size={14} />
-              </Link>
+              </span>
             </div>
           </Link>
         ))}

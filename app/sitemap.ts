@@ -1,11 +1,11 @@
 import type { MetadataRoute } from "next";
-import { capabilities } from "@/lib/capabilities-data";
+import { services } from "@/lib/services-data";
 import { solutions } from "@/lib/solutions-data";
 import { industries } from "@/lib/industries-data";
 import { caseStudies } from "@/lib/case-studies-data";
 import { insights } from "@/lib/insights-data";
 
-const baseUrl = "https://dtai.designlab.technology";
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
@@ -15,7 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/company/engineering-philosophy",
     "/company/approach",
     "/company/careers",
-    "/capabilities",
+    "/services",
     "/solutions",
     "/industries",
     "/case-studies",
@@ -35,7 +35,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   const dynamicRoutes = [
-    ...capabilities.map((c) => `/capabilities/${c.slug}`),
+    ...services.map((c) => `/services/${c.slug}`),
     ...solutions.map((s) => `/solutions/${s.slug}`),
     ...industries.map((i) => `/industries/${i.slug}`),
     ...caseStudies.map((c) => `/case-studies/${c.slug}`),

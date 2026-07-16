@@ -28,7 +28,7 @@ import {
   MapPin,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { capabilities } from "@/lib/capabilities-data";
+import { services } from "@/lib/services-data";
 
 interface DemoSnippet {
   path: string;
@@ -127,9 +127,9 @@ const SERVICE_ICONS: Record<string, LucideIcon> = {
   "gis-spatial-technology": MapPin,
 };
 
-const SERVICES = capabilities.map((c) => ({
-  title: c.title,
-  icon: SERVICE_ICONS[c.slug] ?? Code2,
+const SERVICES = services.map((s) => ({
+  title: s.title,
+  icon: SERVICE_ICONS[s.slug] ?? Code2,
 }));
 
 const CURSOR_NEW_TAB = { x: 93, y: 11 };
@@ -173,10 +173,14 @@ type Stage =
 type BrowserPhase = "logo" | "heading" | "services" | null;
 
 export function HeroCodeDemo() {
+  const reduceMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   const [snippetIndex, setSnippetIndex] = useState(0);
-  const [typedPath, setTypedPath] = useState("");
-  const [typedCode, setTypedCode] = useState("");
-  const [stage, setStage] = useState<Stage>("opening-file");
+  const [typedPath, setTypedPath] = useState(reduceMotion ? SNIPPETS[0].path : "");
+  const [typedCode, setTypedCode] = useState(reduceMotion ? SNIPPETS[0].code : "");
+  const [stage, setStage] = useState<Stage>(reduceMotion ? "typing" : "opening-file");
   const [cursorPos, setCursorPos] = useState(CURSOR_NEW_TAB);
   const [cursorVisible, setCursorVisible] = useState(false);
   const [cursorClicking, setCursorClicking] = useState(false);
@@ -188,16 +192,7 @@ export function HeroCodeDemo() {
   const inViewRef = useRef(true);
 
   useEffect(() => {
-    const reduceMotion =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (reduceMotion) {
-      setTypedPath(SNIPPETS[0].path);
-      setTypedCode(SNIPPETS[0].code);
-      setStage("typing");
-      return;
-    }
+    if (reduceMotion) return;
 
     const el = containerRef.current;
     if (!el) return;

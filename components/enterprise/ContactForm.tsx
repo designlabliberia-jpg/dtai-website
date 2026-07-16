@@ -138,11 +138,11 @@ export function ContactForm() {
         <textarea
           id="message"
           name="message"
-          rows={5}
+          rows={3}
           required
           disabled={status === "submitting"}
           placeholder="Tell us about your organization, timeline, and what you're looking to build."
-          className="mt-2 w-full rounded-md border border-neutral-300 px-4 py-2.5 text-base text-neutral-900 outline-none sm:text-sm transition-colors duration-micro focus:border-tech-blue focus:ring-2 focus:ring-tech-blue/20 disabled:opacity-60"
+          className="mt-2 w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-base text-neutral-900 outline-none sm:text-sm transition-colors duration-micro focus:border-tech-blue focus:ring-2 focus:ring-tech-blue/20 disabled:opacity-60"
         />
       </div>
 

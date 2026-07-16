@@ -1,3 +1,23 @@
+export interface PartnerLogo {
+  name: string;
+  src: string;
+}
+
+export const partnerLogos: PartnerLogo[] = [
+  { name: "Government Institutions", src: "/assets/partners/gi.png" },
+  { name: "Electoral Management Bodies", src: "/assets/partners/eb.png" },
+  { name: "Healthcare Providers", src: "/assets/partners/hp.png" },
+  { name: "Financial Institutions", src: "/assets/partners/fi.png" },
+  { name: "Educational Institutions", src: "/assets/partners/ei.png" },
+  { name: "Retail and E-commerce Businesses", src: "/assets/partners/re.png" },
+  { name: "Logistics and Transportation Companies", src: "/assets/partners/lt.png" },
+  { name: "Agriculture and Agribusiness", src: "/assets/partners/aa.png" },
+  { name: "Hospitality and Tourism", src: "/assets/partners/ht.png" },
+  { name: "Non-Governmental Organizations", src: "/assets/partners/ngos.png" },
+  { name: "Small and Medium Enterprises", src: "/assets/partners/smes.png" }, 
+  { name: "International Development Partners", src: "/assets/partners/id.png" },
+];
+
 export interface PartnerCategory {
   slug: string;
   title: string;

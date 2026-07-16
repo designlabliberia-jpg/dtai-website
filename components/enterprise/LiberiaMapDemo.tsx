@@ -318,7 +318,7 @@ export function LiberiaMapDemo() {
             </span>
             <p className="mt-3 leading-relaxed text-neutral-300">
               This map uses real Liberia county boundary data to demonstrate
-              DTAI&rsquo;s GIS and spatial technology capability &mdash; the
+              DTAI&rsquo;s GIS and spatial technology service &mdash; the
               same class of tooling used for infrastructure planning,
               service-gap analysis, and regional decision support.
             </p>

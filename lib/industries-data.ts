@@ -71,7 +71,7 @@ export const industries: Industry[] = [
     overview:
       "Enterprises with multiple locations or departments often accumulate a patchwork of systems that don't talk to each other, creating operational friction and duplicated work. The challenge isn't just building new systems — it's making them integrate cleanly with what already exists.",
     approach:
-      "DTAI approaches enterprise engagements by prioritizing integration with existing systems and operational scalability, so new capability is additive rather than disruptive to how the organization already runs.",
+      "DTAI approaches enterprise engagements by prioritizing integration with existing systems and operational scalability, so new service is additive rather than disruptive to how the organization already runs.",
     keyNeeds: ["Operational scalability", "Integration with existing systems", "Internal workflow efficiency"],
     relatedCapabilities: ["cloud-solutions", "digital-transformation", "software-engineering"],
   },

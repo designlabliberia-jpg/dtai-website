@@ -7,10 +7,10 @@ const footerColumns = [
   {
     title: "Services",
     links: [
-      { label: "Software Engineering", href: "/capabilities/software-engineering" },
-      { label: "Digital Infrastructure", href: "/capabilities/digital-infrastructure" },
-      { label: "Cybersecurity", href: "/capabilities/cybersecurity" },
-      { label: "GIS & Spatial Technology", href: "/capabilities/gis-spatial-technology" },
+      { label: "Software Engineering", href: "/services/software-engineering" },
+      { label: "Digital Infrastructure", href: "/services/digital-infrastructure" },
+      { label: "Cybersecurity", href: "/services/cybersecurity" },
+      { label: "GIS & Spatial Technology", href: "/services/gis-spatial-technology" },
     ],
   },
   {
@@ -50,10 +50,10 @@ export function Footer() {
                 {siteConfig.name}
               </span>
             </div>
-            <p className="mt-2 font-technical text-xs uppercase tracking-wide text-tech-blue">
+            <p className="mt-2 font-technical text-[10px] uppercase tracking-wide text-tech-blue/70">
               {siteConfig.tagline}
             </p>
-            <p className="mt-4 text-sm leading-relaxed text-neutral-400">
+            <p className="hidden sm:block mt-4 text-sm leading-relaxed text-neutral-400">
               {siteConfig.description}
             </p>
           </div>

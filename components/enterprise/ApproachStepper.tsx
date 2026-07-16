@@ -5,12 +5,12 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
 import { approachSteps } from "@/lib/approach-data";
-import { capabilities } from "@/lib/capabilities-data";
+import { services } from "@/lib/services-data";
 
 export function ApproachStepper() {
   const [active, setActive] = useState(0);
   const step = approachSteps[active];
-  const relatedCaps = capabilities.filter((c) =>
+  const relatedCaps = services.filter((c) =>
     step.relatedCapabilities.includes(c.slug)
   );
 
@@ -81,13 +81,13 @@ export function ApproachStepper() {
 
             {(relatedCaps.length > 0 || step.governanceLink) && (
               <div className="mt-6 flex flex-wrap gap-2 border-t border-neutral-200 pt-5">
-                {relatedCaps.map((cap) => (
+                {relatedCaps.map((ser) => (
                   <Link
-                    key={cap.slug}
-                    href={`/capabilities/${cap.slug}`}
+                    key={ser.slug}
+                    href={`/services/${ser.slug}`}
                     className="rounded-full border border-neutral-300/60 px-3 py-1.5 text-xs font-medium text-neutral-600 transition-colors duration-micro hover:border-tech-blue hover:text-brand"
                   >
-                    {cap.title}
+                    {ser.title}
                   </Link>
                 ))}
                 {step.governanceLink && (

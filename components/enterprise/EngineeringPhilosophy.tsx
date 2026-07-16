@@ -12,7 +12,7 @@ const principles = [
   },
   {
     title: "Verify before claiming",
-    detail: "Capability is demonstrated through working systems and documented methodology, not assertion.",
+    detail: "Service is demonstrated through working systems and documented methodology, not assertion.",
   },
 ];
 

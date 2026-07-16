@@ -3,7 +3,7 @@ export interface ApproachStep {
   title: string;
   detail: string;
   deliverables: string[];
-  relatedCapabilities: string[]; // real capability slugs
+  relatedCapabilities: string[]; // real service slugs
   governanceLink?: { label: string; href: string };
 }
 

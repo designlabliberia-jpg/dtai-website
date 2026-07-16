@@ -10,7 +10,7 @@ interface Snippet {
 }
 
 interface CodeWindowProps {
-  // Single-shot mode (used on capability pages): types once when scrolled
+  // Single-shot mode (used on service pages): types once when scrolled
   // into view, then stops. Unchanged from before.
   filename?: string;
   language?: string;

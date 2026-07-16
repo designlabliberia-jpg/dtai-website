@@ -1,9 +1,6 @@
-// The exhaustive, real set of pages DTAI Agent is allowed to navigate to.
-// Keeping this as an explicit whitelist means the model can never send the
-// visitor to a URL that doesn't exist.
 export const SITE_ROUTES: { path: string; label: string; keywords: string[] }[] = [
   { path: "/", label: "Home", keywords: ["home", "homepage", "main page"] },
-  { path: "/capabilities", label: "Capabilities", keywords: ["capabilities", "services", "what you do", "engineering domains"] },
+  { path: "/services", label: "Capabilities", keywords: ["services", "services", "what you do", "engineering domains"] },
   { path: "/solutions", label: "Solutions", keywords: ["solutions", "government technology", "election technology"] },
   { path: "/industries", label: "Industries", keywords: ["industries", "sectors"] },
   { path: "/case-studies", label: "Case Studies", keywords: ["case studies", "projects", "portfolio", "past work"] },

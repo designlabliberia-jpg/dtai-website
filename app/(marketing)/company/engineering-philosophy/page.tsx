@@ -23,7 +23,7 @@ const principles = [
   {
     title: "Verify before claiming",
     detail:
-      "Capability is demonstrated through working systems, documented methodology, and measurable outcomes — not through marketing language.",
+      "Service is demonstrated through working systems, documented methodology, and measurable outcomes — not through marketing language.",
   },
   {
     title: "Security as a design input",

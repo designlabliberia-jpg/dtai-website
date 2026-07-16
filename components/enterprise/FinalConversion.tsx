@@ -19,7 +19,7 @@ const audiences = [
   },
   {
     label: "International Partner",
-    prompt: "Discuss collaboration and delivery capability.",
+    prompt: "Discuss collaboration and delivery service.",
     href: "/contact?inquiry=partner",
   },
 ];

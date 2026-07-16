@@ -21,7 +21,7 @@ export const products: Product[] = [
       "LIBGO connects people with the services they use every day, all in one place: marketplace shopping, transportation, food delivery, pharmacies, hotels, and courier services.",
     status: "In Development",
     iconKey: "libgo",
-    image: "/assets/MobileScreen.png",
+    image: "/assets/products/MobileScreen.png",
     dark: false,
     features: [
       "One Stop App",
@@ -44,7 +44,7 @@ export const products: Product[] = [
       "A complete healthcare management platform covering the full range of hospital operations, from patient care to administration. A comprehensive platform for healthcare institutions.",
     status: "In Development",
     iconKey: "hospital",
-    image: "/assets/HmsImg.png",
+    image: "/assets/products/HmsImg.png",
     dark: false,
     features: [
       "Clinical Workflow",
@@ -67,7 +67,7 @@ export const products: Product[] = [
       "Engineered for absolute transparency and auditability. This system facilitates secure vote tabulation, real-time transmission, and public dissemination of results with multi-layered verification protocols to ensure democratic integrity.",
     status: "In Development",
     iconKey: "election-results",
-    image: "/assets/EmsImg.png",
+    image: "/assets/products/EmsImg.png",
     dark: false,
     features: [
       "Result Collection",
@@ -90,7 +90,7 @@ export const products: Product[] = [
       "A digital accreditation and management solution for political party agents operating during elections.",
     status: "In Development",
     iconKey: "party-agent",
-    image: "/assets/MobileScreen.png",
+    image: "/assets/products/MobileScreen.png",
     dark: false,
     features: ["Digital Accreditation", "Agent Management"],
     relatedCapabilities: [

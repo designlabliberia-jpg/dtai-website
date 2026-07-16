@@ -1,6 +1,6 @@
 import { MarketingPageShell } from "@/components/enterprise/MarketingPageShell";
-import { CapabilityCard } from "@/components/enterprise/CapabilityCard";
-import { capabilities } from "@/lib/capabilities-data";
+import { ServiceCard } from "@/components/enterprise/ServiceCard";
+import { services } from "@/lib/services-data";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata(
@@ -8,16 +8,17 @@ export const metadata = createPageMetadata(
   "Engineering domains DTAI builds and operates across."
 );
 
-export default function CapabilitiesPage() {
+export default function ServicesPage() {
   return (
     <MarketingPageShell eyebrow="Core Services" title="Engineering across the full digital stack">
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {capabilities.map((cap) => (
-          <CapabilityCard
-            key={cap.slug}
-            title={cap.title}
-            description={cap.summary}
-            href={`/capabilities/${cap.slug}`}
+        {services.map((ser) => (
+          <ServiceCard
+            key={ser.slug}
+            title={ser.title}
+            icon={ser.icon}
+            description={ser.summary}
+            href={`/services/${ser.slug}`}
           />
         ))}
       </div>

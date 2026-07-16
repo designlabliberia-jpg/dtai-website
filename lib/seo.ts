@@ -3,22 +3,21 @@ import type { Metadata } from "next";
 export const siteConfig = {
   url: process.env.NEXT_PUBLIC_SITE_URL!,
   name: "DTAI",
-  fullName: "Digital Technology Associates Inc.",
-  tagline: "Engineering Africa's Digital Infrastructure",
-  description:
-    "DTAI designs, builds, and operates secure digital systems that enable governments, institutions, and enterprises to deliver critical services.",
+  fullName: "Digital Technology Associates Inc",
+  tagline: "Your Trusted Partner in Digital Innovation and Sustainable Solutions",
+  description:"DTAI is a Liberian technology company where advanced software engineering meets environmental purpose, that empower governments, businesses, healthcare institutions, non-governmental organizations, and communities across Liberia and Africa.",
   logo: "/assets/dtai-logo.png",
 } as const;
 
 export const siteMetadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: `${siteConfig.name} — ${siteConfig.tagline}`,
+    default: `${siteConfig.name} | ${siteConfig.tagline}`,
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
   openGraph: {
-    title: `${siteConfig.name} — ${siteConfig.tagline}`,
+    title: `${siteConfig.name} | ${siteConfig.tagline}`,
     description: siteConfig.description,
     siteName: siteConfig.name,
     type: "website",
@@ -26,7 +25,7 @@ export const siteMetadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${siteConfig.name} — ${siteConfig.tagline}`,
+    title: `${siteConfig.name} | ${siteConfig.tagline}`,
     description: siteConfig.description,
     images: [siteConfig.logo],
   },

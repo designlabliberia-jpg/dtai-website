@@ -8,6 +8,9 @@ import { usePathname } from "next/navigation";
 import { Container } from "./Container";
 import { DropdownPanel } from "@/components/ui/DropdownPanel";
 import { MobileMenu } from "@/components/ui/MobileMenu";
+import { siteConfig } from "@/lib/seo";
+import { services } from "@/lib/services-data";
+
 
 
 type NavChild = { title: string; href: string};
@@ -15,13 +18,16 @@ type NavItem = { label: string; href?: string; children?: NavChild[]; viewAllHre
 
 
 const navItems: NavItem[] = [
-  {
-    label: "Services",
-    href: "#capabilities",
-  },
-  {
+    {
     label: "Products",
     href: "#products",
+  },
+  {
+    label: "Services",
+    href: "/services",
+    viewAllHref: "/services",
+    viewAllLabel: "View All Services",
+    children: services.map((s) => ({ title: s.title, href: `/services/${s.slug}` })),
   },
   {
     label: "Solutions",
@@ -30,18 +36,7 @@ const navItems: NavItem[] = [
 {
     label: "About Us",
     href: "/company/overview",
-    viewAllHref: "/company/overview",
-    viewAllLabel: "View All",
-    children: [
-      { title: "Overview", href: "/company/overview" },
-      { title: "Leadership", href: "/company/leadership" },
-      { title: "News", href: "/insights"},
-      { title: "Careers", href: "/company/careers"},
-      { title: "Case Studies", href: "/case-studies"},
-      { title: "Engineering Philosophy", href: "/company/engineering-philosophy"},
-      { title: "Our Approach", href: "/company/approach"},
-    ],
-  },
+}
 ];
 
 function useDropdown() {
@@ -76,13 +71,29 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const { close: dropdownClose } = dropdown;
+
   useEffect(() => {
-    startTransition(() => { setMobileOpen(false); dropdown.close(); });
-  }, [pathname, dropdown.close]);
+    startTransition(() => { setMobileOpen(false); dropdownClose(); });
+  }, [pathname, dropdownClose]);
+
+  const [hash, setHash] = useState("");
+
+  useEffect(() => {
+    const onHash = () => setHash(window.location.hash);
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
+
+  const resolvedHash = pathname === "/" ? hash : "";
 
   const isActive = useCallback(
-    (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href)),
-    [pathname],
+    (href: string) => {
+      if (href.startsWith("#")) return pathname === "/" && resolvedHash === href;
+      if (href.startsWith("/#")) return pathname === "/" && resolvedHash === href.slice(1);
+      return href === "/" ? pathname === "/" : pathname.startsWith(href);
+    },
+    [pathname, resolvedHash],
   );
 
   const isDropdownActive = useCallback(
@@ -91,7 +102,7 @@ export function Header() {
     [isActive],
   );
 
-  const handleMobileClose = useCallback(() => { setMobileOpen(false); dropdown.close(); }, [dropdown.close]);
+  const handleMobileClose = useCallback(() => { setMobileOpen(false); dropdownClose(); }, [dropdownClose]);
 
   return (
     <header
@@ -101,11 +112,11 @@ export function Header() {
 
       <Container className={`flex items-center justify-between transition-all duration-[var(--duration-standard)] ${scrolled ? "h-16" : "h-20"}`}>
         <Link href="/" className="flex items-center gap-2.5">
-          <Image src="/assets/dtai-logo.png" alt="DTAI — Digital Technology Associates Inc." width={40} height={40} className="h-10 w-auto object-contain" />
+          <Image src={siteConfig.logo} alt={siteConfig.name} width={40} height={40} loading="lazy" className="h-10 w-auto object-contain" />
           <div className="flex flex-col leading-none">
-            <span className="font-technical text-sm tracking-wide text-neutral-900">DTAI</span>
+            <span className="font-technical text-sm tracking-wide text-neutral-900">{siteConfig.name}</span>
             <span className="mt-0.5 hidden font-technical text-[9px] uppercase tracking-wider text-neutral-500 sm:block">
-              Digital Technology Associates
+             {siteConfig.fullName}
             </span>
           </div>
         </Link>
@@ -143,7 +154,7 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Link href="/contact" className="hidden items-center gap-2 rounded-md bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-micro hover:bg-tech-blue sm:inline-flex">
+          <Link href="/#contact" className="hidden items-center gap-2 rounded-md bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-micro hover:bg-tech-blue sm:inline-flex">
             Contact Us
           </Link>
           <button

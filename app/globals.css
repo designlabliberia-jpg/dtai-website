@@ -11,7 +11,7 @@
 /* Map tokens into Tailwind's theme so classes like bg-brand, text-tech-blue work */
 @theme {
   --color-brand: var(--color-dtai-blue);
-  --color-tech-blue: var(--color-tech-blue);
+  --color-tech-blue: #00A6FF;
   --color-infra-midnight: var(--color-infra-midnight);
   --color-titanium-silver: var(--color-titanium-silver);
   --color-neutral-950: var(--color-neutral-950);

@@ -7,7 +7,7 @@ import { LikeButton } from "@/components/enterprise/LikeButton";
 import { Container } from "@/components/layout/Container";
 import { RelatedInsights } from "@/components/enterprise/RelatedInsights";
 import { getInsights, getInsightBySlug, getReadTimeMinutes, coverImageUrl } from "@/sanity/lib/insights";
-import { capabilities } from "@/lib/capabilities-data";
+import { services } from "@/lib/services-data";
 
 export const revalidate = 60;
 
@@ -64,7 +64,7 @@ export default async function InsightDetailPage({
 
   const allInsights = await getInsights();
   const otherInsights = allInsights.filter((i) => i.slug !== slug);
-  const relatedCaps = capabilities.filter((c) =>
+  const relatedCaps = services.filter((c) =>
     (insight.relatedCapabilities ?? []).includes(c.slug)
   );
 
@@ -129,13 +129,13 @@ export default async function InsightDetailPage({
               Related Capabilities
             </span>
             <div className="mt-4 flex flex-wrap gap-2">
-              {relatedCaps.map((cap) => (
+              {relatedCaps.map((ser) => (
                 <Link
-                  key={cap.slug}
-                  href={`/capabilities/${cap.slug}`}
+                  key={ser.slug}
+                  href={`/services/${ser.slug}`}
                   className="rounded-full border border-neutral-300/60 px-3.5 py-1.5 text-xs font-medium text-neutral-700 transition-colors duration-micro hover:border-tech-blue hover:text-brand"
                 >
-                  {cap.title}
+                  {ser.title}
                 </Link>
               ))}
             </div>

@@ -1,9 +1,11 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Container } from "@/components/layout/Container";
-import { HeroCodeDemo } from "@/components/enterprise/HeroCodeDemo";
+
+const HeroCodeDemo = dynamic(() => import("@/components/enterprise/HeroCodeDemo").then((m) => ({ default: m.HeroCodeDemo })), { ssr: false });
 
 const nodes = [
   { cx: 150, cy: 200, r: 4 },
@@ -165,16 +167,16 @@ export function Hero() {
             className="mt-10 flex flex-wrap gap-4"
           >
             <Link
-              href="/capabilities"
+              href="/#services"
               className="rounded-md bg-brand px-6 py-3 text-sm font-semibold text-white transition-all duration-micro hover:bg-tech-blue hover:shadow-lg"
             >
-              Explore Capabilities
+              Explore Services
             </Link>
             <Link
-              href="/contact"
+              href="/#contact"
               className="rounded-md border border-white/20 px-6 py-3 text-sm font-semibold text-white transition-colors duration-micro hover:border-tech-blue hover:text-tech-blue"
             >
-              Talk to DTAI
+              Get In Touch
             </Link>
           </motion.div>
         </div>

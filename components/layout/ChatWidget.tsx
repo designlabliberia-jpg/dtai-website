@@ -14,7 +14,7 @@ interface ChatMessage {
 const GREETING: ChatMessage = {
   role: "assistant",
   content:
-    "Hi, I'm DTAI Agent. I can answer questions about DTAI's capabilities, solutions, industries, and approach — I can also take you straight to any page, or pass your details to the team if you'd like to get in touch. What would you like to know?",
+    "Hi, I'm DTAI Agent. I can answer questions about DTAI's services, solutions, industries, and approach — I can also take you straight to any page, or pass your details to the team if you'd like to get in touch. What would you like to know?",
 };
 
 const AUTO_OPEN_DELAY_MS = 4500;
@@ -223,7 +223,7 @@ export function ChatWidget() {
                   value={input}
                   onChange={(e) => { setInput(e.target.value); resetInactivityTimer(); }}
                   onKeyDown={handleKeyDown}
-                  placeholder="Ask about DTAI's capabilities..."
+                  placeholder="Ask about DTAI's services..."
                   rows={1}
                   maxLength={1500}
                   disabled={loading}

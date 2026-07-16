@@ -2,41 +2,40 @@ import { FadeInImage } from "@/components/enterprise/FadeInImage";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/layout/Container";
 import { MethodologyFlow } from "@/components/enterprise/MethodologyFlow";
-import { RelatedCapabilities } from "@/components/enterprise/RelatedCapabilities";
-import { CodeWindow } from "@/components/enterprise/CodeWindow";
-import { capabilities, getCapabilityBySlug } from "@/lib/capabilities-data";
+import { RelatedServices } from "@/components/enterprise/RelatedServices";
+import { services, getServiceBySlug } from "@/lib/services-data";
 
 export function generateStaticParams() {
-  return capabilities.map((c) => ({ slug: c.slug }));
+  return services.map((c) => ({ slug: c.slug }));
 }
 
-export default async function CapabilityDetailPage({
+export default async function ServiceDetailPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const capability = getCapabilityBySlug(slug);
-  if (!capability) return notFound();
-  const otherCapabilities = capabilities.filter((c) => c.slug !== slug);
+  const service = getServiceBySlug(slug);
+  if (!service) return notFound();
+  const otherServices = services.filter((c) => c.slug !== slug);
 
   return (
     <section className="bg-white py-24">
       <Container className="max-w-3xl">
         <span className="font-technical text-xs uppercase tracking-wide text-brand">
-          Capability
+          Service
         </span>
         <h1 className="mt-3 font-primary text-3xl font-semibold tracking-tight text-neutral-900 md:text-4xl">
-          {capability.title}
+          {service.title}
         </h1>
         <p className="mt-5 text-lg leading-relaxed text-neutral-600">
-          {capability.summary}
+          {service.summary}
         </p>
 
         <div className="relative mt-10 w-full aspect-[21/9] overflow-hidden rounded-lg">
           <FadeInImage
-            src={`/assets/capabilities/${capability.slug}.jpg`}
-            alt={capability.title}
+            src={`/assets/services/${service.slug}.jpg`}
+            alt={service.title}
             fill
             sizes="(max-width: 768px) 100vw, 768px"
             quality={70}
@@ -51,20 +50,26 @@ export default async function CapabilityDetailPage({
           />
         </div>
 
-        <div className="mt-6">
-          <CodeWindow
-            filename={capability.codeFilename}
-            language={capability.codeLang}
-            code={capability.codeSnippet}
-          />
-        </div>
+        {service.solutions.length > 0 && (
+          <div className="mt-10">
+            <h2 className="font-primary text-xl font-semibold text-neutral-900">Solutions</h2>
+            <ul className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
+              {service.solutions.map((s) => (
+                <li key={s} className="flex items-start gap-2 text-sm text-neutral-700">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
+                  {s}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         <div className="mt-12">
           <h2 className="font-primary text-xl font-semibold text-neutral-900">
             Methodology
           </h2>
           <div className="mt-5">
-            <MethodologyFlow steps={capability.methodology} />
+            <MethodologyFlow steps={service.methodology} />
           </div>
         </div>
         <div className="mt-12">
@@ -72,7 +77,7 @@ export default async function CapabilityDetailPage({
             Proof Points
           </h2>
           <ul className="mt-4 space-y-3">
-            {capability.proofPoints.map((p) => (
+            {service.proofPoints.map((p) => (
               <li
                 key={p}
                 className="border-l-2 border-neutral-300 pl-4 text-sm leading-relaxed text-neutral-700"
@@ -82,7 +87,7 @@ export default async function CapabilityDetailPage({
             ))}
           </ul>
         </div>
-        <RelatedCapabilities items={otherCapabilities} />
+        <RelatedServices items={otherServices} />
       </Container>
     </section>
   );

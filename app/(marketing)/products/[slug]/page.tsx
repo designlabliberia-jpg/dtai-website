@@ -4,7 +4,7 @@ import { ShoppingBag, HeartPulse, Vote, UserCheck, Users } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { ProductStatusBadge } from "@/components/enterprise/ProductStatusBadge";
 import { products, getProductBySlug } from "@/lib/products-data";
-import { capabilities } from "@/lib/capabilities-data";
+import { services } from "@/lib/services-data";
 
 const ICONS = {
   libgo: ShoppingBag,
@@ -27,7 +27,7 @@ export default async function ProductDetailPage({
   if (!product) return notFound();
 
   const Icon = ICONS[product.iconKey];
-  const relatedCaps = capabilities.filter((c) =>
+  const relatedCaps = services.filter((c) =>
     product.relatedCapabilities.includes(c.slug)
   );
 
@@ -113,20 +113,20 @@ export default async function ProductDetailPage({
                 Built On
               </h2>
               <p className="mt-2 text-sm text-neutral-600">
-                Engineering capabilities behind {product.name}:
+                Engineering services behind {product.name}:
               </p>
               <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
-                {relatedCaps.map((cap) => (
+                {relatedCaps.map((ser) => (
                   <Link
-                    key={cap.slug}
-                    href={`/capabilities/${cap.slug}`}
+                    key={ser.slug}
+                    href={`/services/${ser.slug}`}
                     className="group rounded-lg border border-neutral-300/60 p-4 transition-colors duration-standard hover:border-tech-blue"
                   >
                     <span className="text-sm font-medium text-neutral-800 transition-colors duration-micro group-hover:text-brand">
-                      {cap.title}
+                      {ser.title}
                     </span>
                     <span className="mt-1 block font-technical text-xs uppercase tracking-wide text-tech-blue">
-                      View capability &rarr;
+                      View service &rarr;
                     </span>
                   </Link>
                 ))}

@@ -1,5 +1,5 @@
 import { getInsights } from "@/sanity/lib/insights";
-import { NewsCarousel } from "@/components/enterprise/NewsCarousel";
+import { NewsCarouselLazy } from "@/components/enterprise/NewsCarouselLazy";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
@@ -14,12 +14,14 @@ export async function LatestNews() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mb-8 flex items-end justify-between">
           <div>
-            <span className="font-technical text-xs uppercase tracking-wide text-brand">
-              DTAI News & Blog
-            </span>
-            <h2 className="mt-2 font-primary font-semibold tracking-tight text-neutral-900">
+            <p className="flex items-center gap-3 font-technical text-lg uppercase tracking-widest text-brand">
+              <span className="w-1 h-6 bg-brand rounded-full" />
+               News & Blogs
+              <span className="hidden sm:block w-48 h-px bg-brand" />
+            </p>
+            <h3 className="mt-2 font-primary font-semibold tracking-tight text-neutral-900">
               Latest from DTAI
-            </h2>
+            </h3>
           </div>
           <Link href="/insights"
             className="hidden font-technical text-xs uppercase tracking-wide text-tech-blue hover:text-brand sm:block"
@@ -28,7 +30,7 @@ export async function LatestNews() {
           </Link>
         </div>
 
-        <NewsCarousel items={latest} />
+        <NewsCarouselLazy items={latest} />
       </div>
     </section>
   );
