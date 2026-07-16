@@ -20,7 +20,7 @@ type NavItem = { label: string; href?: string; children?: NavChild[]; viewAllHre
 const navItems: NavItem[] = [
     {
     label: "Products",
-    href: "#products",
+    href: "/#products",
   },
   {
     label: "Services",
@@ -112,7 +112,7 @@ export function Header() {
 
       <Container className={`flex items-center justify-between transition-all duration-[var(--duration-standard)] ${scrolled ? "h-16" : "h-20"}`}>
         <Link href="/" className="flex items-center gap-2.5">
-          <Image src={siteConfig.logo} alt={siteConfig.name} width={40} height={40} loading="lazy" className="h-10 w-auto object-contain" />
+          <Image src={siteConfig.logo} alt={siteConfig.name} width={40} height={40} priority className="h-10 w-auto object-contain" />
           <div className="flex flex-col leading-none">
             <span className="font-technical text-sm tracking-wide text-neutral-900">{siteConfig.name}</span>
             <span className="mt-0.5 hidden font-technical text-[9px] uppercase tracking-wider text-neutral-500 sm:block">
@@ -145,7 +145,7 @@ export function Header() {
             }
 
             return (
-              <Link key={item.href} href={item.href ?? "/"} className={`group relative px-3.5 py-2 text-sm font-medium transition-colors duration-micro ${active ? "text-brand" : "text-neutral-800 hover:text-brand"}`}>
+              <Link key={item.href} href={item.href ?? "/"} prefetch={true} className={`group relative px-3.5 py-2 text-sm font-medium transition-colors duration-micro ${active ? "text-brand" : "text-neutral-800 hover:text-brand"}`}>
                 {item.label}
                 <span className={activeBar(active)} />
               </Link>
@@ -154,7 +154,7 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Link href="/#contact" className="hidden items-center gap-2 rounded-md bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-micro hover:bg-tech-blue sm:inline-flex">
+          <Link href="/#contact" prefetch={true} className="hidden items-center gap-2 rounded-md bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-micro hover:bg-tech-blue sm:inline-flex">
             Contact Us
           </Link>
           <button

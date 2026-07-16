@@ -4,6 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 import { PageTransition } from "@/components/layout/PageTransition";
 import { RouteProgressBar } from "@/components/layout/RouteProgressBar";
 import { ScrollToTop } from "@/components/layout/ScrollToTop";
+import { ScrollToHash } from "@/components/layout/ScrollToHash";
 import { AmbientField } from "@/components/layout/AmbientField";
 import { ChatWidget } from "@/components/layout/ChatWidget";
 import { siteMetadata, organizationSchema } from "@/lib/seo";
@@ -26,6 +27,7 @@ export default function RootLayout({children, }: { children: React.ReactNode; })
         </main>
         <Footer />
         <ScrollToTop />
+        <ScrollToHash />
         <ChatWidget />
       </body>
     </html>

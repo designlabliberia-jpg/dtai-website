@@ -29,6 +29,7 @@ export function DropdownPanel({ items, isOpen, isActive, onClose, viewAllHref, v
               <Link
                 key={item.href}
                 href={item.href}
+                prefetch={true}
                 onClick={onClose}
                 className={`flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors ${
                   active ? "bg-brand/8 text-brand" : "text-neutral-800 hover:bg-neutral-100"
@@ -48,6 +49,7 @@ export function DropdownPanel({ items, isOpen, isActive, onClose, viewAllHref, v
           <div className="mt-2 border-t border-neutral-100 pt-2">
             <Link
               href={viewAllHref}
+              prefetch={true}
               onClick={onClose}
               className="flex w-full items-center justify-center rounded-xl px-3 py-2 text-sm font-medium text-brand transition-colors hover:bg-brand/8"
             >

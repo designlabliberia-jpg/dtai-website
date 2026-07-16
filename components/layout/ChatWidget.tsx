@@ -17,8 +17,6 @@ const GREETING: ChatMessage = {
     "Hi, I'm DTAI Agent. I can answer questions about DTAI's services, solutions, industries, and approach — I can also take you straight to any page, or pass your details to the team if you'd like to get in touch. What would you like to know?",
 };
 
-const AUTO_OPEN_DELAY_MS = 4500;
-const AUTO_OPEN_SESSION_KEY = "dtai-agent-auto-opened";
 const INACTIVITY_TIMEOUT_MS = 45000;
 
 export function ChatWidget() {
@@ -35,20 +33,6 @@ export function ChatWidget() {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages, loading]);
-
-  // Proactively greet once per browser session, if the visitor hasn't
-  // already opened the chat themselves in that time.
-  useEffect(() => {
-    const alreadyOpened = sessionStorage.getItem(AUTO_OPEN_SESSION_KEY);
-    if (alreadyOpened) return;
-
-    const timer = setTimeout(() => {
-      setOpen(true);
-      sessionStorage.setItem(AUTO_OPEN_SESSION_KEY, "1");
-    }, AUTO_OPEN_DELAY_MS);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   // Auto-collapse back to the floating icon after a period of inactivity.
   // Conversation history is preserved — reopening picks up where it left off.
@@ -74,7 +58,6 @@ export function ChatWidget() {
 
   function handleOpenToggle() {
     setOpen((v) => !v);
-    sessionStorage.setItem(AUTO_OPEN_SESSION_KEY, "1");
   }
 
   async function handleSend() {
@@ -156,8 +139,8 @@ export function ChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.96 }}
             transition={{ duration: 0.2, ease: [0.2, 0, 0, 1] }}
-            style={{ position: "fixed", bottom: "6rem", left: "1rem", zIndex: 9999 }}
-            className="flex h-[520px] w-[calc(100vw-2rem)] max-w-[380px] flex-col overflow-hidden rounded-xl border border-white/10 bg-infra-midnight shadow-2xl"
+            style={{ position: "fixed", bottom: "6rem", left: "1rem", zIndex: 9999, height: "min(520px, calc(100vh - 10rem))" }}
+            className="flex w-[calc(100vw-2rem)] max-w-[380px] flex-col overflow-hidden rounded-xl border border-white/10 bg-infra-midnight shadow-2xl"
           >
             <div className="relative flex items-center justify-between border-b border-white/10 px-4 py-3.5">
               <div className="pointer-events-none absolute inset-2">
