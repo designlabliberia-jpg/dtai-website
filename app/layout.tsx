@@ -6,7 +6,7 @@ import { RouteProgressBar } from "@/components/layout/RouteProgressBar";
 import { ScrollToTop } from "@/components/layout/ScrollToTop";
 import { ScrollToHash } from "@/components/layout/ScrollToHash";
 import { AmbientField } from "@/components/layout/AmbientField";
-import { ChatWidget } from "@/components/layout/ChatWidget";
+import { ChatLauncher } from "@/components/layout/ChatLauncher";
 import { siteMetadata, organizationSchema } from "@/lib/seo";
 
 export const metadata = siteMetadata;
@@ -28,7 +28,7 @@ export default function RootLayout({children, }: { children: React.ReactNode; })
         <Footer />
         <ScrollToTop />
         <ScrollToHash />
-        <ChatWidget />
+        <ChatLauncher />
       </body>
     </html>
   );
