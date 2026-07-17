@@ -28,7 +28,7 @@ DTAI is a Liberian technology company committed to delivering innovative, secure
 
 ## Company Overview
 
-Digital Technologies Associates Incorporated (DTAI) is an innovative technology and environmental solutions company dedicated to delivering cutting-edge digital transformation services across Africa and beyond. We specialize in software engineering, artificial intelligence, GIS and geospatial technologies, cybersecurity, health information systems, election technology, environmental monitoring, sustainability solutions, and smart city innovations.
+Digital Technologies Associates Incorporated (DTAI) is an innovative technology and environmental solutions company dedicated to delivering digital transformation services across Africa and beyond. We specialize in software engineering, artificial intelligence, GIS and geospatial technologies, cybersecurity, health information systems, election technology, environmental monitoring, sustainability solutions, and smart city innovations.
 
 By combining advanced digital technologies with environmental expertise, DTAI helps governments, development partners, private enterprises, and communities make informed decisions through data-driven solutions that promote efficiency, transparency, resilience, and sustainable development.
 
@@ -52,7 +52,7 @@ DTAI operates across five integrated business divisions:
 
 ### 1. Digital Technology Solutions
 
-Custom-built digital systems and platforms for governments, enterprises, and institutions.
+Custom built digital systems and platforms for governments, enterprises, and institutions.
 
 | Solution | Description |
 |---|---|
