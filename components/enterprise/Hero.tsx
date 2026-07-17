@@ -133,10 +133,11 @@ export function Hero() {
             transition={{ duration: 0.4, delay: 0.6 }}
             className="mb-6 flex items-center gap-3"
           >
-            <span className="h-px w-8 bg-tech-blue" />
+            <span className="w-1 h-6 bg-brand rounded-full" />
             <span className="font-technical text-xs uppercase tracking-wide text-titanium-silver">
               Digital Infrastructure Engineering
             </span>
+            <span className="hidden sm:block h-px w-64 bg-tech-blue" />
           </motion.div>
 
           <motion.h1

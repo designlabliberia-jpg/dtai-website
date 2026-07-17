@@ -5,7 +5,7 @@ import { ContactForm } from "@/components/enterprise/ContactForm";
 const channels = [
   { label: "Email Us", value: "info@dtai.com" },
   { label: "Direct Line", value: "+231 [PLACEHOLDER]" },
-  { label: "General Inquiries", value: "Randall Street, Gibson Building, Monrovia Liberia" },
+  { label: "General Inquiries", value: "Randall Street, Gibson Building, Monrovia" },
 ];
 
 const steps = [
