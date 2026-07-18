@@ -1,16 +1,19 @@
-import Link from "next/link";
+import fs from "fs";
+
+const content = `import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { MetricsPanel } from "@/components/enterprise/MetricsPanel";
-import { SectorSpotlight } from "@/components/enterprise/SectorSpotlight";
+import { partnerLogos } from "@/lib/partners-data";
 import { industries } from "@/lib/industries-data";
-import { services } from "@/lib/services-data";
+import { capabilities } from "@/lib/capabilities-data";
 import { solutions } from "@/lib/solutions-data";
 
 export function PartnerCard() {
   const metrics = [
     { value: String(industries.length), label: "Sectors Served" },
-    { value: String(services.length), label: "Engineering Capabilities" },
+    { value: String(capabilities.length), label: "Engineering Capabilities" },
     { value: String(solutions.length), label: "Solution Models" },
     { value: "24/7", label: "Systems Monitoring" },
   ];
@@ -39,8 +42,26 @@ export function PartnerCard() {
           </Link>
         </div>
 
-        <div className="mt-14">
-          <SectorSpotlight />
+        <div className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+          {partnerLogos.map((sector) => (
+            <div
+              key={sector.name}
+              className="group flex flex-col items-center gap-3 rounded-lg border border-neutral-300/60 p-5 text-center transition-all duration-standard hover:-translate-y-1 hover:border-tech-blue hover:shadow-md"
+            >
+              <div className="relative h-12 w-12 shrink-0">
+                <Image
+                  src={sector.src}
+                  alt={sector.name}
+                  fill
+                  className="object-contain"
+                  sizes="48px"
+                />
+              </div>
+              <span className="text-sm font-medium leading-tight text-neutral-700 transition-colors duration-micro group-hover:text-brand">
+                {sector.name}
+              </span>
+            </div>
+          ))}
         </div>
 
         <div className="mt-14 border-t border-neutral-300/60 pt-10">
@@ -50,3 +71,7 @@ export function PartnerCard() {
     </section>
   );
 }
+`;
+
+fs.writeFileSync("components/enterprise/PartnerCard.tsx", content);
+console.log("Rewrote components/enterprise/PartnerCard.tsx");

@@ -39,7 +39,7 @@ export default function EngineeringPhilosophyPage() {
         eyebrow="Company"
         title="Engineering Philosophy"
         subtitle="How we build matters as much as what we build. This is the discipline institutions are relying on when they choose DTAI."
-        icon={Compass}
+        icon={<Compass size={24} strokeWidth={1.5} />}
       />
 
       <section className="bg-white py-24">

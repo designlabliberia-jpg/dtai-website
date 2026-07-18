@@ -42,7 +42,7 @@ export default function CareersPage() {
         eyebrow="Company"
         title="Careers"
         subtitle="We're building long-term digital infrastructure for governments, institutions, and enterprises across Africa. That requires engineers, security practitioners, and delivery professionals who take that responsibility seriously."
-        icon={Users}
+        icon={<Users size={24} strokeWidth={1.5} />}
       />
 
       <section className="bg-white py-24">

@@ -18,7 +18,7 @@ export default function LeadershipPage() {
         eyebrow="Company"
         title="Leadership"
         subtitle="DTAI's leadership team combines engineering, security, and institutional delivery experience across government and enterprise projects."
-        icon={Users}
+        icon={<Users size={24} strokeWidth={1.5} />}
       />
 
       <section className="bg-white py-24">

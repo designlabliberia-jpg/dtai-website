@@ -18,7 +18,7 @@ export default function OurApproachPage() {
         eyebrow="Company"
         title="Our Approach"
         subtitle="A consistent delivery process applied across every engagement, regardless of project size or sector. Click through each phase to see what it actually involves."
-        icon={Route}
+        icon={<Route size={24} strokeWidth={1.5} />}
       />
 
       <section className="bg-white py-24">
