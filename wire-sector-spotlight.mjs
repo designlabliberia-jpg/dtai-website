@@ -1,4 +1,6 @@
-import Link from "next/link";
+import fs from "fs";
+
+const content = `import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { MetricsPanel } from "@/components/enterprise/MetricsPanel";
@@ -50,3 +52,7 @@ export function PartnerCard() {
     </section>
   );
 }
+`;
+
+fs.writeFileSync("components/enterprise/PartnerCard.tsx", content);
+console.log("Rewrote components/enterprise/PartnerCard.tsx with SectorSpotlight");

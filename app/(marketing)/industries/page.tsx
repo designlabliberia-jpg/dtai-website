@@ -38,7 +38,7 @@ export default function IndustriesPage() {
         eyebrow="Industries"
         title="Sectors we build for"
         subtitle="Every sector has different constraints — regulatory, operational, or infrastructural. We design systems around the realities of each one, not a one-size-fits-all template."
-        icon={Globe2}
+        icon={<Globe2 size={24} strokeWidth={1.5} />}
       />
       <section className="bg-white py-24">
         <Container>

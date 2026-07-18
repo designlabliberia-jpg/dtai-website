@@ -1,4 +1,6 @@
-import Link from "next/link";
+import fs from "fs";
+
+const content = `import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/layout/Container";
 import { ServiceHero } from "@/components/enterprise/ServiceHero";
@@ -108,3 +110,7 @@ export default async function ServiceDetailPage({
     </>
   );
 }
+`;
+
+fs.writeFileSync("app/(marketing)/services/[slug]/page.tsx", content);
+console.log("Rewrote app/(marketing)/services/[slug]/page.tsx");

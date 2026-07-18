@@ -38,7 +38,7 @@ export function NewsCarousel({ items }: NewsCarouselProps) {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="relative h-72 w-full sm:h-96">
+      <div className="relative h-96 w-full sm:h-[28rem] lg:h-[32rem]">
         {items.map((item, i) => (
           <Link
             key={item.slug}
