@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { partnerLogos } from "@/lib/partners-data";
-import { PartnerSliderLazy } from "@/components/enterprise/PartnerSliderLazy";
+import { PartnerSlider } from "@/components/enterprise/PartnerSlider";
 
 export function PartnerCard() {
   return (
@@ -13,7 +13,7 @@ export function PartnerCard() {
           <div className="lg:w-[50%] lg:sticky lg:top-24 flex flex-col justify-center">
             <p className="flex items-center gap-3 font-technical text-lg uppercase tracking-widest text-brand">
               <span className="w-1 h-6 bg-brand rounded-full" />
-              Our Partners
+              Industries We Serve
               <span className="hidden sm:block w-48 h-px bg-brand" />
             </p>
 
@@ -36,7 +36,7 @@ export function PartnerCard() {
 
           {/* Right — 40% */}
           <div className="lg:w-[50%]">
-            <PartnerSliderLazy logos={partnerLogos} />
+            <PartnerSlider logos={partnerLogos} />
           </div>
         </div>
       </Container>

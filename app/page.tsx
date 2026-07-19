@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
 import { ScrollToHash } from "@/components/layout/ScrollToHash";
+import { whyChooseUsReasons } from "@/lib/about-data";
 
 const Hero = dynamic(() => import("@/components/enterprise/Hero").then((m) => ({ default: m.Hero })));
 const ProductsOverview = dynamic(() => import("@/components/enterprise/ProductsOverview").then((m) => ({ default: m.ProductsOverview })));
@@ -19,7 +20,7 @@ export default function Home() {
       <ServiceOverview />
       <LatestNews />
       <ProductsOverview />
-      <WhyChooseUs />
+      <WhyChooseUs items={whyChooseUsReasons} />
       <ContactSection />
     </>
   );

@@ -18,7 +18,7 @@ export function ProductCard({ name, description, features, image, href, dark = f
     <div className={`group relative flex flex-col sm:flex-row overflow-hidden rounded-lg border border-neutral-300/60 ${imageRight ? "sm:flex-row-reverse" : ""} ${dark ? "bg-neutral-950" : "bg-white"}`}>
       {/* Image half */}
       <div className="relative h-48 sm:h-auto sm:w-1/2 shrink-0 overflow-hidden">
-        <Image src={image} alt={name} fill className="object-contain object-center transition-transform duration-500 group-hover:scale-105" sizes="(max-width: 640px) 100vw, 50vw" />
+        <Image src={image} alt={name} fill loading="lazy" className="object-contain object-center transition-transform duration-500 group-hover:scale-105" sizes="(max-width: 640px) 100vw, 50vw" />
       </div>
 
       {/* Content half */}

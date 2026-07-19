@@ -33,6 +33,17 @@
   --shadow-md: var(--shadow-md);
   --shadow-lg: var(--shadow-lg);
   --shadow-focus: var(--shadow-focus);
+
+  --shadow-focus: var(--shadow-focus);
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.marquee {
+  animation: marquee 20s linear infinite;
 }
 
 @layer base {
@@ -78,6 +89,15 @@
   outline: 2px solid var(--color-tech-blue);
   outline-offset: 2px;
   border-radius: 2px;
+}
+
+/* Hide scrollbar for horizontal sliders */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
 /* Subtle film-grain texture on dark sections for material depth */

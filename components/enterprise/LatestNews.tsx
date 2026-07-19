@@ -1,5 +1,5 @@
 import { getInsights } from "@/sanity/lib/insights";
-import { NewsCarouselLazy } from "@/components/enterprise/NewsCarouselLazy";
+import { NewsCarousel } from "@/components/enterprise/NewsCarousel";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
@@ -10,7 +10,7 @@ export async function LatestNews() {
   if (latest.length === 0) return null;
 
   return (
-    <section className="bg-white py-8">
+    <section id="blog" className="bg-white py-8">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mb-8 flex items-end justify-between">
           <div>
@@ -30,7 +30,7 @@ export async function LatestNews() {
           </Link>
         </div>
 
-        <NewsCarouselLazy items={latest} />
+        <NewsCarousel items={latest} />
       </div>
     </section>
   );
