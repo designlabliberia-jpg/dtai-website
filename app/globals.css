@@ -80,6 +80,15 @@
   border-radius: 2px;
 }
 
+/* Hide scrollbar for horizontal sliders */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* Subtle film-grain texture on dark sections for material depth */
 .bg-infra-midnight,
 .bg-neutral-950 {

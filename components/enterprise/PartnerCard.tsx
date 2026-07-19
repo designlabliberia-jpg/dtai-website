@@ -13,7 +13,7 @@ export function PartnerCard() {
           <div className="lg:w-[50%] lg:sticky lg:top-24 flex flex-col justify-center">
             <p className="flex items-center gap-3 font-technical text-lg uppercase tracking-widest text-brand">
               <span className="w-1 h-6 bg-brand rounded-full" />
-              Our Partners
+              Industries We Serve
               <span className="hidden sm:block w-48 h-px bg-brand" />
             </p>
 
