@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { partnerLogos } from "@/lib/partners-data";
-import { PartnerSliderLazy } from "@/components/enterprise/PartnerSliderLazy";
+import { PartnerSlider } from "@/components/enterprise/PartnerSlider";
 
 export function PartnerCard() {
   return (
@@ -36,7 +36,7 @@ export function PartnerCard() {
 
           {/* Right — 40% */}
           <div className="lg:w-[50%]">
-            <PartnerSliderLazy logos={partnerLogos} />
+            <PartnerSlider logos={partnerLogos} />
           </div>
         </div>
       </Container>

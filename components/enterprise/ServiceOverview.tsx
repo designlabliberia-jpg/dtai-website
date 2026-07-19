@@ -1,5 +1,5 @@
 import { Container } from "@/components/layout/Container";
-import { ServiceCardLazy } from "@/components/enterprise/ServiceCardLazy";
+import { ServiceCard } from "@/components/enterprise/ServiceCard";
 import { services } from "@/lib/services-data";
 
 export function ServiceOverview() {
@@ -24,7 +24,7 @@ export function ServiceOverview() {
           <div className="lg:w-[60%]">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {services.map((service) => (
-                <ServiceCardLazy
+                <ServiceCard
                   key={service.slug}
                   title={service.title}
                   icon={service.icon}

@@ -11,16 +11,6 @@ export interface LeadershipMember {
 
 export const leadershipTeam: LeadershipMember[] = [
   {
-    id: "DTAI-L01",
-    name: "Floyd Oxley Sayor",
-    title: "Chief Executive Officer",
-    division: "Executive",
-    focus: "Strategic Direction & Institutional Partnerships",
-    bio: "Leads DTAI's strategic direction and institutional partnerships, guiding the company's mission to engineer trusted digital infrastructure across Africa.",
-    image: "/assets/team/Floyd.jpeg",
-    linkedin: "",
-  },
-  {
     id: "DTAI-L02",
     name: "Garrison Nyunti Sayor III",
     title: "Senior Software Engineer",
@@ -29,6 +19,16 @@ export const leadershipTeam: LeadershipMember[] = [
     bio: "Leads technical delivery and engineering standards across DTAI's software and infrastructure projects.",
     image: "/assets/team/Garrison.jpeg",
     linkedin: "http://linkedin.com/in/garrison-sayor-iii-aa3699313",
+  },
+    {
+    id: "DTAI-L01",
+    name: "Floyd Oxley Sayor",
+    title: "Chief Executive Officer",
+    division: "Executive",
+    focus: "Strategic Direction & Institutional Partnerships",
+    bio: "Leads DTAI's strategic direction and institutional partnerships, guiding the company's mission to engineer trusted digital infrastructure across Africa.",
+    image: "/assets/team/Floyd.jpeg",
+    linkedin: "",
   },
   {
     id: "DTAI-L03",

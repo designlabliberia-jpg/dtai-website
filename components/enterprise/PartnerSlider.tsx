@@ -21,6 +21,7 @@ function LogoCell({ logo }: { logo: PartnerLogo }) {
           alt={logo.name}
           width={120}
           height={48}
+          loading="lazy"
           className="object-contain max-h-10 w-auto"
           onError={() => setFailed(true)}
         />
@@ -49,6 +50,7 @@ function MobileSlide({ logo }: { logo: PartnerLogo }) {
           alt={logo.name}
           width={80}
           height={32}
+          loading="lazy"
           className="object-contain max-h-8 w-auto"
           onError={() => setFailed(true)}
         />
