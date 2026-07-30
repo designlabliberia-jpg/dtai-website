@@ -23,7 +23,7 @@ export function ProductCard({ name, description, features, image, href, dark = f
 
       {/* Content half */}
       <div className={`flex sm:w-1/2 flex-col justify-center p-6 sm:p-8 ${imageRight ? "sm:border-r" : "sm:border-l"} border-t sm:border-t-0 ${dark ? "border-neutral-800" : "border-neutral-200"}`}>
-        <h3 className={`font-primary text-xl font-semibold leading-tight ${dark ? "text-white" : "text-neutral-900"}`}>
+        <h3 className="font-technical uppercase tracking-widest text-xl text-brand">
           {name}
         </h3>
         <p className={`mt-4 text-sm leading-relaxed ${dark ? "text-neutral-300" : "text-neutral-600"}`}>

@@ -4,20 +4,20 @@ import { services } from "@/lib/services-data";
 
 export function ServiceOverview() {
   return (
-    <section id="services" className="bg-blue-50 py-24">
+    <section id="services" className="py-12">
       <Container>
         <div className="flex flex-col gap-12 lg:flex-row lg:items-center">
           {/* Left — 40% */}
           <div className="lg:w-[40%] lg:sticky lg:top-24 flex flex-col justify-center">
-            <p className="flex items-center gap-3 font-technical text-lg uppercase tracking-widest text-brand">
+            <h1 className="flex items-center gap-3 font-technical text-lg uppercase tracking-widest text-brand">
               <span className="w-1 h-6 bg-brand rounded-full" />
               Core Services
               <span className="hidden sm:block w-64 h-px bg-brand" />
-            </p>
-            <h3 className="mt-4 font-primary font-semibold leading-snug tracking-tight text-neutral-900">
+            </h1>
+            <p className="mt-4 font-primary font-semibold leading-snug tracking-tight text-neutral-900">
               Integrated Solutions for a {" "}
               <span className="text-brand">Digital & Sustainable</span> Future
-            </h3>
+            </p>
           </div>
 
           {/* Right — 60% */}

@@ -1,16 +1,15 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/layout/Container";
-import { partnerLogos } from "@/lib/partners-data";
 import { PartnerSlider } from "@/components/enterprise/PartnerSlider";
 
 export function PartnerCard() {
   return (
-    <section id="partners" className="bg-white py-16">
+    <section id="partners" className="py-16">
       <Container>
-        <div className="flex flex-col gap-2 lg:flex-row lg:items-center">
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-center">
           {/* Left — 60% */}
-          <div className="lg:w-[50%] lg:sticky lg:top-24 flex flex-col justify-center">
+          <div className="lg:w-[60%] lg:sticky lg:top-24 flex flex-col justify-center">
             <p className="flex items-center gap-3 font-technical text-lg uppercase tracking-widest text-brand">
               <span className="w-1 h-6 bg-brand rounded-full" />
               Industries We Serve
@@ -35,8 +34,8 @@ export function PartnerCard() {
           </div>
 
           {/* Right — 40% */}
-          <div className="lg:w-[50%]">
-            <PartnerSlider logos={partnerLogos} />
+          <div className="lg:w-[40%]">
+            <PartnerSlider />
           </div>
         </div>
       </Container>

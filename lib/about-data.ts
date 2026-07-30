@@ -24,11 +24,14 @@ export interface ContentSection {
 
 export interface ProfileSection {
   eyebrow: string;
-  heading?: string;
-  headingAccent: string;
+  heading: string;
+  headingAccent?: string;
   paragraphs: string[];
-  collage: ImageCollage;
-  badgeLabel: string;
+  collage: {
+    primary: { src: string; alt: string };
+    secondary?: { src: string; alt: string };
+  };
+  badgeLabel?: string;
 }
 
 
@@ -42,7 +45,7 @@ export const aboutProfile: ProfileSection = {
     "By combining advanced digital technologies with environmental expertise, DTAI helps governments, development partners, private enterprises, and communities make informed decisions through data-driven solutions that promote efficiency, transparency, resilience, and sustainable development.",
   ],
   collage: {
-    primary: { src: "/assets/hero/team-at-work2.jpg", alt: "DTAI team at work" },
+    primary: { src: "/assets/hero/team-at-work1.jpg", alt: "DTAI team at work" },
     secondary: { src: "/assets/dtai-logo.png", alt: "DTAI logo" },
   },
   badgeLabel: "DTAI",

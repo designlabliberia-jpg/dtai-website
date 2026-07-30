@@ -20,7 +20,7 @@ export const leadershipTeam: LeadershipMember[] = [
     image: "/assets/team/Garrison.jpeg",
     linkedin: "http://linkedin.com/in/garrison-sayor-iii-aa3699313",
   },
-    {
+  {
     id: "DTAI-L01",
     name: "Floyd Oxley Sayor",
     title: "Chief Executive Officer",

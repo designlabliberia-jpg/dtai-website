@@ -1,3 +1,5 @@
+import type { ProfileSection } from "@/lib/about-data";
+
 export interface Service {
   slug: string;
   title: string;
@@ -9,6 +11,7 @@ export interface Service {
   codeLang: string;
   codeFilename: string;
   codeSnippet: string;
+  profile: ProfileSection;
 }
 
 export const services: Service[] = [
@@ -46,6 +49,18 @@ export const services: Service[] = [
   const build = await buildArtifact(release);
   return deployToEnvironment(build, "production");
 }`,
+    profile: {
+      eyebrow: "Digital Technology Solutions",
+      heading: "Engineering Digital Systems",
+      headingAccent: "Built to Last",
+      paragraphs: [
+        "Professional digital systems, from custom software and mobile apps to AI, cloud, and enterprise platforms, engineered for institutional scale and long-term reliability.",
+        "Every engagement starts with an architecture review and ends with documented handover, ensuring your team can maintain and evolve what we build together.",
+      ],
+      collage: {
+        primary: { src: "/assets/services/digital-transformation.jpg", alt: "Digital Technology Solutions" },
+      },
+    },
   },
   {
     slug: "environmental-technology",
@@ -88,6 +103,18 @@ export const services: Service[] = [
         )
     store_reading(reading)
     return None`,
+    profile: {
+      eyebrow: "Eco Technology Sustainability",
+      heading: "Digital Tools for a",
+      headingAccent: "Sustainable Future",
+      paragraphs: [
+        "Digital platforms and data systems that support environmental monitoring, sustainability reporting, and climate-informed decision-making.",
+        "From real-time sensor integration to ESG reporting frameworks, we build systems that turn environmental data into actionable insight.",
+      ],
+      collage: {
+        primary: { src: "/assets/services/gis-spatial-technology.jpg", alt: "Eco Technology Sustainability" },
+      },
+    },
   },
   {
     slug: "environmental-consulting",
@@ -122,6 +149,18 @@ FROM monitoring_readings
 WHERE sampled_at >= CURRENT_DATE - INTERVAL '90 days'
 GROUP BY site_id, parameter, standard_limit
 ORDER BY status DESC, peak_value DESC;`,
+    profile: {
+      eyebrow: "Environmental Advisory",
+      heading: "Expert Guidance for",
+      headingAccent: "Environmental Compliance",
+      paragraphs: [
+        "Expert advisory and technical services for environmental compliance, auditing, and sustainability strategy.",
+        "Our advisory is grounded in field data and structured for regulatory acceptance, not desktop assumptions.",
+      ],
+      collage: {
+        primary: { src: "/assets/services/data-platforms.jpg", alt: "Environmental Advisory" },
+      },
+    },
   },
   {
     slug: "smart-city-infrastructure",
@@ -156,6 +195,18 @@ ORDER BY status DESC, peak_value DESC;`,
     await alertOpsChannel({ sensor: reading.sensorId, metric: reading.metric, value: reading.value });
   }
 }`,
+    profile: {
+      eyebrow: "Smart City & Green Infrastructure",
+      heading: "IoT Systems for",
+      headingAccent: "Smarter Cities",
+      paragraphs: [
+        "IoT-enabled urban systems that improve city services, reduce resource waste, and provide real-time operational visibility.",
+        "From smart waste collection to flood monitoring, we design sensor networks and dashboards built for long-term, low-maintenance city operations.",
+      ],
+      collage: {
+        primary: { src: "/assets/services/digital-infrastructure.jpg", alt: "Smart City & Green Infrastructure" },
+      },
+    },
   },
   {
     slug: "climate-disaster-management",
@@ -190,9 +241,35 @@ ORDER BY status DESC, peak_value DESC;`,
         trigger_early_warning(station_id, level="HIGH")
         return RiskLevel.HIGH
     return RiskLevel.MONITOR`,
+    profile: {
+      eyebrow: "Climate & Disaster Management",
+      heading: "Early Warning Systems for",
+      headingAccent: "Climate Resilience",
+      paragraphs: [
+        "Early warning systems, predictive analytics, and emergency response platforms that help institutions prepare for and respond to climate-driven hazards.",
+        "Built for 24/7 unattended monitoring with automated alerting and spatial analysis tools designed for multi-agency coordination.",
+      ],
+      collage: {
+        primary: { src: "/assets/services/artificial-intelligence-solutions.jpg", alt: "Climate & Disaster Management" },
+      },
+    },
   },
 ];
 
 export function getServiceBySlug(slug: string) {
   return services.find((s) => s.slug === slug);
 }
+
+export const companyLinks = [
+  { label: "About Us", href: "/company/overview" },
+  { label: "Our Team", href: "/company/overview#team" },
+  { label: "Careers", href: "/careers" },
+  { label: "Contact", href: "/#contact" },
+];
+
+export const socialLinks = [
+  { icon: "MessageCircle", label: "WhatsApp", href: "https://wa.me/231XXXXXXXX" },
+  { icon: "Mail", label: "Email", href: "mailto:info@dtai.com.lr" },
+  { icon: "Facebook", label: "Facebook", href: "https://facebook.com/dtailiberia" },
+  { icon: "Share2", label: "Share", href: "#share" },
+];

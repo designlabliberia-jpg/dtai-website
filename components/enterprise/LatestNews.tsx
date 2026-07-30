@@ -23,11 +23,6 @@ export async function LatestNews() {
               Latest from DTAI
             </h3>
           </div>
-          <Link href="/insights"
-            className="hidden font-technical text-xs uppercase tracking-wide text-tech-blue hover:text-brand sm:block"
-          >
-            View all News<ArrowRight className="inline-block h-3 w-3" />
-          </Link>
         </div>
 
         <NewsCarousel items={latest} />

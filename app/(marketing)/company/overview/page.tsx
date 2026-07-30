@@ -23,7 +23,7 @@ export default function AboutPage() {
     <>
       <ProfileBlock data={aboutProfile} />
 
-      <ValuesSlider values={coreValues} />
+      <ValuesSlider items={coreValues.map((v) => v.label)} />
 
       <ContentSectionBlock data={aboutMission} bg="bg-neutral-50" />
 

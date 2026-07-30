@@ -24,9 +24,9 @@ export function WhyChooseUs({
   const visible = items.slice(slide * slideSize, slide * slideSize + slideSize);
 
   return (
-    <section className="bg-white py-20">
+    <section className="bg-white py-12">
       <Container>
-        <div className="flex items-center justify-center gap-4">
+        <div className="flex items-center justify-center gap-4 mb-12">
           <span className="hidden sm:flex flex-1 max-w-[16rem] h-px bg-brand" />
           <span className="w-1 h-6 bg-brand" />
           <h1 className="font-technical text-sm uppercase tracking-widest text-neutral-500 whitespace-nowrap">Why Choose Us</h1>
@@ -34,19 +34,19 @@ export function WhyChooseUs({
           <span className="hidden sm:flex flex-1 max-w-[16rem] h-px bg-brand" />
         </div>
 
-        <div className="border-t border-neutral-200 pt-8 mb-12 text-center">
+        <div className="mb-12 text-center">
           <h3 className="font-primary font-bold text-neutral-900 max-w-2xl mx-auto leading-tight">
             {heading} <span className="text-brand">{headingAccent}</span> are:
           </h3>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-12">
           {visible.map((r) => (
             <WhyChooseCard key={r.title} title={r.title} description={r.description} />
           ))}
         </div>
 
-        <div className="flex items-center justify-center gap-4">
+        <div className="flex items-center justify-center gap-4 mt-12">
           <button onClick={() => setSlide((s) => Math.max(s - 1, 0))} disabled={slide === 0} aria-label="Previous" className="text-neutral-400 hover:text-brand disabled:opacity-30 transition-colors">
             <ChevronLeft size={20} />
           </button>

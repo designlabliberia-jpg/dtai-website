@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { Landmark, Code2, Server } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -19,21 +21,34 @@ function initials(name: string) {
     .toUpperCase();
 }
 
-export function LeadershipCard({ member }: { member: LeadershipMember }) {
+interface Props {
+  member: LeadershipMember;
+  isActive: boolean;
+}
+
+export function LeadershipCard({ member, isActive }: Props) {
   const Icon = divisionIcon[member.division];
 
   return (
-    <div className="group flex flex-col overflow-hidden rounded-xl border border-neutral-300/60 bg-white transition-shadow duration-standard hover:shadow-lg">
+    <div
+      className={`flex overflow-hidden rounded-2xl transition-all duration-500 ${
+        isActive
+          ? "scale-100 opacity-100 shadow-2xl flex-row h-[280px]"
+          : "scale-90 opacity-40 shadow-none flex-col h-[220px]"
+      }`}
+    >
       {/* Portrait */}
-      <div className="relative aspect-[4/5] w-full overflow-hidden bg-neutral-100">
+      <div className={`relative overflow-hidden rounded-2xl bg-neutral-100 flex-shrink-0 ${
+        isActive ? "w-[45%] h-full" : "w-full h-full"
+      }`}>
         {member.image ? (
           <Image
             src={member.image}
             alt={member.name}
             fill
             loading="lazy"
-            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-            className="object-cover object-top transition-transform duration-standard group-hover:scale-[1.03]"
+            sizes="(min-width: 1024px) 33vw, 80vw"
+            className="object-cover object-top"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-infra-midnight">
@@ -42,9 +57,8 @@ export function LeadershipCard({ member }: { member: LeadershipMember }) {
             </span>
           </div>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
 
-        {member.linkedin && (
+        {member.linkedin && isActive && (
           <a
             href={member.linkedin}
             target="_blank"
@@ -59,29 +73,29 @@ export function LeadershipCard({ member }: { member: LeadershipMember }) {
         )}
       </div>
 
-      {/* Details */}
-      <div className="flex flex-1 flex-col p-6">
-        <div className="flex items-center gap-1.5 text-neutral-500">
-          <Icon size={13} strokeWidth={1.75} />
-          <span className="font-technical text-[10px] uppercase tracking-wide">
-            {member.division}
-          </span>
+      {/* Details — only visible when active */}
+      {isActive && (
+        <div className="flex flex-col justify-center overflow-y-auto px-4 py-4 text-left">
+          <div className="flex items-center gap-1.5 text-neutral-500">
+            <Icon size={12} strokeWidth={1.75} />
+            <span className="font-technical text-[9px] uppercase tracking-wide">
+              {member.division}
+            </span>
+          </div>
+          <h3 className="mt-1 font-primary text-sm font-semibold tracking-tight text-neutral-900">
+            {member.name}
+          </h3>
+          <p className="mt-0.5 font-technical text-[9px] uppercase tracking-wide text-brand">
+            {member.title}
+          </p>
+          <p className="mt-1.5 text-xs font-medium leading-snug text-neutral-800">
+            {member.focus}
+          </p>
+          <p className="mt-1 text-xs leading-relaxed text-neutral-600">
+            {member.bio}
+          </p>
         </div>
-
-        <h3 className="mt-2 font-primary text-lg font-semibold tracking-tight text-neutral-900">
-          {member.name}
-        </h3>
-        <p className="mt-0.5 font-technical text-xs uppercase tracking-wide text-brand">
-          {member.title}
-        </p>
-
-        <p className="mt-4 text-sm font-medium leading-snug text-neutral-800">
-          {member.focus}
-        </p>
-        <p className="mt-2 text-sm leading-relaxed text-neutral-600">
-          {member.bio}
-        </p>
-      </div>
+      )}
     </div>
   );
 }
