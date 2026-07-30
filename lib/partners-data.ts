@@ -1,10 +1,29 @@
 export interface PartnerCategory {
-  slug: string;
+  slug?: string;
   title: string;
   src: string;
-  summary: string;
-  points: string[];
+  summary?: string;
+  points?: string[];
 }
+
+export const partnerLogo: PartnerCategory[] = [
+  { title: "Civil Service Agency", src: "/assets/partners/logo/csa.jpg" },
+  { title: "Ecobank Liberia", src: "/assets/partners/logo/eco.jpg" },
+  { title: "John F Kennedy Medical Hospital", src: "/assets/partners/logo/Jfk.jpg" },
+  { title: "J Palm Liberia", src: "/assets/partners/logo/Jpalm lr.png" },
+  { title: "Liberia Chamber of Commerce", src: "/assets/partners/logo/lcc lr.jpg" },
+  { title: "Liberia Medical And Dental Council", src: "/assets/partners/logo/Lmdc liberia.png" },
+  { title: "Liberia Revenue Authority", src: "/assets/partners/logo/lra lr.png" },
+  { title: "National Elections Commission", src: "/assets/partners/logo/NEC lr.jpg" },
+  { title: "Sustainable Development Institute", src: "/assets/partners/logo/Sdi lib.png" },
+  { title: "Stella Maris Polytechnic University", src: "/assets/partners/logo/SMpu lr.png" },
+  { title: "TipMe", src: "/assets/partners/logo/tipme.jpg" },
+  { title: "University of Liberia", src: "/assets/partners/logo/UL lr.jpg" },
+  { title: "USAID Liberia", src: "/assets/partners/logo/usaid lr.png" },
+]
+
+
+
 
 export const partnerCategories: PartnerCategory[] = [
   {
@@ -131,7 +150,7 @@ export const partnerCategories: PartnerCategory[] = [
   {
     slug: "ecosystem",
     title: "Ecosystem Partners",
-    src: "/assets/partners/ecosystem.png",
+    src: "/assets/partners/ei.png",
     summary: "The broader ecosystem of organizations and communities DTAI collaborates with to drive digital transformation across sectors.",
     points: [
       "Technology alliances and open-source communities",

@@ -9,6 +9,7 @@ const LatestNews = dynamic(() => import("@/components/enterprise/LatestNews").th
 const ServiceOverview = dynamic(() => import("@/components/enterprise/ServiceOverview").then((m) => ({ default: m.ServiceOverview })));
 const WhyChooseUs = dynamic(() => import("@/components/enterprise/WhyChooseUs").then((m) => ({ default: m.WhyChooseUs })));
 const ContactSection = dynamic(() => import("@/components/enterprise/ContactSection").then((m) => ({ default: m.ContactSection })));
+const TrustedBy = dynamic(() => import("@/components/enterprise/TrustedBy").then((m) => ({ default: m.TrustedBy })));
 
 
 export default function Home() {
@@ -16,8 +17,9 @@ export default function Home() {
     <>
       <ScrollToHash />
       <Hero />
-      <PartnerCard />
+      <TrustedBy />
       <ServiceOverview />
+      <PartnerCard />
       <LatestNews />
       <ProductsOverview />
       <WhyChooseUs items={whyChooseUsReasons} />
