@@ -26,9 +26,10 @@ export function TrustedBy() {
                 <Image
                   src={partner.src}
                   alt={partner.title}
+                  title={partner.title}
                   width={80}
                   height={80}
-                  className="w-full h-full object-cover grayscale transition-all duration-300 group-hover:grayscale-0"
+                  className="w-full h-full object-contain object-center grayscale transition-all duration-300 group-hover:grayscale-0"
                 />
               </div>
             </div>
