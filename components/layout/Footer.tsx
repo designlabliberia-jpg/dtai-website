@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { MessageCircle, Mail, Share2 } from "lucide-react";
 import { Container } from "./Container";
+import { HashLink } from "./HashLink";
 import { siteConfig } from "@/lib/seo";
 import { services, companyLinks, socialLinks } from "@/lib/services-data";
 
@@ -94,12 +95,21 @@ export function Footer() {
               <ul className="space-y-2">
                 {companyLinks.map((link) => (
                   <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-neutral-300 transition-colors duration-micro hover:text-tech-blue"
-                    >
-                      {link.label}
-                    </Link>
+                    {link.href.includes("#") ? (
+                      <HashLink
+                        href={link.href}
+                        className="text-sm text-neutral-300 transition-colors duration-micro hover:text-tech-blue"
+                      >
+                        {link.label}
+                      </HashLink>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className="text-sm text-neutral-300 transition-colors duration-micro hover:text-tech-blue"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>

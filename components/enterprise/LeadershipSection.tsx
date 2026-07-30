@@ -37,7 +37,7 @@ export function LeadershipSection() {
   }, []);
 
   return (
-    <section className="flex flex-col items-center justify-center bg-neutral-50 mb-6 overflow-hidden">
+    <section id="team" className="flex flex-col items-center justify-center bg-neutral-50 mb-6 overflow-hidden">
       {/* Header */}
       <Container className="text-center mb-12">
         <div className="flex items-center justify-center gap-4 mb-2">
