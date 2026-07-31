@@ -12,7 +12,7 @@ export function ProfileBlock({ data }: ProfileBlockProps) {
   return (
     <section className="bg-white mb-8 lg:mb-12">
       <Container>
-        <div className="grid items-center gap-12 lg:grid-cols-2">
+        <div className="grid items-center gap-2 lg:gap-12 lg:grid-cols-2">
           <div>
             <h1 className="flex items-center gap-3 font-technical text-lg uppercase tracking-widest text-brand">
               <span className="w-1 h-6 bg-brand rounded-full" />{eyebrow}
@@ -27,7 +27,7 @@ export function ProfileBlock({ data }: ProfileBlockProps) {
           </div>
 
           <div className="relative h-[420px]">
-            <div className="absolute right-0 top-0 h-[400px] w-[85%] overflow-hidden rounded-2xl">
+            <div className={`absolute top-0 h-[400px] overflow-hidden rounded-2xl ${collage.secondary ? "right-0 w-[85%]" : "left-1/2 -translate-x-1/2 w-full"}`}>
               <Image src={collage.primary.src} alt={collage.primary.alt} fill sizes="(min-width: 1024px) 40vw, 80vw" className="object-contain object-center transition-transform duration-500 group-hover:scale-105" priority />
               {collage.secondary && (
                 <div className="absolute bottom-0 left-0 h-[160px] w-[140px] bg-white rounded-tr-2xl rounded-bl-2xl" />

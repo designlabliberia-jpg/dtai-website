@@ -22,13 +22,13 @@ export function TrustedBy() {
         <div className="flex gap-10 marquee">
           {track.map((partner, i) => (
             <div key={i} className="flex flex-col items-center gap-3 shrink-0">
-              <div className="w-20 h-20 rounded-full overflow-hidden border border-neutral-200 shadow-sm bg-white group">
+              <div className="w-16 h-16 rounded-full overflow-hidden border border-neutral-200 shadow-sm bg-white group">
                 <Image
                   src={partner.src}
                   alt={partner.title}
                   title={partner.title}
-                  width={80}
-                  height={80}
+                  width={20}
+                  height={20}
                   className="w-full h-full object-contain object-center grayscale transition-all duration-300 group-hover:grayscale-0"
                 />
               </div>
