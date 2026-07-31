@@ -18,12 +18,12 @@ export function ProductCard({ name, description, features, image, href, dark = f
     <div className={`group relative flex flex-col sm:flex-row overflow-hidden rounded-lg border border-neutral-300/60 ${imageRight ? "sm:flex-row-reverse" : ""} ${dark ? "bg-neutral-950" : "bg-white"}`}>
       {/* Image half */}
       <div className="relative h-48 sm:h-auto sm:w-1/2 shrink-0 overflow-hidden">
-        <Image src={image} alt={name} fill className="object-contain object-center transition-transform duration-500 group-hover:scale-105" sizes="(max-width: 640px) 100vw, 50vw" />
+        <Image src={image} alt={name} fill loading="lazy" className="object-contain object-center transition-transform duration-500 group-hover:scale-105" sizes="(max-width: 640px) 100vw, 50vw" />
       </div>
 
       {/* Content half */}
       <div className={`flex sm:w-1/2 flex-col justify-center p-6 sm:p-8 ${imageRight ? "sm:border-r" : "sm:border-l"} border-t sm:border-t-0 ${dark ? "border-neutral-800" : "border-neutral-200"}`}>
-        <h3 className={`font-primary text-xl font-semibold leading-tight ${dark ? "text-white" : "text-neutral-900"}`}>
+        <h3 className="font-technical uppercase tracking-widest text-xl text-brand">
           {name}
         </h3>
         <p className={`mt-4 text-sm leading-relaxed ${dark ? "text-neutral-300" : "text-neutral-600"}`}>
