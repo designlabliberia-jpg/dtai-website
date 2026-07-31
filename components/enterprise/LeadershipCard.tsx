@@ -33,13 +33,13 @@ export function LeadershipCard({ member, isActive }: Props) {
     <div
       className={`flex overflow-hidden rounded-2xl transition-all duration-500 ${
         isActive
-          ? "scale-100 opacity-100 shadow-2xl flex-row h-[280px]"
+          ? "scale-100 opacity-100 shadow-2xl flex-col sm:flex-row h-auto sm:h-[280px]"
           : "scale-90 opacity-40 shadow-none flex-col h-[220px]"
       }`}
     >
       {/* Portrait */}
       <div className={`relative overflow-hidden rounded-2xl bg-neutral-100 flex-shrink-0 ${
-        isActive ? "w-[45%] h-full" : "w-full h-full"
+        isActive ? "w-full h-[200px] sm:w-[45%] sm:h-full" : "w-full h-full"
       }`}>
         {member.image ? (
           <Image
