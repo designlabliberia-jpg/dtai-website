@@ -1,95 +1,159 @@
 "use client";
 
 import { motion } from "framer-motion";
+import {
+  ScanSearch, Code2, FileCheck2, Map, Wifi, BarChart3,
+  ClipboardList, ShieldCheck, FileText, Network, LayoutDashboard,
+  Plug, Activity, BellRing, GitMerge, type LucideIcon,
+} from "lucide-react";
+import { Container } from "@/components/layout/Container";
+import type { MethodologyStep } from "@/lib/services-data";
 
-interface MethodologyFlowProps {
-  steps: string[];
-}
+const ICON_MAP: Record<string, LucideIcon> = {
+  ScanSearch, Code2, FileCheck2, Map, Wifi, BarChart3,
+  ClipboardList, ShieldCheck, FileText, Network, LayoutDashboard,
+  Plug, Activity, BellRing, GitMerge,
+};
 
-export function MethodologyFlow({ steps }: MethodologyFlowProps) {
+
+const WAVE_PATH =
+  "M 0,110 C 40,110 60,110 100,110 C 160,110 200,30 300,30 C 400,30 440,110 500,50 C 540,20 580,20 600,20";
+
+// [x%, y in viewBox] for each node — used to place the icon circle
+const NODES: { xPct: number; cy: number }[] = [
+  { xPct: 100 / 600, cy: 110 }, // step 1 — low left
+  { xPct: 300 / 600, cy: 30  }, // step 2 — high centre
+  { xPct: 500 / 600, cy: 50  }, // step 3 — high right
+];
+
+// viewBox height
+const VB_H = 160;
+
+interface Props { steps: MethodologyStep[] }
+
+export function MethodologyFlow({ steps }: Props) {
   return (
-    <div className="relative overflow-hidden rounded-lg border border-neutral-300/60 bg-infra-midnight p-6 sm:p-8">
-      <div className="pointer-events-none absolute inset-3">
-        <span className="absolute left-0 top-0 h-3 w-3 border-l border-t border-tech-blue/40" />
-        <span className="absolute right-0 top-0 h-3 w-3 border-r border-t border-tech-blue/40" />
-        <span className="absolute bottom-0 left-0 h-3 w-3 border-b border-l border-tech-blue/40" />
-        <span className="absolute bottom-0 right-0 h-3 w-3 border-b border-r border-tech-blue/40" />
-      </div>
+    <section className="bg-neutral-50 py-8 sm:py-12">
+      <Container>
 
-      <div className="mb-6 flex items-center gap-2">
-        <span className="h-1.5 w-1.5 rounded-full bg-tech-blue" />
-        <span className="font-technical text-[10px] uppercase tracking-wide text-neutral-400">
-          Delivery Sequence
-        </span>
-      </div>
+        {/* ── Section heading ── */}
+        <div className="flex items-center justify-center gap-4 mb-4 sm:mb-8">
+          <span className="hidden sm:flex flex-1 max-w-[16rem] h-px bg-brand" />
+          <span className="w-1 h-6 bg-brand" />
+          <h2 className="font-technical text-sm uppercase tracking-widest text-neutral-500 whitespace-nowrap">
+            Methodology
+          </h2>
+          <span className="w-1 h-6 bg-brand" />
+          <span className="hidden sm:flex flex-1 max-w-[16rem] h-px bg-brand" />
+        </div>
 
-      <div className="flex flex-col gap-0 md:flex-row md:items-stretch md:gap-0">
-        {steps.map((step, i) => (
-          <div key={step} className="flex flex-1 items-stretch">
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.4, delay: i * 0.12, ease: [0.2, 0, 0, 1] }}
-              className="flex flex-1 flex-col rounded-md border border-white/10 bg-white/[0.03] p-5"
-            >
-              <span className="font-technical text-xs text-tech-blue">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <p className="mt-3 text-sm leading-relaxed text-neutral-200">
-                {step}
-              </p>
-            </motion.div>
+        {/* ── Desktop wave (md+) ── */}
+        <div className="relative hidden md:block" style={{ height: "360px" }}>
 
-            {i < steps.length - 1 && (
-              <>
-                {/* horizontal connector, desktop */}
-                <div className="hidden w-8 shrink-0 items-center justify-center md:flex">
-                  <svg width="32" height="16" viewBox="0 0 32 16" fill="none">
-                    <line
-                      x1="0"
-                      y1="8"
-                      x2="24"
-                      y2="8"
-                      stroke="var(--color-tech-blue)"
-                      strokeWidth="1.5"
-                      strokeOpacity="0.6"
-                    />
-                    <path
-                      d="M24 3L29 8L24 13"
-                      stroke="var(--color-tech-blue)"
-                      strokeWidth="1.5"
-                      strokeOpacity="0.6"
-                      fill="none"
-                    />
-                  </svg>
+          {/* SVG wave — fills the full width, fixed height */}
+          <svg
+            viewBox={`0 0 600 ${VB_H}`}
+            preserveAspectRatio="none"
+            className="pointer-events-none absolute inset-0 h-full w-full"
+            fill="none"
+            aria-hidden
+          >
+            <path
+              d={WAVE_PATH}
+              stroke="#00A6FF"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+            />
+          </svg>
+
+          {/* Step cards + icon nodes */}
+          {steps.map((step, i) => {
+            const Icon = ICON_MAP[step.icon] ?? ScanSearch;
+            const { xPct, cy } = NODES[i];
+            // Convert SVG coords → % of container
+            const leftPct  = xPct * 100;
+            const topPct   = (cy / VB_H) * 100;
+            // Step 1: text above icon; Steps 2&3: text below icon
+            const textAbove = i === 0;
+
+            return (
+              <motion.div
+                key={step.title}
+                initial={{ opacity: 0, y: textAbove ? -16 : 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.45, delay: i * 0.14, ease: [0.2, 0, 0, 1] }}
+                className="absolute"
+                style={{ left: `${leftPct}%`, top: `${topPct}%`, transform: "translate(-50%, -50%)" }}
+              >
+                {/* Text block — above or below the icon */}
+                <div
+                  className={`absolute w-44 ${
+                    textAbove
+                      ? "bottom-[calc(100%+12px)] left-0"
+                      : "top-[calc(100%+12px)] left-0"
+                  }`}
+                >
+                  {/* Ghost number — large, sits to the right of the text */}
+                  <div className="relative">
+                    <span
+                      className="pointer-events-none absolute -right-8 top-1/2 -translate-y-1/2 select-none font-primary text-[4.5rem] font-bold leading-none text-neutral-200"
+                      aria-hidden
+                    >
+                      {i + 1}
+                    </span>
+                    <h3 className="relative font-primary text-lg font-bold text-brand leading-snug">
+                      {step.title}
+                    </h3>
+                    <p className="relative mt-1.5 text-xs leading-relaxed text-neutral-500">
+                      {step.description}
+                    </p>
+                  </div>
                 </div>
-                {/* vertical connector, mobile */}
-                <div className="flex h-8 shrink-0 items-center justify-center md:hidden">
-                  <svg width="16" height="32" viewBox="0 0 16 32" fill="none">
-                    <line
-                      x1="8"
-                      y1="0"
-                      x2="8"
-                      y2="24"
-                      stroke="var(--color-tech-blue)"
-                      strokeWidth="1.5"
-                      strokeOpacity="0.6"
-                    />
-                    <path
-                      d="M3 24L8 29L13 24"
-                      stroke="var(--color-tech-blue)"
-                      strokeWidth="1.5"
-                      strokeOpacity="0.6"
-                      fill="none"
-                    />
-                  </svg>
+
+                {/* Icon circle — sits exactly on the wave node */}
+                <span className="flex h-11 w-11 items-center justify-center rounded-full border border-brand/30 bg-white shadow-md">
+                  <Icon size={18} className="text-brand" />
+                </span>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* ── Mobile vertical list (< md) ── */}
+        <ol className="relative flex flex-col md:hidden">
+          <span className="absolute left-5 top-5 bottom-5 w-px bg-brand/20" aria-hidden />
+          {steps.map((step, i) => {
+            const Icon = ICON_MAP[step.icon] ?? ScanSearch;
+            return (
+              <motion.li
+                key={step.title}
+                initial={{ opacity: 0, x: -12 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-30px" }}
+                transition={{ duration: 0.4, delay: i * 0.12, ease: [0.2, 0, 0, 1] }}
+                className="relative flex items-start gap-5 py-6"
+              >
+                <span className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-brand/30 bg-white shadow-sm">
+                  <Icon size={18} className="text-brand" />
+                </span>
+                <div className="pt-1">
+                  <span className="font-technical text-xs text-brand/60 tracking-widest">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className="mt-0.5 font-primary text-sm font-semibold text-neutral-900">
+                    {step.title}
+                  </h3>
+                  <p className="mt-1 text-xs leading-relaxed text-neutral-500">
+                    {step.description}
+                  </p>
                 </div>
-              </>
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
+              </motion.li>
+            );
+          })}
+        </ol>
+
+      </Container>
+    </section>
   );
 }

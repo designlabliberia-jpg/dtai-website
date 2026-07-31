@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import { Container } from "@/components/layout/Container";
 import { MethodologyFlow } from "@/components/enterprise/MethodologyFlow";
 import { RelatedServices } from "@/components/enterprise/RelatedServices";
 import { ProfileBlock } from "@/components/enterprise/ProfileBlock";
@@ -27,18 +26,7 @@ export default async function ServiceDetailPage({
 
       <ValuesSlider items={service.solutions} label="Solutions" />
 
-      <section>
-        <Container className="max-w-3xl">
-        <div className="mt-12">
-          <h2 className="font-primary text-xl font-semibold text-neutral-900">
-            Methodology
-          </h2>
-          <div className="mt-5">
-            <MethodologyFlow steps={service.methodology} />
-          </div>
-        </div> 
-        </Container>
-      </section>
+      <MethodologyFlow steps={service.methodology} />
 
     <RelatedServices items={otherServices} />
 

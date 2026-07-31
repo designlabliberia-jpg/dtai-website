@@ -1,12 +1,18 @@
 import type { ProfileSection } from "@/lib/about-data";
 
+export interface MethodologyStep {
+  title: string;
+  description: string;
+  icon: string;
+}
+
 export interface Service {
   slug: string;
   title: string;
   icon: string;
   summary: string;
   solutions: string[];
-  methodology: string[];
+  methodology: MethodologyStep[];
   proofPoints: string[];
   codeLang: string;
   codeFilename: string;
@@ -33,9 +39,9 @@ export const services: Service[] = [
       "Enterprise Resource Planning (ERP)",
     ],
     methodology: [
-      "Architecture review before implementation begins",
-      "Typed, tested codebases with enforced review gates",
-      "Documented handover for long-term maintainability",
+      { title: "Architecture Review", description: "System design and architecture assessed before any implementation begins.", icon: "ScanSearch" },
+      { title: "Build & Test", description: "Typed, tested codebases with enforced peer review gates at every stage.", icon: "Code2" },
+      { title: "Documented Handover", description: "Full documentation delivered for long-term maintainability and team ownership.", icon: "FileCheck2" },
     ],
     proofPoints: [
       "Standardized development workflows applied across every engagement",
@@ -83,9 +89,9 @@ export const services: Service[] = [
       "Disaster Risk Mapping and Early Warning Systems",
     ],
     methodology: [
-      "Spatial data modeling matched to environmental decision needs",
-      "Real-time sensor integration and data pipeline design",
-      "Reporting frameworks aligned to international ESG standards",
+      { title: "Spatial Data Modeling", description: "Data models matched to environmental decision needs and field realities.", icon: "Map" },
+      { title: "Sensor Integration", description: "Real-time sensor pipelines designed for reliability in low-connectivity environments.", icon: "Wifi" },
+      { title: "ESG Reporting", description: "Reporting frameworks aligned to international ESG and regulatory standards.", icon: "BarChart3" },
     ],
     proofPoints: [
       "Systems built for field data collection in low-connectivity environments",
@@ -132,9 +138,9 @@ export const services: Service[] = [
       "Environmental Database Development",
     ],
     methodology: [
-      "Baseline environmental assessment before any recommendation",
-      "Compliance frameworks mapped to applicable national and international standards",
-      "Findings documented for regulatory submission and institutional use",
+      { title: "Baseline Assessment", description: "Environmental baseline established from field data before any recommendation.", icon: "ClipboardList" },
+      { title: "Compliance Mapping", description: "Frameworks mapped to applicable national and international standards.", icon: "ShieldCheck" },
+      { title: "Regulatory Documentation", description: "Findings structured for regulatory submission and institutional acceptance.", icon: "FileText" },
     ],
     proofPoints: [
       "Advisory grounded in field data, not desktop assumptions",
@@ -177,9 +183,9 @@ ORDER BY status DESC, peak_value DESC;`,
       "Environmental Sensors (IoT)",
     ],
     methodology: [
-      "Sensor network design matched to city infrastructure and connectivity",
-      "Centralized monitoring dashboards for operations teams",
-      "Interoperability with existing municipal systems",
+      { title: "Network Design", description: "Sensor networks designed around city infrastructure and connectivity constraints.", icon: "Network" },
+      { title: "Ops Dashboard", description: "Centralized monitoring dashboards built for operations teams and real-time alerting.", icon: "LayoutDashboard" },
+      { title: "System Integration", description: "Full interoperability with existing municipal and third-party systems.", icon: "Plug" },
     ],
     proofPoints: [
       "IoT deployments designed for low-maintenance, long-term operation",
@@ -222,9 +228,9 @@ ORDER BY status DESC, peak_value DESC;`,
       "Emergency Response Systems",
     ],
     methodology: [
-      "Hazard modeling grounded in historical and real-time climate data",
-      "Alert thresholds defined with emergency management stakeholders",
-      "Response workflows integrated with existing institutional protocols",
+      { title: "Hazard Modeling", description: "Risk models grounded in historical and real-time climate data sources.", icon: "Activity" },
+      { title: "Alert Thresholds", description: "Thresholds defined collaboratively with emergency management stakeholders.", icon: "BellRing" },
+      { title: "Response Integration", description: "Workflows integrated with existing institutional emergency protocols.", icon: "GitMerge" },
     ],
     proofPoints: [
       "Systems designed for 24/7 unattended monitoring with automated alerting",
