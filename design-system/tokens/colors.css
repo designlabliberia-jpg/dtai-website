@@ -1,0 +1,24 @@
+:root {
+  /* Brand */
+  --color-dtai-blue: #0057B8;
+  --color-tech-blue: #00A6FF;
+  --color-infra-midnight: #071827;
+  --color-titanium-silver: #BFC7D5;
+  --color-white: #F8FAFC;
+
+  /* Neutral scale */
+  --color-neutral-950: #050A12;
+  --color-neutral-900: #101820;
+  --color-neutral-800: #172433;
+  --color-neutral-600: #334155;
+  --color-neutral-300: #CBD5E1;
+
+  /* Semantic */
+  --color-bg-primary: var(--color-white);
+  --color-bg-inverse: var(--color-infra-midnight);
+  --color-text-primary: var(--color-neutral-900);
+  --color-text-inverse: var(--color-white);
+  --color-border-subtle: var(--color-neutral-300);
+  --color-accent: var(--color-tech-blue);
+  --color-brand: var(--color-dtai-blue);
+}

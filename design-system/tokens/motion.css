@@ -1,0 +1,7 @@
+:root {
+  --duration-micro: 200ms;
+  --duration-standard: 400ms;
+  --duration-large: 900ms;
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-system: cubic-bezier(0.2, 0, 0, 1);
+}

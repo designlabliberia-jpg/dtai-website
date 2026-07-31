@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+/* Design tokens */
+@import "../design-system/tokens/colors.css";
+@import "../design-system/tokens/typography.css";
+@import "../design-system/tokens/spacing.css";
+@import "../design-system/tokens/radius.css";
+@import "../design-system/tokens/shadow.css";
+@import "../design-system/tokens/motion.css";
+
+/* Map tokens into Tailwind's theme so classes like bg-brand, text-tech-blue work */
+@theme {
+  --color-brand: var(--color-dtai-blue);
+  --color-tech-blue: #00A6FF;
+  --color-infra-midnight: var(--color-infra-midnight);
+  --color-titanium-silver: var(--color-titanium-silver);
+  --color-neutral-950: var(--color-neutral-950);
+  --color-neutral-900: var(--color-neutral-900);
+  --color-neutral-800: var(--color-neutral-800);
+  --color-neutral-600: var(--color-neutral-600);
+  --color-neutral-300: var(--color-neutral-300);
+  --color-accent: var(--color-tech-blue);
+
+  --font-primary: var(--font-primary);
+  --font-technical: var(--font-technical);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-full: var(--radius-full);
+
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-focus: var(--shadow-focus);
+}
+
+@layer base {
+  body {
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    font-family: var(--font-primary);
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+  }
+
+  h1 {
+    font-size: var(--text-4xl);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    font-weight: 600;
+  }
+
+  h2 {
+    font-size: var(--text-3xl);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    font-weight: 600;
+  }
+
+  h3 {
+    font-size: var(--text-xl);
+    line-height: var(--leading-normal);
+    font-weight: 600;
+  }
+
+  p {
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+  }
+
+  button {
+    font-size: var(--text-sm);
+  }
+}
+/* Accessible focus states, applied globally */
+:focus-visible {
+  outline: 2px solid var(--color-tech-blue);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Subtle film-grain texture on dark sections for material depth */
+.bg-infra-midnight,
+.bg-neutral-950 {
+  position: relative;
+}
