@@ -6,22 +6,19 @@ import { Container } from "@/components/layout/Container";
 const ProductCard = dynamic(() => import("@/components/enterprise/ProductCard").then((m) => ({ default: m.ProductCard })));
 import { products } from "@/lib/products-data";
 
-const featured = products.slice().sort(() => Math.random() - 0.5).slice(0, 3);
+const featured = products.slice().sort(() => Math.random() - 0.5).slice(0, 2);
 
 export function ProductsOverview() {
   return (
-    <section id="products" className="bg-blue-50 py-8">
+    <section id="products" className="py-8">
       <Container>
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between border-b border-neutral-200 pb-6">
           <div>
-            <p className="flex items-center gap-3 font-technical text-lg uppercase tracking-widest text-brand">
+           <h1 className="flex items-center gap-3 font-technical text-lg uppercase tracking-widest text-brand">
               <span className="w-1 h-6 bg-brand rounded-full" />
-              Engineered Solutions
-              <span className="hidden sm:block flex-1 max-w-[12rem] h-px bg-brand" />
-            </p>
-            <h3 className="mt-2 font-primary font-semibold tracking-tight text-neutral-900">
-              Digital Products
-            </h3>
+              Featured Products
+              <span className="hidden sm:block w-64 h-px bg-brand" />
+            </h1>
           </div>
           <div className="flex flex-col sm:items-end gap-3">
             <p className="hidden max-w-xs sm:text-right text-sm leading-relaxed text-neutral-500 sm:block">

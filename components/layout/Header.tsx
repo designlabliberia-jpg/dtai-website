@@ -30,13 +30,18 @@ const navItems: NavItem[] = [
     children: services.map((s) => ({ title: s.title, href: `/services/${s.slug}` })),
   },
   {
-    label: "Solutions",
-    href: "/solutions",
+    label: "Careers",
+    href: "/company/careers",
   },
-{
+  {
+    label: "Blogs",
+    href: "/#blog",
+  },
+  {
     label: "About Us",
     href: "/company/overview",
-}
+},
+  
 ];
 
 function useDropdown() {

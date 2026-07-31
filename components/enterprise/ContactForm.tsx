@@ -4,14 +4,6 @@ import { useState } from "react";
 import { Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 import { submitLead } from "@/lib/web3forms";
 
-const inquiryTypes = [
-  { value: "government", label: "Government Executive" },
-  { value: "technical", label: "Technical Director / CIO" },
-  { value: "procurement", label: "Procurement Officer" },
-  { value: "partner", label: "International Partner" },
-  { value: "other", label: "Other" },
-];
-
 type Status = "idle" | "submitting" | "submitted" | "error";
 
 export function ContactForm() {
@@ -109,26 +101,6 @@ export function ContactForm() {
             className="mt-2 w-full rounded-md border border-neutral-300 px-4 py-2.5 text-base text-neutral-900 outline-none sm:text-sm transition-colors duration-micro focus:border-tech-blue focus:ring-2 focus:ring-tech-blue/20 disabled:opacity-60"
           />
         </div>
-      </div>
-
-      <div>
-        <label htmlFor="inquiryType" className="block text-sm font-medium text-neutral-900">
-          I am a... <span className="text-tech-blue">*</span>
-        </label>
-        <select
-          id="inquiryType"
-          name="inquiryType"
-          required
-          disabled={status === "submitting"}
-          className="mt-2 w-full rounded-md border border-neutral-300 px-4 py-2.5 text-base text-neutral-900 outline-none sm:text-sm transition-colors duration-micro focus:border-tech-blue focus:ring-2 focus:ring-tech-blue/20 disabled:opacity-60"
-        >
-          <option value="">Select one</option>
-          {inquiryTypes.map((t) => (
-            <option key={t.value} value={t.value}>
-              {t.label}
-            </option>
-          ))}
-        </select>
       </div>
 
       <div>

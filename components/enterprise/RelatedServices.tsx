@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ServiceCard } from "@/components/enterprise/ServiceCard";
 import type { Service } from "@/lib/services-data";
+import { Container } from "../layout/Container";
 
 interface RelatedServicesProps {
   items: Service[];
@@ -10,40 +10,32 @@ export function RelatedServices({ items }: RelatedServicesProps) {
   if (items.length === 0) return null;
 
   return (
-    <div className="mt-20 border-t border-neutral-300/60 pt-12">
-      <span className="font-technical text-xs uppercase tracking-wide text-neutral-500">
-        Explore other services
-      </span>
+    <section className="py-12">
+    <Container>
+      <div className="flex flex-col gap-12 lg:flex-row lg:items-center">
+        <div className="lg:w-[40%] lg:sticky lg:top-24 flex flex-col justify-center">
+          <h2 className="flex items-center gap-3 font-technical text-lg uppercase tracking-widest text-brand">
+            <span className="w-1 h-6 bg-brand rounded-full" />
+            Other Services
+            <span className="hidden sm:block w-64 h-px bg-brand" />
+          </h2>
+        </div>
 
-      <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {items.map((ser) => (
-          <Link
-            key={ser.slug}
-            href={`/services/${ser.slug}`}
-            className="group flex items-center justify-between rounded-md border border-neutral-300/60 px-5 py-4 transition-all duration-micro hover:border-tech-blue hover:shadow-sm"
-          >
-            <span className="text-sm font-medium text-neutral-900 transition-colors duration-micro group-hover:text-brand">
-              {ser.title}
-            </span>
-            <ArrowRight
-              size={16}
-              className="shrink-0 text-neutral-400 transition-all duration-micro group-hover:translate-x-1 group-hover:text-tech-blue"
-              strokeWidth={1.75}
-            />
-          </Link>
-        ))}
+        <div className="lg:w-[60%]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {items.map((service) => (
+              <ServiceCard
+                key={service.slug}
+                title={service.title}
+                icon={service.icon}
+                description={service.summary}
+                href={`/services/${service.slug}`}
+              />
+            ))}
+          </div>
+        </div>
       </div>
-
-      <div className="mt-6">
-        <Link
-          href="/services"
-          className="font-technical text-xs uppercase tracking-wide text-tech-blue hover:text-brand"
-        >
-          View all services  <ArrowRight size={16} className="shrink-0 text-neutral-400 transition-all duration-micro group-hover:translate-x-1 group-hover:text-tech-blue"
-            strokeWidth={1.75}
-            />
-        </Link>
-      </div>
-    </div>
+      </Container>
+    </section>
   );
 }
