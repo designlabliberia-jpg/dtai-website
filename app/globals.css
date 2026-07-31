@@ -43,7 +43,13 @@
 }
 
 .marquee {
-  animation: marquee 20s linear infinite;
+  --marquee-duration: 20s;
+  animation: marquee var(--marquee-duration) linear infinite;
+}
+
+.marquee:hover,
+.marquee:focus-within {
+  --marquee-duration: 40s;
 }
 
 @layer base {

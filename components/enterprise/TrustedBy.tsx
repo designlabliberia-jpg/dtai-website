@@ -21,17 +21,23 @@ export function TrustedBy() {
       <div className="relative flex">
         <div className="flex gap-10 marquee">
           {track.map((partner, i) => (
-            <div key={i} className="flex flex-col items-center gap-3 shrink-0">
-              <div className="w-16 h-16 rounded-full overflow-hidden border border-neutral-200 shadow-sm bg-white group">
+            <div key={i} className="group relative flex flex-col items-center gap-3 shrink-0">
+              <button
+                type="button"
+                aria-label={partner.title}
+                className="w-16 h-16 rounded-full overflow-hidden border border-neutral-200 shadow-sm bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              >
                 <Image
                   src={partner.src}
                   alt={partner.title}
-                  title={partner.title}
                   width={20}
                   height={20}
-                  className="w-full h-full object-contain object-center grayscale transition-all duration-300 group-hover:grayscale-0"
+                  className="w-full h-full object-contain object-center grayscale transition-all duration-300 group-hover:grayscale-0 group-focus:grayscale-0 group-active:grayscale-0"
                 />
-              </div>
+              </button>
+              <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-neutral-800 px-2 py-1 text-xs text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus:opacity-100 group-active:opacity-100">
+                {partner.title}
+              </span>
             </div>
           ))}
         </div>
