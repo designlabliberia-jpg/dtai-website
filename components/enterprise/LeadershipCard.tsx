@@ -39,7 +39,7 @@ export function LeadershipCard({ member, isActive }: Props) {
     >
       {/* Portrait */}
       <div className={`relative overflow-hidden rounded-2xl bg-neutral-100 flex-shrink-0 ${
-        isActive ? "w-full h-[200px] sm:w-[45%] sm:h-full" : "w-full h-full"
+        isActive ? "w-full h-[260px] sm:w-[45%] sm:h-full" : "w-full h-full"
       }`}>
         {member.image ? (
           <Image

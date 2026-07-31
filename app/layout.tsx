@@ -7,6 +7,7 @@ import { ScrollToTop } from "@/components/layout/ScrollToTop";
 import { ScrollToHash } from "@/components/layout/ScrollToHash";
 import { AmbientField } from "@/components/layout/AmbientField";
 import { ChatLauncher } from "@/components/layout/ChatLauncher";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { siteMetadata, organizationSchema } from "@/lib/seo";
 
 export const metadata = siteMetadata;
@@ -29,6 +30,7 @@ export default function RootLayout({children, }: { children: React.ReactNode; })
         <ScrollToTop />
         <ScrollToHash />
         <ChatLauncher />
+        <SpeedInsights />
       </body>
     </html>
   );
