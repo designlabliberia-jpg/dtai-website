@@ -61,17 +61,22 @@ export function LeadershipSection() {
         ref={scrollRef}
         onScroll={handleScroll}
         className="flex w-full items-center gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hide"
-        style={{ scrollbarWidth: "none", paddingLeft: "calc(50% - 15vw - 8px)", paddingRight: "calc(50% - 15vw - 8px)" }}
+        style={{ scrollbarWidth: "none", paddingLeft: "calc(50% - 12vw - 8px)", paddingRight: "calc(50% - 12vw - 8px)" }}
         data-active={activeIndex}
       >
-        {leadershipTeam.map((member, i) => (
-          <div
-            key={member.id}
-            className={`snap-center flex-shrink-0 ${i === activeIndex ? "w-[85vw] sm:w-[30vw]" : "w-[30vw]"}`}
-          >
-            <LeadershipCard member={member} isActive={i === activeIndex} />
-          </div>
-        ))}
+        {leadershipTeam.map((member, i) => {
+          const dist = Math.abs(i - activeIndex);
+          const wClass = dist === 0
+            ? "w-[85vw] sm:w-[28vw]"
+            : dist === 1
+            ? "w-[55vw] sm:w-[20vw]"
+            : "w-[38vw] sm:w-[13vw]";
+          return (
+            <div key={member.id} className={`snap-center flex-shrink-0 ${wClass}`}>
+              <LeadershipCard member={member} isActive={i === activeIndex} dist={dist} />
+            </div>
+          );
+        })}
       </div>
 
     </section>

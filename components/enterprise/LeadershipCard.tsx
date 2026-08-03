@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Landmark, Code2, Server } from "lucide-react";
+import { Landmark, Code2, Server, ShieldCheck, Briefcase } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { LeadershipMember } from "@/lib/leadership-data";
 
@@ -9,6 +9,8 @@ const divisionIcon: Record<LeadershipMember["division"], LucideIcon> = {
   Executive: Landmark,
   Engineering: Code2,
   Operations: Server,
+  Directorate: ShieldCheck,
+  Management: Briefcase,
 };
 
 function initials(name: string) {
@@ -24,17 +26,19 @@ function initials(name: string) {
 interface Props {
   member: LeadershipMember;
   isActive: boolean;
+  dist: number;
 }
 
-export function LeadershipCard({ member, isActive }: Props) {
+export function LeadershipCard({ member, isActive, dist }: Props) {
   const Icon = divisionIcon[member.division];
+  const scaleClass = dist === 0 ? "scale-100" : dist === 1 ? "scale-95" : "scale-90";
 
   return (
     <div
-      className={`flex overflow-hidden rounded-2xl transition-all duration-500 ${
+      className={`flex overflow-hidden rounded-2xl transition-all duration-500 ${scaleClass} ${
         isActive
-          ? "scale-100 opacity-100 shadow-2xl flex-col sm:flex-row h-auto sm:h-[280px]"
-          : "scale-90 opacity-40 shadow-none flex-col h-[220px]"
+          ? "opacity-100 shadow-2xl flex-col sm:flex-row h-auto sm:h-[280px]"
+          : "opacity-100 shadow-none flex-col h-[220px]"
       }`}
     >
       {/* Portrait */}
@@ -48,7 +52,7 @@ export function LeadershipCard({ member, isActive }: Props) {
             fill
             loading="lazy"
             sizes="(min-width: 1024px) 33vw, 80vw"
-            className="object-cover object-top"
+            className="object-cover object-top lg:object-top sm:object-center"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-infra-midnight">
@@ -75,7 +79,7 @@ export function LeadershipCard({ member, isActive }: Props) {
 
       {/* Details — only visible when active */}
       {isActive && (
-        <div className="flex flex-col justify-center overflow-y-auto px-4 py-4 text-left">
+        <div className="flex flex-col justify-center overflow-hidden px-4 py-4 text-left">
           <div className="flex items-center gap-1.5 text-neutral-500">
             <Icon size={12} strokeWidth={1.75} />
             <span className="font-technical text-[9px] uppercase tracking-wide">
@@ -91,7 +95,7 @@ export function LeadershipCard({ member, isActive }: Props) {
           <p className="mt-1.5 text-xs font-medium leading-snug text-neutral-800">
             {member.focus}
           </p>
-          <p className="mt-1 text-xs leading-relaxed text-neutral-600">
+          <p className="mt-1 text-xs leading-relaxed text-neutral-600 line-clamp-4">
             {member.bio}
           </p>
         </div>
