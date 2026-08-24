@@ -1,0 +1,292 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Auth ────────────────────────────────────────────────────────────────────
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         Role
+  name         String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+enum Role {
+  super_admin
+  editor
+  recruiter
+  support
+}
+
+// ─── Site ────────────────────────────────────────────────────────────────────
+
+model SiteSettings {
+  id             String  @id @default("global")
+  name           String
+  fullName       String
+  tagline        String
+  description    String
+  logoUrl        String
+  siteUrl        String
+  contactEmail   String
+  whatsappNumber String
+  facebookUrl    String?
+  linkedinUrl    String?
+  web3formsKey   String
+}
+
+model PageSeo {
+  pageSlug    String  @id
+  title       String?
+  description String?
+  ogImageUrl  String?
+}
+
+// ─── Products ────────────────────────────────────────────────────────────────
+
+model Product {
+  id                       String    @id @default(cuid())
+  slug                     String    @unique
+  name                     String
+  tagline                  String
+  description              String
+  status                   String    @default("In Development")
+  imageUrl                 String
+  dark                     Boolean   @default(false)
+  features                 String[]
+  relatedProducts          String[]
+  profileEyebrow           String
+  profileHeading           String
+  profileHeadingAccent     String?
+  profileParagraphs        String[]
+  profilePrimaryImageUrl   String
+  profilePrimaryImageAlt   String
+  profileSecondaryImageUrl String?
+  profileSecondaryImageAlt String?
+  published                Boolean   @default(false)
+  order                    Int       @default(0)
+  deletedAt                DateTime?
+  createdAt                DateTime  @default(now())
+  updatedAt                DateTime  @updatedAt
+}
+
+// ─── Services ────────────────────────────────────────────────────────────────
+
+model Service {
+  id                     String                   @id @default(cuid())
+  slug                   String                   @unique
+  title                  String
+  icon                   String
+  summary                String
+  solutions              String[]
+  profileEyebrow         String
+  profileHeading         String
+  profileHeadingAccent   String?
+  profileParagraphs      String[]
+  profilePrimaryImageUrl String
+  profilePrimaryImageAlt String
+  published              Boolean                  @default(false)
+  order                  Int                      @default(0)
+  deletedAt              DateTime?
+  methodology            ServiceMethodologyStep[]
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @updatedAt
+}
+
+model ServiceMethodologyStep {
+  id          String  @id @default(cuid())
+  serviceId   String
+  service     Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  title       String
+  description String
+  icon        String
+  order       Int     @default(0)
+}
+
+// ─── Solutions ───────────────────────────────────────────────────────────────
+
+model Solution {
+  id              String    @id @default(cuid())
+  slug            String    @unique
+  title           String
+  summary         String
+  overview        String
+  focusAreas      String[]
+  proofPoints     String[]
+  relatedServices String[]
+  snippetFilename String?
+  snippetLanguage String?
+  snippetCode     String?
+  published       Boolean   @default(false)
+  order           Int       @default(0)
+  deletedAt       DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+// ─── Careers ─────────────────────────────────────────────────────────────────
+
+model JobListing {
+  id                      String           @id @default(cuid())
+  slug                    String           @unique
+  title                   String
+  description             String
+  location                String
+  type                    String
+  category                String
+  minQualifications       String[]
+  preferredQualifications String[]
+  aboutJob                String?
+  active                  Boolean          @default(true)
+  order                   Int              @default(0)
+  deletedAt               DateTime?
+  applications            JobApplication[]
+  createdAt               DateTime         @default(now())
+  updatedAt               DateTime         @updatedAt
+}
+
+model JobApplication {
+  id           String     @id @default(cuid())
+  jobListingId String
+  jobListing   JobListing @relation(fields: [jobListingId], references: [id])
+  fullName     String
+  email        String
+  phone        String?
+  coverLetter  String
+  resumeUrl    String?
+  linkedinUrl  String?
+  status       AppStatus  @default(new)
+  notes        String?
+  deletedAt    DateTime?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+enum AppStatus {
+  new
+  reviewing
+  interviewed
+  hired
+  rejected
+}
+
+// ─── Leadership ──────────────────────────────────────────────────────────────
+
+model LeadershipMember {
+  id        String    @id @default(cuid())
+  memberId  String    @unique
+  name      String
+  title     String
+  division  String
+  focus     String
+  bio       String
+  imageUrl  String?
+  linkedin  String?
+  order     Int       @default(0)
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+// ─── Partners ────────────────────────────────────────────────────────────────
+
+model Partner {
+  id        String      @id @default(cuid())
+  title     String
+  logoUrl   String
+  type      PartnerType
+  slug      String?     @unique
+  summary   String?
+  points    String[]
+  order     Int         @default(0)
+  deletedAt DateTime?
+}
+
+enum PartnerType {
+  logo
+  category
+}
+
+// ─── Articles (Sanity → Neon sync) ───────────────────────────────────────────
+
+model Article {
+  id                  String    @id @default(cuid())
+  sanityId            String    @unique
+  slug                String    @unique
+  title               String
+  category            String
+  publishDate         String
+  author              String
+  summary             String
+  sections            Json
+  relatedCapabilities String[]
+  coverImageUrl       String
+  likes               Int       @default(0)
+  published           Boolean   @default(false)
+  deletedAt           DateTime?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+}
+
+// ─── Contact ─────────────────────────────────────────────────────────────────
+
+model ContactSubmission {
+  id        String        @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  status    ContactStatus @default(new)
+  notes     String?
+  deletedAt DateTime?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+enum ContactStatus {
+  new
+  read
+  responded
+}
+
+// ─── Client Pipeline ─────────────────────────────────────────────────────────
+
+model Client {
+  id              String       @id @default(cuid())
+  companyName     String
+  contactName     String
+  contactEmail    String
+  contactPhone    String?
+  serviceInterest String?
+  status          ClientStatus @default(lead)
+  estimatedValue  Float?
+  notes           ClientNote[]
+  deletedAt       DateTime?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+}
+
+model ClientNote {
+  id        String    @id @default(cuid())
+  clientId  String
+  client    Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  note      String
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+}
+
+enum ClientStatus {
+  lead
+  proposal_sent
+  negotiating
+  won
+  lost
+}

@@ -1,3 +1,5 @@
+import { db } from "@/lib/db";
+
 export interface InsightSection {
   heading?: string;
   body: string;
@@ -12,44 +14,53 @@ export interface Insight {
   summary: string;
   sections: InsightSection[];
   relatedCapabilities: string[];
+  coverImageUrl: string;
+  likes: number;
 }
 
-export const insights: Insight[] = [
-  {
-    slug: "digital-infrastructure-resilience",
-    title: "Designing for Resilience in National Digital Infrastructure",
-    category: "Engineering Insight",
-    publishDate: "2026-05-14",
-    author: "DTAI Engineering Team",
-    summary:
-      "Why redundancy planning and environment separation matter more than feature velocity for systems institutions depend on.",
-    sections: [
-      {
-        body:
-          "National-scale digital infrastructure fails differently than typical software: outages have institutional and public consequences, not just user inconvenience. This piece outlines DTAI's approach to redundancy planning, environment separation, and monitoring as foundational requirements rather than post-launch additions.",
-      },
-      {
-        heading: "Redundancy as a Design Input, Not a Patch",
-        body:
-          "Redundancy planning that begins after a system is built tends to bolt failover onto an architecture that was never designed to support it. DTAI treats redundancy as a constraint defined at the architecture stage — alongside data models and access control — so failover paths are native to the system, not layered on afterward.",
-      },
-      {
-        heading: "Environment Separation",
-        body:
-          "Development, staging, and production environments are kept fully separate, with distinct access controls and data boundaries between them. This limits the blast radius of any single change and ensures that testing against realistic conditions doesn't put live institutional data at risk.",
-      },
-      {
-        heading: "Monitoring from Day One",
-        body:
-          "Monitoring and alerting are part of the initial deployment, not a follow-up task. For systems that public institutions depend on, the gap between a failure occurring and a failure being detected is itself a risk that has to be engineered against.",
-      },
-    ],
-    relatedCapabilities: ["digital-infrastructure", "cybersecurity"],
-  },
-];
+export async function getInsights(): Promise<Insight[]> {
+  const rows = await db.article.findMany({
+    where: { published: true, deletedAt: null },
+    orderBy: { publishDate: "desc" },
+    select: {
+      slug: true,
+      title: true,
+      category: true,
+      publishDate: true,
+      author: true,
+      summary: true,
+      sections: true,
+      relatedCapabilities: true,
+      coverImageUrl: true,
+      likes: true,
+    },
+  });
 
-export function getInsightBySlug(slug: string) {
-  return insights.find((i) => i.slug === slug);
+  return rows.map((r) => ({
+    ...r,
+    sections: r.sections as InsightSection[],
+  }));
+}
+
+export async function getInsightBySlug(slug: string): Promise<Insight | null> {
+  const row = await db.article.findUnique({
+    where: { slug, published: true, deletedAt: null },
+    select: {
+      slug: true,
+      title: true,
+      category: true,
+      publishDate: true,
+      author: true,
+      summary: true,
+      sections: true,
+      relatedCapabilities: true,
+      coverImageUrl: true,
+      likes: true,
+    },
+  });
+
+  if (!row) return null;
+  return { ...row, sections: row.sections as InsightSection[] };
 }
 
 export function getReadTimeMinutes(insight: Insight): number {

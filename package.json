@@ -6,21 +6,34 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:seed": "dotenv-cli -e .env -- tsx prisma/seed.ts"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@prisma/adapter-neon": "^7.9.1",
+    "@prisma/client": "^7.9.1",
     "@sanity/client": "^7.23.0",
     "@sanity/image-url": "^2.1.1",
     "@sanity/vision": "^5.31.1",
+    "@types/bcryptjs": "^2.4.6",
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/blob": "^2.7.0",
     "@vercel/speed-insights": "^2.0.0",
+    "bcryptjs": "^3.0.3",
     "framer-motion": "^12.42.2",
+    "iron-session": "^8.0.4",
     "lucide-react": "^1.24.0",
     "next": "16.2.10",
     "next-sanity": "^13.1.1",
+    "prisma": "^7.9.1",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "sanity": "^5.31.1",
-    "styled-components": "^6.4.3"
+    "styled-components": "^6.4.3",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
