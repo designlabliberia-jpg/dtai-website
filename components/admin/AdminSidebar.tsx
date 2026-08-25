@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -20,6 +20,8 @@ import {
   UserCircle,
   Handshake,
   ClipboardList,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { NavItem } from "./NavItem";
 import { NavSection } from "./NavSection";
@@ -38,14 +40,30 @@ export function AdminSidebar({
   role,
   userName,
   userEmail,
-}: AdminSidebarProps) {
+}: Readonly<AdminSidebarProps>) {
   const [collapsed, setCollapsed] = useState(false);
+  const [isLight, setIsLight] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const saved = localStorage.getItem("admin-theme");
+    const light = saved === "light";
+    document.documentElement.dataset.theme = light ? "light" : "";
+    // defer state update to avoid cascading render in effect body
+    const id = setTimeout(() => setIsLight(light), 0);
+    return () => clearTimeout(id);
+  }, []);
+
+  function toggleTheme() {
+    const next = !isLight;
+    setIsLight(next);
+    document.documentElement.dataset.theme = next ? "light" : "";
+    localStorage.setItem("admin-theme", next ? "light" : "dark");
+  }
 
   const isSuperAdmin = role === "super_admin";
   const isEditor     = role === "editor" || isSuperAdmin;
   const isRecruiter  = role === "recruiter" || isSuperAdmin;
-  const isSupport    = role === "support" || isSuperAdmin;
 
   async function handleLogout() {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -67,7 +85,7 @@ export function AdminSidebar({
         style={{ borderBottom: "1px solid var(--admin-sidebar-border)" }}
       >
         {collapsed ? (
-          <Link href="/admin" className="flex items-center justify-center w-full">
+          <Link href="/" className="flex items-center justify-center w-full">
             <Image
               src="/assets/dtai-logo.png"
               alt="DTAI"
@@ -77,7 +95,7 @@ export function AdminSidebar({
             />
           </Link>
         ) : (
-          <Link href="/admin" className="flex items-center gap-2.5">
+          <Link href="/" className="flex items-center gap-2.5">
             <Image
               src="/assets/dtai-logo.png"
               alt="DTAI"
@@ -105,6 +123,7 @@ export function AdminSidebar({
 
       {/* ── Collapse toggle ─────────────────────────────────────────────── */}
       <button
+        type="button"
         onClick={() => setCollapsed((c) => !c)}
         aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
         className="absolute -right-3 top-[40px] z-10 flex h-6 w-6 items-center justify-center rounded-full transition-colors"
@@ -211,16 +230,30 @@ export function AdminSidebar({
               </p>
             </div>
           )}
-          <button
-            onClick={handleLogout}
-            title="Sign out"
-            className="ml-auto shrink-0 transition-colors"
-            style={{ color: "var(--admin-text-inverse-muted)" }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--admin-danger)")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--admin-text-inverse-muted)")}
-          >
-            <LogOut size={13} />
-          </button>
+          <div className="ml-auto flex items-center gap-1.5 shrink-0">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              title={isLight ? "Switch to dark mode" : "Switch to light mode"}
+              className="transition-colors"
+              style={{ color: "var(--admin-text-inverse-muted)" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--admin-accent)")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--admin-text-inverse-muted)")}
+            >
+              {isLight ? <Moon size={13} /> : <Sun size={13} />}
+            </button>
+            <button
+              type="button"
+              onClick={handleLogout}
+              title="Sign out"
+              className="transition-colors"
+              style={{ color: "var(--admin-text-inverse-muted)" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--admin-danger)")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--admin-text-inverse-muted)")}
+            >
+              <LogOut size={13} />
+            </button>
+          </div>
         </div>
       </div>
     </aside>

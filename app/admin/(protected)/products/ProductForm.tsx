@@ -15,7 +15,7 @@ import { PRODUCT_ICON_KEYS } from "@/lib/validations/product.schema";
 interface ProductFormProps {
   product?: {
     id: string; slug: string; name: string; tagline: string; description: string;
-    iconKey?: string; imageUrl: string; dark: boolean; features: string[];
+    status: string; iconKey?: string; imageUrl: string; features: string[];
     builtFor: string[]; relatedCapabilities: string[];
     profileEyebrow: string; profileHeading: string;
     profileHeadingAccent: string | null; profileParagraphs: string[];
@@ -90,6 +90,14 @@ export function ProductForm({ product: p }: ProductFormProps) {
                   style={{ color: "var(--admin-text-secondary)" }}>Icon Key</label>
                 <select name="iconKey" defaultValue={p?.iconKey ?? PRODUCT_ICON_KEYS[0]} style={selectStyle}>
                   {PRODUCT_ICON_KEYS.map((k) => <option key={k} value={k}>{k}</option>)}
+                </select>
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <label className="font-technical text-[10px] uppercase tracking-[0.1em]"
+                  style={{ color: "var(--admin-text-secondary)" }}>Status</label>
+                <select name="status" defaultValue={p?.status ?? "In Development"} style={selectStyle}>
+                  <option value="In Development">In Development</option>
+                  <option value="Published">Published</option>
                 </select>
               </div>
               <div className="flex flex-col gap-1.5">

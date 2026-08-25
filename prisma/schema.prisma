@@ -75,7 +75,6 @@ model Product {
   description              String
   status                   String    @default("In Development")
   imageUrl                 String
-  dark                     Boolean   @default(false)
   features                 String[]
   relatedProducts          String[]
   profileEyebrow           String

@@ -6,22 +6,22 @@ type StatusVariant =
   | "In Development" | "Live";
 
 const VARIANT_STYLES: Record<StatusVariant, { bg: string; color: string; border: string }> = {
-  new:            { bg: "var(--admin-info-bg)",    color: "var(--admin-brand)",   border: "#BFDBFE" },
+  new:            { bg: "var(--admin-info-bg)",    color: "var(--admin-brand)",          border: "var(--admin-border-accent)" },
   read:           { bg: "var(--admin-surface-2)",  color: "var(--admin-text-secondary)", border: "var(--admin-border-strong)" },
-  responded:      { bg: "var(--admin-success-bg)", color: "var(--admin-success)", border: "#BBF7D0" },
-  reviewing:      { bg: "var(--admin-warning-bg)", color: "var(--admin-warning)", border: "#FDE68A" },
-  interviewed:    { bg: "#F5F3FF",                 color: "#7C3AED",              border: "#DDD6FE" },
-  hired:          { bg: "var(--admin-success-bg)", color: "var(--admin-success)", border: "#BBF7D0" },
-  rejected:       { bg: "var(--admin-danger-bg)",  color: "var(--admin-danger)",  border: "#FECACA" },
-  lead:           { bg: "var(--admin-info-bg)",    color: "var(--admin-brand)",   border: "#BFDBFE" },
-  proposal_sent:  { bg: "var(--admin-warning-bg)", color: "var(--admin-warning)", border: "#FDE68A" },
-  negotiating:    { bg: "#FFF7ED",                 color: "#C2410C",              border: "#FED7AA" },
-  won:            { bg: "var(--admin-success-bg)", color: "var(--admin-success)", border: "#BBF7D0" },
-  lost:           { bg: "var(--admin-surface-2)",  color: "var(--admin-text-muted)", border: "var(--admin-border-strong)" },
-  active:         { bg: "var(--admin-success-bg)", color: "var(--admin-success)", border: "#BBF7D0" },
-  inactive:       { bg: "var(--admin-surface-2)",  color: "var(--admin-text-muted)", border: "var(--admin-border-strong)" },
-  "In Development": { bg: "var(--admin-warning-bg)", color: "var(--admin-warning)", border: "#FDE68A" },
-  Live:           { bg: "var(--admin-success-bg)", color: "var(--admin-success)", border: "#BBF7D0" },
+  responded:      { bg: "var(--admin-success-bg)", color: "var(--admin-success)",        border: "var(--admin-success)" },
+  reviewing:      { bg: "var(--admin-warning-bg)", color: "var(--admin-warning)",        border: "var(--admin-warning)" },
+  interviewed:    { bg: "var(--admin-info-bg)",    color: "var(--admin-accent)",         border: "var(--admin-border-accent)" },
+  hired:          { bg: "var(--admin-success-bg)", color: "var(--admin-success)",        border: "var(--admin-success)" },
+  rejected:       { bg: "var(--admin-danger-bg)",  color: "var(--admin-danger)",         border: "var(--admin-danger)" },
+  lead:           { bg: "var(--admin-info-bg)",    color: "var(--admin-brand)",          border: "var(--admin-border-accent)" },
+  proposal_sent:  { bg: "var(--admin-warning-bg)", color: "var(--admin-warning)",        border: "var(--admin-warning)" },
+  negotiating:    { bg: "var(--admin-warning-bg)", color: "var(--admin-warning)",        border: "var(--admin-warning)" },
+  won:            { bg: "var(--admin-success-bg)", color: "var(--admin-success)",        border: "var(--admin-success)" },
+  lost:           { bg: "var(--admin-surface-2)",  color: "var(--admin-text-muted)",     border: "var(--admin-border-strong)" },
+  active:         { bg: "var(--admin-success-bg)", color: "var(--admin-success)",        border: "var(--admin-success)" },
+  inactive:       { bg: "var(--admin-surface-2)",  color: "var(--admin-text-muted)",     border: "var(--admin-border-strong)" },
+  "In Development": { bg: "var(--admin-warning-bg)", color: "var(--admin-warning)",      border: "var(--admin-warning)" },
+  Live:           { bg: "var(--admin-success-bg)", color: "var(--admin-success)",        border: "var(--admin-success)" },
 };
 
 const LABELS: Record<StatusVariant, string> = {

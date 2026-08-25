@@ -27,16 +27,16 @@ export function NavItem({ href, label, icon: Icon, badge, collapsed }: NavItemPr
           : "transparent",
         color: active
           ? "var(--admin-sidebar-item-active-text)"
-          : "rgba(248,250,252,0.65)",
+          : "var(--admin-text-secondary)",
         fontWeight: active ? 500 : 400,
       }}
       onMouseEnter={(e) => {
         if (!active) e.currentTarget.style.background = "var(--admin-sidebar-item-hover-bg)";
-        if (!active) e.currentTarget.style.color = "rgba(248,250,252,0.9)";
+        if (!active) e.currentTarget.style.color = "var(--admin-text-primary)";
       }}
       onMouseLeave={(e) => {
         if (!active) e.currentTarget.style.background = "transparent";
-        if (!active) e.currentTarget.style.color = "rgba(248,250,252,0.65)";
+        if (!active) e.currentTarget.style.color = "var(--admin-text-secondary)";
       }}
     >
       {/* Active left bar */}

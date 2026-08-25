@@ -47,7 +47,7 @@ export const productSchema = z.object({
     .max(1000, "Description must be under 1000 characters")
     .trim(),
 
-  status: z.literal("In Development"),
+  status: z.enum(["In Development", "Published"]),
 
   iconKey: z.enum(PRODUCT_ICON_KEYS, { error: "Select a valid icon" }),
 

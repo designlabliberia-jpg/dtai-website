@@ -1,66 +1,138 @@
-/* ─── DTAI Admin Design Tokens — Dark-First Engineering System ───────────────
-   Philosophy: infra-midnight base, tech-blue accents, machined precision.
-   Every surface feels like a component, not a card.
+/* ─── DTAI Admin Design Tokens ────────────────────────────────────────────────
+   Dark mode default. Light mode via [data-theme="light"] on <html>.
+   Both modes tuned for high contrast and readability (WCAG AA+).
    ─────────────────────────────────────────────────────────────────────────── */
 
+/* ── Dark Mode (default) ─────────────────────────────────────────────────── */
 :root {
-  /* ── Page & Surface ──────────────────────────────────────────────────────── */
-  --admin-bg:            #050A12;   /* page base — infra-midnight */
-  --admin-surface:       #0D1520;   /* panel / card surface */
-  --admin-surface-2:     #111D2E;   /* elevated surface (modals, dropdowns, inset) */
-  --admin-surface-deep:  #0A1628;   /* deepest surface — sidebar header */
+  /* Page & Surface */
+  --admin-bg:            #0B1120;
+  --admin-surface:       #131E30;
+  --admin-surface-2:     #1A2840;
+  --admin-surface-deep:  #0F1A2E;
 
-  /* ── Borders ─────────────────────────────────────────────────────────────── */
-  --admin-border:        #1A2A3A;   /* default panel border */
-  --admin-border-strong: #1E3248;   /* table dividers, form inputs */
-  --admin-border-accent: #0057B8;   /* active / focused accent border */
+  /* Borders */
+  --admin-border:        #253A52;
+  --admin-border-strong: #2E4A66;
+  --admin-border-accent: #0080E0;
 
-  /* ── Text ────────────────────────────────────────────────────────────────── */
-  --admin-text-primary:  #F0F4F8;   /* headings, values */
-  --admin-text-secondary:#94A3B8;   /* labels, descriptions */
-  --admin-text-muted:    #475569;   /* placeholders, dim labels */
-  --admin-text-dim:      #334155;   /* barely-visible structural labels */
+  /* Text */
+  --admin-text-primary:   #F0F6FF;
+  --admin-text-secondary: #B8CCDF;
+  --admin-text-muted:     #7A96B0;
+  --admin-text-dim:       #5A7A96;
 
-  /* ── Accent ──────────────────────────────────────────────────────────────── */
-  --admin-accent:        #00A6FF;   /* tech-blue — charts, highlights, links */
-  --admin-brand:         #0057B8;   /* primary brand blue */
-  --admin-brand-deep:    #002169;   /* deep navy */
+  /* Sidebar text (used in header/footer of sidebar) */
+  --admin-text-inverse:       #E8F0FA;
+  --admin-text-inverse-muted: #7A96B0;
 
-  /* ── Sidebar ─────────────────────────────────────────────────────────────── */
-  --admin-sidebar-bg:              #0D1520;
-  --admin-sidebar-border:          #1A2A3A;
-  --admin-sidebar-item-active-bg:  rgba(0,87,184,0.12);
-  --admin-sidebar-item-active-text:#00A6FF;
-  --admin-sidebar-item-hover-bg:   rgba(255,255,255,0.04);
-  --admin-sidebar-section-label:   #334155;
+  /* Accent */
+  --admin-accent:     #29B6FF;
+  --admin-brand:      #0080E0;
+  --admin-brand-deep: #003A8C;
 
-  /* ── Status ──────────────────────────────────────────────────────────────── */
-  --admin-success:       #22C55E;
-  --admin-success-bg:    rgba(34,197,94,0.08);
-  --admin-warning:       #F59E0B;
-  --admin-warning-bg:    rgba(245,158,11,0.08);
-  --admin-danger:        #EF4444;
-  --admin-danger-bg:     rgba(239,68,68,0.08);
-  --admin-info:          #0057B8;
-  --admin-info-bg:       rgba(0,87,184,0.10);
+  /* Sidebar */
+  --admin-sidebar-bg:              #131E30;
+  --admin-sidebar-border:          #253A52;
+  --admin-sidebar-item-active-bg:  rgba(0,128,224,0.18);
+  --admin-sidebar-item-active-text:#29B6FF;
+  --admin-sidebar-item-hover-bg:   rgba(255,255,255,0.07);
+  --admin-sidebar-section-label:   #5A7A96;
 
-  /* ── Chart Palette ───────────────────────────────────────────────────────── */
-  --chart-1: #0057B8;
-  --chart-2: #00A6FF;
-  --chart-3: #3B82F6;
-  --chart-4: #6366F1;
-  --chart-5: #8B5CF6;
-  --chart-success: #22C55E;
-  --chart-warning: #F59E0B;
-  --chart-danger:  #EF4444;
-  --chart-muted:   #475569;
+  /* Status */
+  --admin-success:    #34D46A;
+  --admin-success-bg: rgba(34,212,106,0.14);
+  --admin-warning:    #FBBF24;
+  --admin-warning-bg: rgba(251,191,36,0.14);
+  --admin-danger:     #F87171;
+  --admin-danger-bg:  rgba(248,113,113,0.14);
+  --admin-info:       #0080E0;
+  --admin-info-bg:    rgba(0,128,224,0.14);
 
-  /* ── Elevation shadows (dark system) ────────────────────────────────────── */
+  /* Chart Palette */
+  --chart-1: #0080E0;
+  --chart-2: #29B6FF;
+  --chart-3: #60A5FA;
+  --chart-4: #818CF8;
+  --chart-5: #A78BFA;
+  --chart-success: #34D46A;
+  --chart-warning: #FBBF24;
+  --chart-danger:  #F87171;
+  --chart-muted:   #5A7A96;
+
+  /* Shadows */
   --admin-shadow-panel:  0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.3);
   --admin-shadow-raised: 0 4px 12px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.3);
   --admin-shadow-modal:  0 20px 48px rgba(0,0,0,0.7), 0 8px 16px rgba(0,0,0,0.4);
 
-  /* ── Grid overlay (engineering precision texture) ────────────────────────── */
-  --admin-grid-color: rgba(0,166,255,0.04);
+  /* Grid overlay */
+  --admin-grid-color: rgba(41,182,255,0.04);
+  --admin-grid-size:  40px;
+}
+
+/* ── Light Mode ──────────────────────────────────────────────────────────── */
+[data-theme="light"] {
+  /* Page & Surface */
+  --admin-bg:            #EEF3F9;
+  --admin-surface:       #FFFFFF;
+  --admin-surface-2:     #E2EAF4;
+  --admin-surface-deep:  #D4E0EE;
+
+  /* Borders */
+  --admin-border:        #B8CCE0;
+  --admin-border-strong: #96B0CC;
+  --admin-border-accent: #0057B8;
+
+  /* Text */
+  --admin-text-primary:   #050A12;   /* true black — maximum readability */
+  --admin-text-secondary: #0F1F35;   /* near-black navy */
+  --admin-text-muted:     #1E3A5C;   /* dark blue-grey — still clearly readable */
+  --admin-text-dim:       #3D5A78;   /* subtle but visible */
+
+  /* Sidebar text */
+  --admin-text-inverse:       #050A12;
+  --admin-text-inverse-muted: #1E3A5C;
+
+  /* Accent */
+  --admin-accent:     #0057B8;
+  --admin-brand:      #0057B8;
+  --admin-brand-deep: #002169;
+
+  /* Sidebar */
+  --admin-sidebar-bg:              #FFFFFF;
+  --admin-sidebar-border:          #B8CCE0;
+  --admin-sidebar-item-active-bg:  rgba(0,87,184,0.10);
+  --admin-sidebar-item-active-text:#0057B8;
+  --admin-sidebar-item-hover-bg:   rgba(0,87,184,0.06);
+  --admin-sidebar-section-label:   #3D5A78;
+
+  /* Status */
+  --admin-success:    #15803D;
+  --admin-success-bg: rgba(21,128,61,0.10);
+  --admin-warning:    #B45309;
+  --admin-warning-bg: rgba(180,83,9,0.10);
+  --admin-danger:     #B91C1C;
+  --admin-danger-bg:  rgba(185,28,28,0.10);
+  --admin-info:       #0057B8;
+  --admin-info-bg:    rgba(0,87,184,0.10);
+
+  /* Chart Palette */
+  --chart-1: #0057B8;
+  --chart-2: #0080E0;
+  --chart-3: #3B82F6;
+  --chart-4: #6366F1;
+  --chart-5: #7C3AED;
+  --chart-success: #15803D;
+  --chart-warning: #B45309;
+  --chart-danger:  #B91C1C;
+  --chart-muted:   #6080A0;
+
+  /* Shadows */
+  --admin-shadow-panel:  0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05);
+  --admin-shadow-raised: 0 4px 12px rgba(0,0,0,0.10), 0 2px 4px rgba(0,0,0,0.06);
+  --admin-shadow-modal:  0 20px 48px rgba(0,0,0,0.16), 0 8px 16px rgba(0,0,0,0.08);
+
+  /* Grid overlay */
+  --admin-grid-color: rgba(0,87,184,0.04);
   --admin-grid-size:  40px;
 }

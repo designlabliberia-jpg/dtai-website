@@ -53,7 +53,7 @@ export function ConfirmButton({
           ? danger ? "var(--admin-danger-bg)" : "var(--admin-info-bg)"
           : "transparent",
         border: confirming
-          ? danger ? "1px solid #FECACA" : "1px solid #BFDBFE"
+          ? danger ? "1px solid var(--admin-danger)" : "1px solid var(--admin-border-accent)"
           : "1px solid transparent",
       }}
     >

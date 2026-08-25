@@ -3,6 +3,8 @@
 import { createHmac, timingSafeEqual } from "crypto";
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { client } from "@/sanity/lib/client";
+import { urlFor } from "@/sanity/lib/image";
 import { webhookArticleSchema } from "@/lib/validations/webhook.schema";
 
 export async function deleteArticle(sanityId: string): Promise<void> {
@@ -81,4 +83,41 @@ export async function syncArticleFromWebhook(
   revalidatePath("/");
 
   return { ok: true };
+}
+
+export async function syncAllArticlesFromSanity(): Promise<{ ok: boolean; count?: number; error?: string }> {
+  try {
+    const articles = await client.fetch<Array<{
+      _id: string; slug: string; title: string; category: string;
+      publishDate: string; author: string; summary: string;
+      sections: { _key: string; _type: string; heading?: string; body: string }[] | null;
+      relatedCapabilities: string[] | null; coverImage: object;
+      likes: number | null; published: boolean | null;
+    }>>(
+      `*[_type == "article"] { _id, "slug": slug.current, title, category, publishDate, author, summary, sections, relatedCapabilities, coverImage, likes, published }`
+    );
+
+    await Promise.all(
+      articles.map((a) => {
+        const shared = {
+          slug: a.slug, title: a.title, category: a.category,
+          publishDate: a.publishDate, author: a.author, summary: a.summary,
+          sections: (a.sections ?? []) as object[],
+          relatedCapabilities: a.relatedCapabilities ?? [],
+          coverImageUrl: urlFor(a.coverImage).width(800).auto("format").url(),
+          likes: a.likes ?? 0,
+        };
+        return db.article.upsert({
+          where: { sanityId: a._id },
+          update: shared,
+          create: { sanityId: a._id, published: a.published ?? false, ...shared },
+        });
+      })
+    );
+
+    revalidatePath("/admin/news");
+    return { ok: true, count: articles.length };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Unknown error" };
+  }
 }
