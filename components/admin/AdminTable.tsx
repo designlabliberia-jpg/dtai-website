@@ -20,8 +20,18 @@ export function AdminTable<T>({
 }: AdminTableProps<T>) {
   if (rows.length === 0) {
     return (
-      <div className="flex h-40 items-center justify-center rounded-lg border border-neutral-200 bg-white">
-        <p className="font-technical text-xs uppercase tracking-widest text-neutral-400">
+      <div
+        className="flex h-40 items-center justify-center rounded-[var(--radius-md)]"
+        style={{
+          background: "var(--admin-surface)",
+          border: "1px solid var(--admin-border)",
+          boxShadow: "var(--admin-shadow-panel)",
+        }}
+      >
+        <p
+          className="font-technical text-[10px] uppercase tracking-widest"
+          style={{ color: "var(--admin-text-muted)" }}
+        >
           {emptyMessage}
         </p>
       </div>
@@ -29,26 +39,54 @@ export function AdminTable<T>({
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-neutral-200 bg-white">
+    <div
+      className="overflow-x-auto rounded-[var(--radius-md)]"
+      style={{
+        background: "var(--admin-surface)",
+        border: "1px solid var(--admin-border)",
+        boxShadow: "var(--admin-shadow-panel)",
+      }}
+    >
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-neutral-100 bg-neutral-50">
+          <tr style={{ borderBottom: "1px solid var(--admin-border)" }}>
             {columns.map((col) => (
               <th
                 key={col.key}
-                style={col.width ? { width: col.width } : undefined}
-                className="px-4 py-3 text-left font-technical text-[10px] uppercase tracking-widest text-neutral-400"
+                style={{
+                  ...(col.width ? { width: col.width } : {}),
+                  color: "var(--admin-text-muted)",
+                  background: "var(--admin-surface-2)",
+                }}
+                className="px-4 py-3 text-left font-technical text-[9px] uppercase tracking-[0.12em]"
               >
                 {col.header}
               </th>
             ))}
           </tr>
         </thead>
-        <tbody className="divide-y divide-neutral-100">
-          {rows.map((row) => (
-            <tr key={getRowKey(row)} className="hover:bg-neutral-50 transition-colors duration-150">
+        <tbody>
+          {rows.map((row, i) => (
+            <tr
+              key={getRowKey(row)}
+              style={{
+                borderBottom:
+                  i < rows.length - 1 ? "1px solid var(--admin-border)" : "none",
+              }}
+              className="transition-colors duration-100"
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.background = "var(--admin-surface-2)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.background = "transparent")
+              }
+            >
               {columns.map((col) => (
-                <td key={col.key} className="px-4 py-3 text-neutral-700">
+                <td
+                  key={col.key}
+                  className="px-4 py-3"
+                  style={{ color: "var(--admin-text-secondary)" }}
+                >
                   {col.render(row)}
                 </td>
               ))}

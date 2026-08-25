@@ -8,7 +8,6 @@ export interface Product {
   status: "In Development";
   iconKey: "libgo" | "hospital" | "election-results" | "party-agent";
   image: string;
-  dark: boolean;
   features: string[];
   relatedCapabilities: string[];
   builtFor: string[];
@@ -25,7 +24,6 @@ export const products: Product[] = [
     status: "In Development",
     iconKey: "libgo",
     image: "/assets/products/MobileScreen.png",
-    dark: false,
     features: [
       "One Stop App",
       "Integrated Payments",
@@ -60,7 +58,6 @@ export const products: Product[] = [
     status: "In Development",
     iconKey: "hospital",
     image: "/assets/products/HmsImg.png",
-    dark: false,
     features: [
       "Clinical Workflow",
       "Secure EHR",
@@ -95,7 +92,6 @@ export const products: Product[] = [
     status: "In Development",
     iconKey: "election-results",
     image: "/assets/products/EmsImg.png",
-    dark: false,
     features: [
       "Result Collection",
       "Verification",
@@ -130,7 +126,6 @@ export const products: Product[] = [
     status: "In Development",
     iconKey: "party-agent",
     image: "/assets/products/MobileScreen.png",
-    dark: false,
     features: ["Digital Accreditation", "Agent Management"],
     relatedCapabilities: [
       "web-application-development",

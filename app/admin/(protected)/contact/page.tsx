@@ -24,12 +24,12 @@ export default async function ContactInboxPage() {
           {
             key: "name",
             header: "Name",
-            render: (r) => <span className="font-medium text-neutral-900">{r.name}</span>,
+            render: (r) => <span className="font-medium" style={{ color: "var(--admin-text-primary)" }}>{r.name}</span>,
           },
           {
             key: "email",
             header: "Email",
-            render: (r) => <span className="text-neutral-500">{r.email}</span>,
+            render: (r) => <span style={{ color: "var(--admin-text-muted)" }}>{r.email}</span>,
           },
           {
             key: "subject",

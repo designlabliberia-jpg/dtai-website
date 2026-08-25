@@ -1,6 +1,15 @@
+import "@/design-system/tokens/admin.css";
+
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="bg-neutral-50 text-neutral-900 antialiased min-h-screen">
+    <div
+      className="antialiased min-h-screen"
+      style={{
+        background: "var(--admin-bg)",
+        color: "var(--admin-text-primary)",
+        fontFamily: "var(--font-primary)",
+      }}
+    >
       {children}
     </div>
   );

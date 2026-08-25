@@ -6,13 +6,20 @@ interface NavSectionProps {
 
 export function NavSection({ label, collapsed, children }: NavSectionProps) {
   return (
-    <div className="flex flex-col gap-1">
-      {!collapsed && (
-        <p className="px-3 font-technical text-[10px] uppercase tracking-widest text-neutral-400 h-4 flex items-center">
+    <div className="flex flex-col gap-0.5">
+      {!collapsed ? (
+        <p
+          className="mb-0.5 px-2.5 font-technical text-[9px] uppercase tracking-[0.15em]"
+          style={{ color: "var(--admin-sidebar-section-label)" }}
+        >
           {label}
         </p>
+      ) : (
+        <div
+          className="mx-auto my-1 h-px w-6"
+          style={{ background: "var(--admin-sidebar-border)" }}
+        />
       )}
-      {collapsed && <div className="h-4" />}
       {children}
     </div>
   );

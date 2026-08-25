@@ -1,51 +1,35 @@
 type StatusVariant =
-  | "new"
-  | "read"
-  | "responded"
-  | "reviewing"
-  | "interviewed"
-  | "hired"
-  | "rejected"
-  | "lead"
-  | "proposal_sent"
-  | "negotiating"
-  | "won"
-  | "lost"
-  | "active"
-  | "inactive";
+  | "new" | "read" | "responded"
+  | "reviewing" | "interviewed" | "hired" | "rejected"
+  | "lead" | "proposal_sent" | "negotiating" | "won" | "lost"
+  | "active" | "inactive"
+  | "In Development" | "Live";
 
-const VARIANT_STYLES: Record<StatusVariant, string> = {
-  new:           "bg-blue-50 text-blue-700 border-blue-200",
-  read:          "bg-neutral-100 text-neutral-600 border-neutral-200",
-  responded:     "bg-green-50 text-green-700 border-green-200",
-  reviewing:     "bg-yellow-50 text-yellow-700 border-yellow-200",
-  interviewed:   "bg-purple-50 text-purple-700 border-purple-200",
-  hired:         "bg-green-50 text-green-700 border-green-200",
-  rejected:      "bg-red-50 text-red-600 border-red-200",
-  lead:          "bg-blue-50 text-blue-700 border-blue-200",
-  proposal_sent: "bg-yellow-50 text-yellow-700 border-yellow-200",
-  negotiating:   "bg-orange-50 text-orange-700 border-orange-200",
-  won:           "bg-green-50 text-green-700 border-green-200",
-  lost:          "bg-neutral-100 text-neutral-500 border-neutral-200",
-  active:        "bg-green-50 text-green-700 border-green-200",
-  inactive:      "bg-neutral-100 text-neutral-500 border-neutral-200",
+const VARIANT_STYLES: Record<StatusVariant, { bg: string; color: string; border: string }> = {
+  new:            { bg: "var(--admin-info-bg)",    color: "var(--admin-brand)",   border: "#BFDBFE" },
+  read:           { bg: "var(--admin-surface-2)",  color: "var(--admin-text-secondary)", border: "var(--admin-border-strong)" },
+  responded:      { bg: "var(--admin-success-bg)", color: "var(--admin-success)", border: "#BBF7D0" },
+  reviewing:      { bg: "var(--admin-warning-bg)", color: "var(--admin-warning)", border: "#FDE68A" },
+  interviewed:    { bg: "#F5F3FF",                 color: "#7C3AED",              border: "#DDD6FE" },
+  hired:          { bg: "var(--admin-success-bg)", color: "var(--admin-success)", border: "#BBF7D0" },
+  rejected:       { bg: "var(--admin-danger-bg)",  color: "var(--admin-danger)",  border: "#FECACA" },
+  lead:           { bg: "var(--admin-info-bg)",    color: "var(--admin-brand)",   border: "#BFDBFE" },
+  proposal_sent:  { bg: "var(--admin-warning-bg)", color: "var(--admin-warning)", border: "#FDE68A" },
+  negotiating:    { bg: "#FFF7ED",                 color: "#C2410C",              border: "#FED7AA" },
+  won:            { bg: "var(--admin-success-bg)", color: "var(--admin-success)", border: "#BBF7D0" },
+  lost:           { bg: "var(--admin-surface-2)",  color: "var(--admin-text-muted)", border: "var(--admin-border-strong)" },
+  active:         { bg: "var(--admin-success-bg)", color: "var(--admin-success)", border: "#BBF7D0" },
+  inactive:       { bg: "var(--admin-surface-2)",  color: "var(--admin-text-muted)", border: "var(--admin-border-strong)" },
+  "In Development": { bg: "var(--admin-warning-bg)", color: "var(--admin-warning)", border: "#FDE68A" },
+  Live:           { bg: "var(--admin-success-bg)", color: "var(--admin-success)", border: "#BBF7D0" },
 };
 
 const LABELS: Record<StatusVariant, string> = {
-  new:           "New",
-  read:          "Read",
-  responded:     "Responded",
-  reviewing:     "Reviewing",
-  interviewed:   "Interviewed",
-  hired:         "Hired",
-  rejected:      "Rejected",
-  lead:          "Lead",
-  proposal_sent: "Proposal Sent",
-  negotiating:   "Negotiating",
-  won:           "Won",
-  lost:          "Lost",
-  active:        "Active",
-  inactive:      "Inactive",
+  new: "New", read: "Read", responded: "Responded",
+  reviewing: "Reviewing", interviewed: "Interviewed", hired: "Hired", rejected: "Rejected",
+  lead: "Lead", proposal_sent: "Proposal Sent", negotiating: "Negotiating", won: "Won", lost: "Lost",
+  active: "Active", inactive: "Inactive",
+  "In Development": "In Development", Live: "Live",
 };
 
 interface StatusBadgeProps {
@@ -53,12 +37,11 @@ interface StatusBadgeProps {
 }
 
 export function StatusBadge({ status }: StatusBadgeProps) {
+  const s = VARIANT_STYLES[status] ?? VARIANT_STYLES.read;
   return (
     <span
-      className={[
-        "inline-flex items-center rounded-full border px-2 py-0.5 font-technical text-[10px] uppercase tracking-widest",
-        VARIANT_STYLES[status] ?? "bg-neutral-100 text-neutral-500 border-neutral-200",
-      ].join(" ")}
+      className="inline-flex items-center rounded-full px-2 py-0.5 font-technical text-[9px] uppercase tracking-[0.1em]"
+      style={{ background: s.bg, color: s.color, border: `1px solid ${s.border}` }}
     >
       {LABELS[status] ?? status}
     </span>

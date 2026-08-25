@@ -6,8 +6,8 @@ import { CheckCheck, Trash2 } from "lucide-react";
 import { markApplicationReviewing, deleteApplication } from "./actions";
 
 interface ApplicationActionsProps {
-  id: string;
-  status: string;
+  readonly id: string;
+  readonly status: string;
 }
 
 export function ApplicationActions({ id, status }: ApplicationActionsProps) {

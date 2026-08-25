@@ -25,12 +25,12 @@ export default async function ApplicationsPage() {
           {
             key: "name",
             header: "Applicant",
-            render: (r) => <span className="font-medium text-neutral-900">{r.fullName}</span>,
+            render: (r) => <span className="font-medium" style={{ color: "var(--admin-text-primary)" }}>{r.fullName}</span>,
           },
           {
             key: "email",
             header: "Email",
-            render: (r) => <span className="text-neutral-500">{r.email}</span>,
+            render: (r) => <span style={{ color: "var(--admin-text-muted)" }}>{r.email}</span>,
           },
           {
             key: "role",

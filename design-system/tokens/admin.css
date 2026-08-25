@@ -1,0 +1,66 @@
+/* ─── DTAI Admin Design Tokens — Dark-First Engineering System ───────────────
+   Philosophy: infra-midnight base, tech-blue accents, machined precision.
+   Every surface feels like a component, not a card.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* ── Page & Surface ──────────────────────────────────────────────────────── */
+  --admin-bg:            #050A12;   /* page base — infra-midnight */
+  --admin-surface:       #0D1520;   /* panel / card surface */
+  --admin-surface-2:     #111D2E;   /* elevated surface (modals, dropdowns, inset) */
+  --admin-surface-deep:  #0A1628;   /* deepest surface — sidebar header */
+
+  /* ── Borders ─────────────────────────────────────────────────────────────── */
+  --admin-border:        #1A2A3A;   /* default panel border */
+  --admin-border-strong: #1E3248;   /* table dividers, form inputs */
+  --admin-border-accent: #0057B8;   /* active / focused accent border */
+
+  /* ── Text ────────────────────────────────────────────────────────────────── */
+  --admin-text-primary:  #F0F4F8;   /* headings, values */
+  --admin-text-secondary:#94A3B8;   /* labels, descriptions */
+  --admin-text-muted:    #475569;   /* placeholders, dim labels */
+  --admin-text-dim:      #334155;   /* barely-visible structural labels */
+
+  /* ── Accent ──────────────────────────────────────────────────────────────── */
+  --admin-accent:        #00A6FF;   /* tech-blue — charts, highlights, links */
+  --admin-brand:         #0057B8;   /* primary brand blue */
+  --admin-brand-deep:    #002169;   /* deep navy */
+
+  /* ── Sidebar ─────────────────────────────────────────────────────────────── */
+  --admin-sidebar-bg:              #0D1520;
+  --admin-sidebar-border:          #1A2A3A;
+  --admin-sidebar-item-active-bg:  rgba(0,87,184,0.12);
+  --admin-sidebar-item-active-text:#00A6FF;
+  --admin-sidebar-item-hover-bg:   rgba(255,255,255,0.04);
+  --admin-sidebar-section-label:   #334155;
+
+  /* ── Status ──────────────────────────────────────────────────────────────── */
+  --admin-success:       #22C55E;
+  --admin-success-bg:    rgba(34,197,94,0.08);
+  --admin-warning:       #F59E0B;
+  --admin-warning-bg:    rgba(245,158,11,0.08);
+  --admin-danger:        #EF4444;
+  --admin-danger-bg:     rgba(239,68,68,0.08);
+  --admin-info:          #0057B8;
+  --admin-info-bg:       rgba(0,87,184,0.10);
+
+  /* ── Chart Palette ───────────────────────────────────────────────────────── */
+  --chart-1: #0057B8;
+  --chart-2: #00A6FF;
+  --chart-3: #3B82F6;
+  --chart-4: #6366F1;
+  --chart-5: #8B5CF6;
+  --chart-success: #22C55E;
+  --chart-warning: #F59E0B;
+  --chart-danger:  #EF4444;
+  --chart-muted:   #475569;
+
+  /* ── Elevation shadows (dark system) ────────────────────────────────────── */
+  --admin-shadow-panel:  0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.3);
+  --admin-shadow-raised: 0 4px 12px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.3);
+  --admin-shadow-modal:  0 20px 48px rgba(0,0,0,0.7), 0 8px 16px rgba(0,0,0,0.4);
+
+  /* ── Grid overlay (engineering precision texture) ────────────────────────── */
+  --admin-grid-color: rgba(0,166,255,0.04);
+  --admin-grid-size:  40px;
+}

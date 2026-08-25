@@ -6,11 +6,21 @@ interface AdminPageHeaderProps {
 
 export function AdminPageHeader({ title, description, action }: AdminPageHeaderProps) {
   return (
-    <div className="flex items-start justify-between gap-4 pb-6">
+    <div className="flex items-start justify-between gap-4 pb-5">
       <div>
-        <h1 className="text-lg font-semibold text-neutral-900">{title}</h1>
+        <h1
+          className="text-[18px] font-semibold leading-tight tracking-tight"
+          style={{ color: "var(--admin-text-primary)" }}
+        >
+          {title}
+        </h1>
         {description && (
-          <p className="mt-0.5 text-sm text-neutral-500">{description}</p>
+          <p
+            className="mt-1 text-sm"
+            style={{ color: "var(--admin-text-secondary)" }}
+          >
+            {description}
+          </p>
         )}
       </div>
       {action && <div className="shrink-0">{action}</div>}

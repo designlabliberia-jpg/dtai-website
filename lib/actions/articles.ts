@@ -9,6 +9,11 @@ export async function deleteArticle(sanityId: string): Promise<void> {
   await db.article.update({ where: { sanityId }, data: { deletedAt: new Date() } });
 }
 
+export async function toggleArticlePublished(id: string, value: boolean): Promise<void> {
+  await db.article.update({ where: { id }, data: { published: value } });
+  revalidatePath("/admin/news");
+}
+
 export async function syncArticleFromWebhook(
   rawBody: string,
   signature: string

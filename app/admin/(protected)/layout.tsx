@@ -3,7 +3,7 @@ import { getSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 
-export default async function ProtectedLayout({ children }: { children: React.ReactNode }) {
+export default async function ProtectedLayout({ children }: { readonly children: React.ReactNode }) {
   const session = await getSession();
   if (!session.adminId) redirect("/admin/login");
 
@@ -19,7 +19,7 @@ export default async function ProtectedLayout({ children }: { children: React.Re
   ]);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-neutral-50">
+    <div className="flex h-screen overflow-hidden" style={{ background: "var(--admin-bg)" }}>
       <AdminSidebar
         unreadContacts={unreadContacts}
         unreadApplications={unreadApplications}

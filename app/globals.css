@@ -7,6 +7,7 @@
 @import "../design-system/tokens/radius.css";
 @import "../design-system/tokens/shadow.css";
 @import "../design-system/tokens/motion.css";
+@import "../design-system/tokens/admin.css";
 
 /* Map tokens into Tailwind's theme so classes like bg-brand, text-tech-blue work */
 @theme {
@@ -20,6 +21,7 @@
   --color-neutral-600: var(--color-neutral-600);
   --color-neutral-300: var(--color-neutral-300);
   --color-accent: var(--color-tech-blue);
+  --color-admin-brand-deep: #002169;
 
   --font-primary: var(--font-primary);
   --font-technical: var(--font-technical);

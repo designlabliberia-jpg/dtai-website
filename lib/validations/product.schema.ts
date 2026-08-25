@@ -53,8 +53,6 @@ export const productSchema = z.object({
 
   imageUrl: httpsOrRelativeUrl,
 
-  dark: z.boolean().default(false),
-
   features: nonEmptyStringArray.max(20, "Maximum 20 features allowed"),
 
   builtFor: nonEmptyStringArray.max(10, "Maximum 10 built-for entries allowed"),

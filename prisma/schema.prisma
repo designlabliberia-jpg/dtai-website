@@ -5,6 +5,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 // ─── Auth ────────────────────────────────────────────────────────────────────
@@ -48,6 +49,20 @@ model PageSeo {
   title       String?
   description String?
   ogImageUrl  String?
+}
+
+model AboutSettings {
+  id                  String  @id @default("global")
+  mission             String  @default("")
+  vision              String  @default("")
+  aboutHeading        String  @default("")
+  aboutSubheading     String  @default("")
+  aboutDescription    String  @default("")
+  heroImageUrl        String  @default("")
+  teamImageUrl        String  @default("")
+  officeImageUrl      String  @default("")
+  valuesHeading       String  @default("")
+  valuesDescription   String  @default("")
 }
 
 // ─── Products ────────────────────────────────────────────────────────────────

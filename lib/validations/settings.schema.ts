@@ -102,5 +102,19 @@ export const pageSeoSchema = z.object({
   ogImageUrl: optionalHttpsUrl,
 });
 
+export const aboutSettingsSchema = z.object({
+  mission:           z.string().max(1000).trim().optional().default(""),
+  vision:            z.string().max(1000).trim().optional().default(""),
+  aboutHeading:      z.string().max(200).trim().optional().default(""),
+  aboutSubheading:   z.string().max(300).trim().optional().default(""),
+  aboutDescription:  z.string().max(2000).trim().optional().default(""),
+  heroImageUrl:      z.string().max(500).trim().optional().default(""),
+  teamImageUrl:      z.string().max(500).trim().optional().default(""),
+  officeImageUrl:    z.string().max(500).trim().optional().default(""),
+  valuesHeading:     z.string().max(200).trim().optional().default(""),
+  valuesDescription: z.string().max(1000).trim().optional().default(""),
+});
+
 export type SettingsInput = z.infer<typeof settingsSchema>;
 export type PageSeoInput = z.infer<typeof pageSeoSchema>;
+export type AboutSettingsInput = z.infer<typeof aboutSettingsSchema>;

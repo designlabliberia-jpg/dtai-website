@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
-import { settingsSchema, pageSeoSchema } from "@/lib/validations/settings.schema";
+import { settingsSchema, pageSeoSchema, aboutSettingsSchema } from "@/lib/validations/settings.schema";
 
 export type SettingsActionState =
   | { success: true }
@@ -70,5 +70,40 @@ export async function savePageSeo(
   });
 
   revalidatePath(`/${parsed.data.pageSlug}`);
+  return { success: true };
+}
+
+export async function saveAboutSettings(
+  _prev: SettingsActionState | null,
+  formData: FormData
+): Promise<SettingsActionState> {
+  const parsed = aboutSettingsSchema.safeParse({
+    mission: formData.get("mission"),
+    vision: formData.get("vision"),
+    aboutHeading: formData.get("aboutHeading"),
+    aboutSubheading: formData.get("aboutSubheading"),
+    aboutDescription: formData.get("aboutDescription"),
+    heroImageUrl: formData.get("heroImageUrl"),
+    teamImageUrl: formData.get("teamImageUrl"),
+    officeImageUrl: formData.get("officeImageUrl"),
+    valuesHeading: formData.get("valuesHeading"),
+    valuesDescription: formData.get("valuesDescription"),
+  });
+
+  if (!parsed.success) {
+    return {
+      success: false,
+      error: "Please fix the errors below.",
+      fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]>,
+    };
+  }
+
+  await db.aboutSettings.upsert({
+    where: { id: "global" },
+    update: parsed.data,
+    create: { id: "global", ...parsed.data },
+  });
+
+  revalidatePath("/company");
   return { success: true };
 }

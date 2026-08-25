@@ -6,8 +6,8 @@ import { CheckCheck, Trash2 } from "lucide-react";
 import { markContactRead, deleteContactSubmission } from "./actions";
 
 interface ContactActionsProps {
-  id: string;
-  status: string;
+  readonly id: string;
+  readonly status: string;
 }
 
 export function ContactActions({ id, status }: ContactActionsProps) {
@@ -33,6 +33,7 @@ export function ContactActions({ id, status }: ContactActionsProps) {
     <div className="flex items-center gap-2">
       {status === "new" && (
         <button
+          type="button"
           onClick={handleRead}
           disabled={pending}
           title="Mark as read"
@@ -42,6 +43,7 @@ export function ContactActions({ id, status }: ContactActionsProps) {
         </button>
       )}
       <button
+        type="button"
         onClick={handleDelete}
         disabled={pending}
         title="Archive"
