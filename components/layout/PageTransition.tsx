@@ -13,6 +13,7 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.15, ease: "easeOut" }}
+        className="w-full overflow-hidden"
       >
         {children}
       </motion.div>

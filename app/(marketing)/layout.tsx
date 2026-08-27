@@ -18,7 +18,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
       />
       <RouteProgressBar />
       <Header />
-      <main>
+      <main className="overflow-x-clip">
         <PageTransition>{children}</PageTransition>
       </main>
       <Footer />

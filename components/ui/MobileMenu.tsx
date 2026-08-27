@@ -42,7 +42,7 @@ export function MobileMenu({ isOpen, navItems, openDropdown, onDropdownToggle, i
 
       {/* Drawer */}
       <div
-        className={`fixed top-0 right-0 h-full w-2/3 bg-white z-50 shadow-2xl flex flex-col px-6 py-4 gap-5 text-sm font-medium transition-transform duration-[var(--duration-standard)] ease-[var(--ease-standard)] md:hidden ${
+        className={`fixed inset-y-0 right-0 z-50 w-2/3 max-w-xs bg-white shadow-2xl flex flex-col px-6 py-4 gap-5 text-sm font-medium transition-transform duration-[var(--duration-standard)] ease-[var(--ease-standard)] md:hidden ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >

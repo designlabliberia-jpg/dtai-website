@@ -55,7 +55,15 @@
 }
 
 @layer base {
+  html {
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+
   body {
+    overflow-x: hidden;
+    max-width: 100%;
+    touch-action: pan-y;
     background: var(--color-bg-primary);
     color: var(--color-text-primary);
     font-family: var(--font-primary);

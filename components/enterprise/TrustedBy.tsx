@@ -18,7 +18,7 @@ export function TrustedBy() {
         40+ partners have put their trust in us
       </p>
 
-      <div className="relative flex">
+      <div className="relative flex overflow-hidden">
         <div className="flex gap-10 marquee">
           {track.map((partner, i) => (
             <div key={i} className="group relative flex flex-col items-center gap-3 shrink-0">
