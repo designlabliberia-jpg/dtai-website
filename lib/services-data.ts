@@ -8,25 +8,16 @@ export interface MethodologyStep {
 
 export interface Service {
   slug: string;
-  title: string;
   icon: string;
-  summary: string;
   solutions: string[];
   methodology: MethodologyStep[];
-  proofPoints: string[];
-  codeLang: string;
-  codeFilename: string;
-  codeSnippet: string;
   profile: ProfileSection;
 }
 
 export const services: Service[] = [
   {
     slug: "digital-technology",
-    title: "Digital Technology Solutions",
     icon: "Monitor",
-    summary:
-      "Professional digital systems, from custom software and mobile apps to AI, cloud, and enterprise platforms, engineered for institutional scale and long term reliability.",
     solutions: [
       "Custom Software Development",
       "Mobile Applications",
@@ -38,23 +29,11 @@ export const services: Service[] = [
       "Hospital Information Systems",
       "Enterprise Resource Planning (ERP)",
     ],
-    methodology: [
+      methodology: [
       { title: "Architecture Review", description: "System design and architecture assessed before any implementation begins.", icon: "ScanSearch" },
       { title: "Build & Test", description: "Typed, tested codebases with enforced peer review gates at every stage.", icon: "Code2" },
       { title: "Documented Handover", description: "Full documentation delivered for long-term maintainability and team ownership.", icon: "FileCheck2" },
     ],
-    proofPoints: [
-      "Standardized development workflows applied across every engagement",
-      "Ongoing software maintenance and technical support included",
-    ],
-    codeLang: "typescript",
-    codeFilename: "deployment.service.ts",
-    codeSnippet: `export async function deployRelease(release: Release): Promise<DeployResult> {
-  await runTestSuite(release);
-  await requireCodeReview(release, { minApprovals: 2 });
-  const build = await buildArtifact(release);
-  return deployToEnvironment(build, "production");
-}`,
     profile: {
       eyebrow: "Digital Technology Solutions",
       heading: "Engineering Digital Systems",
@@ -70,10 +49,7 @@ export const services: Service[] = [
   },
   {
     slug: "environmental-technology",
-    title: "Eco Technology Sustainability",
     icon: "Leaf",
-    summary:
-      "Digital platforms and data systems that support environmental monitoring, sustainability reporting, and climate-informed decision-making.",
     solutions: [
       "Environmental Information Management Systems",
       "Environmental Impact Assessment (digital data collection)",
@@ -88,27 +64,12 @@ export const services: Service[] = [
       "Smart Agriculture Solutions",
       "Disaster Risk Mapping and Early Warning Systems",
     ],
-    methodology: [
+       methodology: [
       { title: "Spatial Data Modeling", description: "Data models matched to environmental decision needs and field realities.", icon: "Map" },
       { title: "Sensor Integration", description: "Real-time sensor pipelines designed for reliability in low-connectivity environments.", icon: "Wifi" },
       { title: "ESG Reporting", description: "Reporting frameworks aligned to international ESG and regulatory standards.", icon: "BarChart3" },
     ],
-    proofPoints: [
-      "Systems built for field data collection in low-connectivity environments",
-      "Dashboards designed around regulatory and institutional reporting cycles",
-    ],
-    codeLang: "python",
-    codeFilename: "env_monitor.py",
-    codeSnippet: `def process_sensor_reading(reading: SensorReading) -> Alert | None:
-    if reading.value > THRESHOLD[reading.parameter]:
-        return Alert(
-            station=reading.station_id,
-            parameter=reading.parameter,
-            value=reading.value,
-            severity=classify_severity(reading),
-        )
-    store_reading(reading)
-    return None`,
+    
     profile: {
       eyebrow: "Eco Technology Sustainability",
       heading: "Digital Tools for a",
@@ -124,10 +85,7 @@ export const services: Service[] = [
   },
   {
     slug: "environmental-consulting",
-    title: "Environmental Advisory",
     icon: "TreePine",
-    summary:
-      "Expert advisory and technical services for environmental compliance, auditing, and sustainability strategy.",
     solutions: [
       "Environmental Compliance",
       "Environmental Audits",
@@ -137,24 +95,12 @@ export const services: Service[] = [
       "Pollution Monitoring",
       "Environmental Database Development",
     ],
-    methodology: [
+     methodology: [
       { title: "Baseline Assessment", description: "Environmental baseline established from field data before any recommendation.", icon: "ClipboardList" },
       { title: "Compliance Mapping", description: "Frameworks mapped to applicable national and international standards.", icon: "ShieldCheck" },
       { title: "Regulatory Documentation", description: "Findings structured for regulatory submission and institutional acceptance.", icon: "FileText" },
     ],
-    proofPoints: [
-      "Advisory grounded in field data, not desktop assumptions",
-      "Deliverables structured for regulatory acceptance",
-    ],
-    codeLang: "sql",
-    codeFilename: "compliance_report.sql",
-    codeSnippet: `SELECT site_id, parameter, AVG(value) AS avg_value,
-       MAX(value) AS peak_value, standard_limit,
-       CASE WHEN MAX(value) > standard_limit THEN 'EXCEEDANCE' ELSE 'COMPLIANT' END AS status
-FROM monitoring_readings
-WHERE sampled_at >= CURRENT_DATE - INTERVAL '90 days'
-GROUP BY site_id, parameter, standard_limit
-ORDER BY status DESC, peak_value DESC;`,
+    
     profile: {
       eyebrow: "Environmental Advisory",
       heading: "Expert Guidance for",
@@ -170,10 +116,7 @@ ORDER BY status DESC, peak_value DESC;`,
   },
   {
     slug: "smart-city-infrastructure",
-    title: "Smart City & Green Infrastructure",
     icon: "Building2",
-    summary:
-      "IoT-enabled urban systems that improve city services, reduce resource waste, and provide real-time operational visibility.",
     solutions: [
       "Smart Waste Collection",
       "Smart Street Lighting",
@@ -182,25 +125,11 @@ ORDER BY status DESC, peak_value DESC;`,
       "Traffic Monitoring",
       "Environmental Sensors (IoT)",
     ],
-    methodology: [
+      methodology: [
       { title: "Network Design", description: "Sensor networks designed around city infrastructure and connectivity constraints.", icon: "Network" },
       { title: "Ops Dashboard", description: "Centralized monitoring dashboards built for operations teams and real-time alerting.", icon: "LayoutDashboard" },
       { title: "System Integration", description: "Full interoperability with existing municipal and third-party systems.", icon: "Plug" },
     ],
-    proofPoints: [
-      "IoT deployments designed for low-maintenance, long-term operation",
-      "Data pipelines built for real-time alerting and historical analysis",
-    ],
-    codeLang: "typescript",
-    codeFilename: "sensor-gateway.ts",
-    codeSnippet: `export async function ingestReading(payload: IoTPayload) {
-  const reading = parseReading(payload);
-  await timeseries.insert(reading);
-
-  if (reading.value > thresholds[reading.metric]) {
-    await alertOpsChannel({ sensor: reading.sensorId, metric: reading.metric, value: reading.value });
-  }
-}`,
     profile: {
       eyebrow: "Smart City & Green Infrastructure",
       heading: "IoT Systems for",
@@ -216,10 +145,7 @@ ORDER BY status DESC, peak_value DESC;`,
   },
   {
     slug: "climate-disaster-management",
-    title: "Climate & Disaster Management",
     icon: "ShieldAlert",
-    summary:
-      "Early warning systems, predictive analytics, and emergency response platforms that help institutions prepare for and respond to climate-driven hazards.",
     solutions: [
       "Flood Prediction Systems",
       "Wildfire Monitoring",
@@ -227,26 +153,11 @@ ORDER BY status DESC, peak_value DESC;`,
       "Drought Monitoring",
       "Emergency Response Systems",
     ],
-    methodology: [
+      methodology: [
       { title: "Hazard Modeling", description: "Risk models grounded in historical and real-time climate data sources.", icon: "Activity" },
       { title: "Alert Thresholds", description: "Thresholds defined collaboratively with emergency management stakeholders.", icon: "BellRing" },
       { title: "Response Integration", description: "Workflows integrated with existing institutional emergency protocols.", icon: "GitMerge" },
     ],
-    proofPoints: [
-      "Systems designed for 24/7 unattended monitoring with automated alerting",
-      "Spatial analysis tools built for multi-agency coordination",
-    ],
-    codeLang: "python",
-    codeFilename: "flood_predictor.py",
-    codeSnippet: `def predict_flood_risk(station_id: str, hours_ahead: int = 6) -> RiskLevel:
-    readings = fetch_recent_readings(station_id, window_hours=24)
-    rainfall_trend = compute_trend(readings["rainfall_mm"])
-    river_level = readings["river_level_m"].iloc[-1]
-
-    if river_level > CRITICAL_LEVEL or rainfall_trend > SURGE_THRESHOLD:
-        trigger_early_warning(station_id, level="HIGH")
-        return RiskLevel.HIGH
-    return RiskLevel.MONITOR`,
     profile: {
       eyebrow: "Climate & Disaster Management",
       heading: "Early Warning Systems for",

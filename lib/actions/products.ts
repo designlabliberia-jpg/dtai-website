@@ -15,7 +15,6 @@ function parseProduct(formData: FormData) {
     tagline: formData.get("tagline"),
     description: formData.get("description"),
     status: (formData.get("status") as string) || "In Development",
-    iconKey: formData.get("iconKey"),
     imageUrl: formData.get("imageUrl"),
     features: formData.getAll("features"),
     builtFor: formData.getAll("builtFor"),

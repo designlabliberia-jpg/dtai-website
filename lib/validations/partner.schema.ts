@@ -1,20 +1,12 @@
 import { z } from "zod";
+import { cloudinaryOrRelativeUrl } from "./shared";
 
 export const PARTNER_TYPES = ["logo", "category"] as const;
-
-const httpsOrRelativeUrl = z
-  .string()
-  .min(1, "Image URL is required")
-  .max(500, "Image URL must be under 500 characters")
-  .refine(
-    (v) => v.startsWith("/") || v.startsWith("https://"),
-    "Image URL must be a relative path or HTTPS URL"
-  );
 
 export const partnerSchema = z.object({
   title: z.string().min(1, "Title is required").max(150).trim(),
 
-  logoUrl: httpsOrRelativeUrl,
+  logoUrl: cloudinaryOrRelativeUrl,
 
   type: z.enum(PARTNER_TYPES, { error: "Select a valid partner type" }),
 

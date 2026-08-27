@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { Panel } from "@/components/admin/Panel";
 import { FormField } from "@/components/admin/FormField";
+import { ImageUploadField } from "@/components/admin/ImageUploadField";
 import { saveSettings } from "@/lib/actions/settings";
 import type { SettingsActionState } from "@/lib/actions/settings";
 
@@ -59,7 +60,7 @@ export function GeneralForm({ settings: s }: Props) {
 
       <Panel accent title="Assets & Keys">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <FormField label="Logo URL" name="logoUrl" required error={fe.logoUrl?.[0]} inputProps={{ defaultValue: s?.logoUrl }} />
+          <ImageUploadField label="Logo" name="logoUrl" required error={fe.logoUrl?.[0]} defaultValue={s?.logoUrl} />
           <FormField label="Web3Forms Key" name="web3formsKey" required error={fe.web3formsKey?.[0]} inputProps={{ defaultValue: s?.web3formsKey }} />
         </div>
       </Panel>

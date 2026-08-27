@@ -17,9 +17,9 @@ export default function ServicesPage() {
         {services.map((ser) => (
           <ServiceCard
             key={ser.slug}
-            title={ser.title}
+            title={ser.profile.eyebrow}
             icon={ser.icon}
-            description={ser.summary}
+            description={ser.profile.paragraphs[0]}
             href={`/services/${ser.slug}`}
           />
         ))}

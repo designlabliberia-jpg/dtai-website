@@ -8,6 +8,7 @@ import { Panel } from "@/components/admin/Panel";
 import { FormField } from "@/components/admin/FormField";
 import { ArrayField } from "@/components/admin/ArrayField";
 import { SlugField } from "@/components/admin/SlugField";
+import { ImageUploadField } from "@/components/admin/ImageUploadField";
 import { createPartner, updatePartner } from "@/lib/actions/partners";
 import type { PartnerActionState } from "@/lib/actions/partners";
 import { PARTNER_TYPES } from "@/lib/validations/partner.schema";
@@ -111,13 +112,12 @@ export function PartnerForm({ partner: p }: PartnerFormProps) {
                 {PARTNER_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
               </select>
             </div>
-            <FormField
-              label="Logo URL"
+            <ImageUploadField
+              label="Logo"
               name="logoUrl"
               required
               error={fe.logoUrl?.[0]}
-              hint="Relative path or HTTPS URL"
-              inputProps={{ defaultValue: p?.logoUrl }}
+              defaultValue={p?.logoUrl}
             />
             <div className="flex flex-col gap-1.5">
               <label

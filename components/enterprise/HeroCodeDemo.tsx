@@ -128,7 +128,7 @@ const SERVICE_ICONS: Record<string, LucideIcon> = {
 };
 
 const SERVICES = services.map((s) => ({
-  title: s.title,
+  title: s.profile.eyebrow,
   icon: SERVICE_ICONS[s.slug] ?? Code2,
 }));
 

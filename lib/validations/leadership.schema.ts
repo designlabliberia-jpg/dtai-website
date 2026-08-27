@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { optionalCloudinaryOrRelativeUrl } from "./shared";
 
 export const DIVISIONS = [
   "Executive",
@@ -37,14 +38,7 @@ export const leadershipSchema = z.object({
     .max(2000, "Bio must be under 2000 characters")
     .trim(),
 
-  imageUrl: z
-    .string()
-    .max(500)
-    .refine(
-      (v) => !v || v.startsWith("/") || v.startsWith("https://"),
-      "Must be a relative path or HTTPS URL"
-    )
-    .optional(),
+  imageUrl: optionalCloudinaryOrRelativeUrl,
 
   linkedin: z
     .union([

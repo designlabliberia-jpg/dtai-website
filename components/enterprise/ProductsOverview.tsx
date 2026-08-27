@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { ProductCard } from "@/components/enterprise/ProductCard";
 import { db } from "@/lib/db";
+import { services as fallbackServices } from "@/lib/services-data";
 
 async function getData() {
   const [products, services] = await Promise.all([
@@ -19,7 +20,10 @@ async function getData() {
       take: 5,
     }),
   ]);
-  return { products, services };
+  const resolvedServices = services.length
+    ? services
+    : fallbackServices.slice(0, 5).map(({ profile }) => ({ title: profile.eyebrow }));
+  return { products, services: resolvedServices };
 }
 
 export async function ProductsOverview() {
@@ -67,7 +71,7 @@ export async function ProductsOverview() {
             ))}
           </div>
         ) : (
-          <div className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-[3fr_2fr] items-center">
+          <div className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-[3fr_2fr]">
             {/* Image collage: 60% column */}
             <div className="flex flex-col gap-3">
               {/* Top row: team photo (35% of col) + logo (20% of col) */}
@@ -86,16 +90,18 @@ export async function ProductsOverview() {
             </div>
 
             {/* Content */}
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col items-start gap-6">
               <p className="text-sm leading-relaxed text-neutral-600 max-w-md">
-                DTAI engineers purpose-built digital platforms for governments, institutions, and everyday life — from election management systems to healthcare platforms and super apps. Our products are built for scale, security, and real-world impact across Africa.
+                Digital Technologies Associates Incorporated (DTAI) is an innovative technology and environmental solutions company dedicated to delivering digital transformation services across Africa and beyond. 
+                We specialize in software engineering, artificial intelligence, GIS and geospatial technologies, cybersecurity, health information systems, election technology, environmental monitoring, sustainability solutions, and smart city innovations.
+                By combining advanced digital technologies with environmental expertise, DTAI helps governments, development partners, private enterprises, and communities make informed decisions through solutions that promote efficiency, transparency, resilience, and sustainable development.
               </p>
 
               {/* Capability bars */}
-              <div className="flex flex-col gap-5">
+              <div className="flex flex-col gap-5 w-full">
                 {services.map(({ title }, i) => (
                   <div key={title}>
-                    <div className="flex justify-between mb-1.5">
+                    <div className="flex justify-between mb-2">
                       <span className="font-technical text-xs font-bold uppercase tracking-wide text-neutral-800">{title}</span>
                       <span className="font-technical text-xs font-bold text-brand">{pcts[i]}%</span>
                     </div>

@@ -6,7 +6,6 @@ export interface Product {
   tagline: string;
   description: string;
   status: "In Development";
-  iconKey: "libgo" | "hospital" | "election-results" | "party-agent";
   image: string;
   features: string[];
   relatedCapabilities: string[];
@@ -22,7 +21,6 @@ export const products: Product[] = [
     description:
       "LIBGO connects people with the services they use every day, all in one place: marketplace shopping, transportation, food delivery, pharmacies, hotels, and courier services.",
     status: "In Development",
-    iconKey: "libgo",
     image: "/assets/products/MobileScreen.png",
     features: [
       "One Stop App",
@@ -56,7 +54,6 @@ export const products: Product[] = [
     description:
       "A complete healthcare management platform covering the full range of hospital operations, from patient care to administration. A comprehensive platform for healthcare institutions.",
     status: "In Development",
-    iconKey: "hospital",
     image: "/assets/products/HmsImg.png",
     features: [
       "Clinical Workflow",
@@ -90,7 +87,6 @@ export const products: Product[] = [
     description:
       "Engineered for absolute transparency and auditability. This system facilitates secure vote tabulation, real-time transmission, and public dissemination of results with multi-layered verification protocols to ensure democratic integrity.",
     status: "In Development",
-    iconKey: "election-results",
     image: "/assets/products/EmsImg.png",
     features: [
       "Result Collection",
@@ -124,7 +120,6 @@ export const products: Product[] = [
     description:
       "A digital accreditation and management solution for political party agents operating during elections.",
     status: "In Development",
-    iconKey: "party-agent",
     image: "/assets/products/MobileScreen.png",
     features: ["Digital Accreditation", "Agent Management"],
     relatedCapabilities: [

@@ -8,18 +8,17 @@ import { Panel } from "@/components/admin/Panel";
 import { FormField } from "@/components/admin/FormField";
 import { SlugField } from "@/components/admin/SlugField";
 import { ArrayField } from "@/components/admin/ArrayField";
-import { MethodologyRepeater } from "@/components/admin/MethodologyRepeater";
+import { ImageUploadField } from "@/components/admin/ImageUploadField";
 import { createService, updateService } from "@/lib/actions/services";
 import type { ServiceActionState } from "@/lib/actions/services";
 
 interface ServiceFormProps {
   service?: {
-    id: string; slug: string; title: string; icon: string; summary: string;
+    id: string; slug: string; icon: string;
     solutions: string[]; profileEyebrow: string; profileHeading: string;
     profileHeadingAccent: string | null; profileParagraphs: string[];
     profilePrimaryImageUrl: string; profilePrimaryImageAlt: string;
     published: boolean; order: number;
-    methodology: { title: string; description: string; icon: string; order: number }[];
   };
 }
 
@@ -34,7 +33,7 @@ const selectStyle = {
 export function ServiceForm({ service: s }: ServiceFormProps) {
   const router = useRouter();
   const isEdit = !!s;
-  const [title, setTitle] = useState(s?.title ?? "");
+  const [eyebrow, setEyebrow] = useState(s?.profileEyebrow ?? "");
 
   const action = isEdit ? updateService.bind(null, s.id) : createService;
   const [state, formAction, pending] = useActionState(
@@ -48,7 +47,7 @@ export function ServiceForm({ service: s }: ServiceFormProps) {
 
   return (
     <AdminFormShell
-      title={isEdit ? `Edit — ${s.title}` : "New Service"}
+      title={isEdit ? `Edit — ${s.profileEyebrow}` : "New Service"}
       backHref="/admin/services" backLabel="Services"
       actions={
         <div className="flex gap-3">
@@ -76,13 +75,11 @@ export function ServiceForm({ service: s }: ServiceFormProps) {
         <Panel accent title="Identity">
           <div className="flex flex-col gap-4">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <FormField label="Title" name="title" required error={fe.title?.[0]}
-                inputProps={{ defaultValue: s?.title, onChange: (e) => setTitle(e.target.value) }} />
               <FormField label="Icon Name" name="icon" required error={fe.icon?.[0]}
                 hint="Lucide icon name e.g. Cloud"
                 inputProps={{ defaultValue: s?.icon }} />
             </div>
-            <SlugField name="slug" sourceValue={title} defaultValue={s?.slug} error={fe.slug?.[0]} />
+            <SlugField name="slug" sourceValue={eyebrow} defaultValue={s?.slug} error={fe.slug?.[0]} />
             <div className="flex flex-col gap-1.5">
               <label className="font-technical text-[10px] uppercase tracking-[0.1em]"
                 style={{ color: "var(--admin-text-secondary)" }}>Order</label>
@@ -93,25 +90,16 @@ export function ServiceForm({ service: s }: ServiceFormProps) {
 
         <Panel accent title="Content">
           <div className="flex flex-col gap-4">
-            <FormField label="Summary" name="summary" as="textarea" rows={3} required
-              error={fe.summary?.[0]} inputProps={{ defaultValue: s?.summary }} />
             <ArrayField label="Solutions" name="solutions" defaultValue={s?.solutions}
               error={fe.solutions?.[0]} placeholder="Add solution…" />
           </div>
-        </Panel>
-
-        <Panel accent title="Methodology Steps">
-          <MethodologyRepeater
-            defaultValue={s?.methodology?.sort((a, b) => a.order - b.order)}
-            error={fe.methodology?.[0]}
-          />
         </Panel>
 
         <Panel accent title="Profile Section">
           <div className="flex flex-col gap-4">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <FormField label="Eyebrow" name="profileEyebrow" required error={fe.profileEyebrow?.[0]}
-                inputProps={{ defaultValue: s?.profileEyebrow }} />
+                inputProps={{ defaultValue: s?.profileEyebrow, onChange: (e) => setEyebrow(e.target.value) }} />
               <FormField label="Heading" name="profileHeading" required error={fe.profileHeading?.[0]}
                 inputProps={{ defaultValue: s?.profileHeading }} />
               <FormField label="Heading Accent" name="profileHeadingAccent"
@@ -120,8 +108,8 @@ export function ServiceForm({ service: s }: ServiceFormProps) {
             <ArrayField label="Paragraphs" name="profileParagraphs" defaultValue={s?.profileParagraphs}
               error={fe.profileParagraphs?.[0]} />
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <FormField label="Primary Image URL" name="profilePrimaryImageUrl" required
-                error={fe.profilePrimaryImageUrl?.[0]} inputProps={{ defaultValue: s?.profilePrimaryImageUrl }} />
+              <ImageUploadField label="Primary Image" name="profilePrimaryImageUrl" required
+                error={fe.profilePrimaryImageUrl?.[0]} defaultValue={s?.profilePrimaryImageUrl} />
               <FormField label="Primary Image Alt" name="profilePrimaryImageAlt" required
                 error={fe.profilePrimaryImageAlt?.[0]} inputProps={{ defaultValue: s?.profilePrimaryImageAlt }} />
             </div>

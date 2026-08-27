@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { Panel } from "@/components/admin/Panel";
 import { FormField } from "@/components/admin/FormField";
+import { ImageUploadField } from "@/components/admin/ImageUploadField";
 import { saveAboutSettings } from "@/lib/actions/settings";
 import type { SettingsActionState } from "@/lib/actions/settings";
 
@@ -48,9 +49,9 @@ export function AboutForm({ about: a }: Props) {
 
       <Panel accent title="Images">
         <div className="flex flex-col gap-4">
-          <FormField label="Hero Image URL" name="heroImageUrl" error={fe.heroImageUrl?.[0]} inputProps={{ defaultValue: a?.heroImageUrl }} />
-          <FormField label="Team Image URL" name="teamImageUrl" error={fe.teamImageUrl?.[0]} inputProps={{ defaultValue: a?.teamImageUrl }} />
-          <FormField label="Office Image URL" name="officeImageUrl" error={fe.officeImageUrl?.[0]} inputProps={{ defaultValue: a?.officeImageUrl }} />
+          <ImageUploadField label="Hero Image" name="heroImageUrl" error={fe.heroImageUrl?.[0]} defaultValue={a?.heroImageUrl} />
+          <ImageUploadField label="Team Image" name="teamImageUrl" error={fe.teamImageUrl?.[0]} defaultValue={a?.teamImageUrl} />
+          <ImageUploadField label="Office Image" name="officeImageUrl" error={fe.officeImageUrl?.[0]} defaultValue={a?.officeImageUrl} />
         </div>
       </Panel>
 

@@ -20,14 +20,14 @@ type NavItem = { label: string; href?: string; children?: NavChild[]; viewAllHre
 const navItems: NavItem[] = [
     {
     label: "Products",
-    href: "/#products",
+    href: "/products",
   },
   {
     label: "Services",
     href: "/services",
     viewAllHref: "/services",
     viewAllLabel: "View All Services",
-    children: services.map((s) => ({ title: s.title, href: `/services/${s.slug}` })),
+    children: services.map((s) => ({ title: s.profile.eyebrow, href: `/services/${s.slug}` })),
   },
   {
     label: "Careers",
@@ -111,7 +111,7 @@ export function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-all duration-[var(--duration-standard)] ${scrolled ? "border-b border-neutral-300/60 bg-white/85 shadow-sm backdrop-blur-md" : "border-b border-transparent bg-white"}`}
+      className={`sticky top-0 z-40 transition-all duration-[var(--duration-standard)] ${scrolled ? "border-b border-neutral-300/60 bg-white/85 shadow-sm backdrop-blur-md" : "border-b border-transparent bg-white"}`}
     >
       <div className={`h-px w-full bg-gradient-to-r from-tech-blue via-dtai-blue/50 to-transparent transition-opacity duration-[var(--duration-standard)] ${scrolled ? "opacity-100" : "opacity-0"}`} />
 
@@ -191,3 +191,4 @@ export function Header() {
     </header>
   );
 }
+

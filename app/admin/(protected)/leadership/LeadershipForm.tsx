@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { AdminFormShell } from "@/components/admin/AdminFormShell";
 import { Panel } from "@/components/admin/Panel";
 import { FormField } from "@/components/admin/FormField";
+import { ImageUploadField } from "@/components/admin/ImageUploadField";
 import { createLeadershipMember, updateLeadershipMember } from "@/lib/actions/leadership";
 import type { LeadershipActionState } from "@/lib/actions/leadership";
 import { DIVISIONS } from "@/lib/validations/leadership.schema";
@@ -151,12 +152,11 @@ export function LeadershipForm({ member: m }: LeadershipFormProps) {
               inputProps={{ defaultValue: m?.bio }}
             />
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <FormField
-                label="Image URL"
+              <ImageUploadField
+                label="Image"
                 name="imageUrl"
                 error={fe.imageUrl?.[0]}
-                hint="Relative path or HTTPS URL"
-                inputProps={{ defaultValue: m?.imageUrl ?? "" }}
+                defaultValue={m?.imageUrl}
               />
               <FormField
                 label="LinkedIn URL"

@@ -1,22 +1,5 @@
 import { z } from "zod";
-
-export const PRODUCT_ICON_KEYS = [
-  "libgo",
-  "hospital",
-  "election-results",
-  "party-agent",
-] as const;
-
-export type ProductIconKey = (typeof PRODUCT_ICON_KEYS)[number];
-
-const httpsOrRelativeUrl = z
-  .string()
-  .min(1, "Image URL is required")
-  .max(500, "Image URL must be under 500 characters")
-  .refine(
-    (v) => v.startsWith("/") || v.startsWith("https://"),
-    "Image URL must be a relative path or HTTPS URL"
-  );
+import { cloudinaryOrRelativeUrl, optionalCloudinaryOrRelativeUrl } from "./shared";
 
 const nonEmptyStringArray = z
   .array(z.string().min(1).max(200))
@@ -49,9 +32,7 @@ export const productSchema = z.object({
 
   status: z.enum(["In Development", "Published"]),
 
-  iconKey: z.enum(PRODUCT_ICON_KEYS, { error: "Select a valid icon" }),
-
-  imageUrl: httpsOrRelativeUrl,
+  imageUrl: cloudinaryOrRelativeUrl,
 
   features: nonEmptyStringArray.max(20, "Maximum 20 features allowed"),
 
@@ -65,13 +46,9 @@ export const productSchema = z.object({
   profileHeading: z.string().min(1, "Heading is required").max(150).trim(),
   profileHeadingAccent: z.string().max(150).trim().optional(),
   profileParagraphs: nonEmptyStringArray.max(10, "Maximum 10 paragraphs allowed"),
-  profilePrimaryImageUrl: httpsOrRelativeUrl,
+  profilePrimaryImageUrl: cloudinaryOrRelativeUrl,
   profilePrimaryImageAlt: z.string().min(1, "Alt text is required").max(200).trim(),
-  profileSecondaryImageUrl: z
-    .string()
-    .max(500)
-    .refine((v) => !v || v.startsWith("/") || v.startsWith("https://"), "Must be a relative path or HTTPS URL")
-    .optional(),
+  profileSecondaryImageUrl: optionalCloudinaryOrRelativeUrl,
   profileSecondaryImageAlt: z.string().max(200).trim().optional(),
 
   published: z.boolean().default(false),
