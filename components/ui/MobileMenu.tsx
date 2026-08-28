@@ -16,13 +16,13 @@ type MobileMenuProps = Readonly<{
   onClose: () => void;
 }>;
 
-function DrawerLink({ href, onClick, active, children }: { href: string; onClick: () => void; active: boolean; children: React.ReactNode }) {
+function DrawerLink({ href, onClick, active, children }: Readonly<{ href: string; onClick: () => void; active: boolean; children: React.ReactNode }>) {
   return (
     <Link
       href={href}
       prefetch={true}
       onClick={onClick}
-      className={`py-1.5 transition-colors duration-micro ${active ? "text-brand" : "text-neutral-700 hover:text-brand"}`}
+      className={`rounded-lg px-2 py-1.5 transition-colors duration-micro ${active ? "text-brand" : "text-neutral-700 hover:bg-neutral-100 hover:text-brand"}`}
     >
       {children}
     </Link>
@@ -34,10 +34,14 @@ export function MobileMenu({ isOpen, navItems, openDropdown, onDropdownToggle, i
     <>
       {/* Backdrop */}
       <div
+        role="button"
+        tabIndex={0}
         onClick={onClose}
+        onKeyDown={(e) => e.key === "Enter" || e.key === " " ? onClose() : undefined}
         className={`fixed inset-0 z-40 bg-black/40 transition-opacity duration-[var(--duration-standard)] md:hidden ${
           isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
+        aria-label="Close menu"
       />
 
       {/* Drawer */}
@@ -55,12 +59,14 @@ export function MobileMenu({ isOpen, navItems, openDropdown, onDropdownToggle, i
           const expanded = openDropdown === item.label;
 
           if (item.children) {
+            const btnClass = expanded ? "bg-brand text-white" : active ? "text-brand" : "text-neutral-700 hover:bg-neutral-100 hover:text-brand";
             return (
               <div key={item.label}>
                 <button
                   type="button"
                   onClick={() => onDropdownToggle(item.label)}
-                  className={`flex items-center gap-1 w-full py-1.5 transition-colors duration-micro ${active ? "text-brand" : "text-neutral-700 hover:text-brand"}`}
+                  className={`flex items-center gap-1 w-full rounded-lg px-2 py-1.5 transition-colors duration-micro ${btnClass}`}
+                  aria-expanded={expanded}
                 >
                   {item.label}
                   <ChevronDown size={14} className={`ml-auto transition-transform duration-micro ${expanded ? "rotate-180" : ""}`} />

@@ -9,40 +9,25 @@ import { Container } from "./Container";
 import { DropdownPanel } from "@/components/ui/DropdownPanel";
 import { MobileMenu } from "@/components/ui/MobileMenu";
 import { siteConfig } from "@/lib/seo";
-import { services } from "@/lib/services-data";
-
-
 
 type NavChild = { title: string; href: string};
 type NavItem = { label: string; href?: string; children?: NavChild[]; viewAllHref?: string; viewAllLabel?: string };
 
-
-const navItems: NavItem[] = [
+function buildNavItems(serviceLinks: NavChild[]): NavItem[] {
+  return [
+    { label: "Products", href: "/products" },
     {
-    label: "Products",
-    href: "/products",
-  },
-  {
-    label: "Services",
-    href: "/services",
-    viewAllHref: "/services",
-    viewAllLabel: "View All Services",
-    children: services.map((s) => ({ title: s.profile.eyebrow, href: `/services/${s.slug}` })),
-  },
-  {
-    label: "Careers",
-    href: "/company/careers",
-  },
-  {
-    label: "Blogs",
-    href: "/#blog",
-  },
-  {
-    label: "About Us",
-    href: "/company/overview",
-},
-  
-];
+      label: "Services",
+      href: "/services",
+      viewAllHref: "/services",
+      viewAllLabel: "View All Services",
+      children: serviceLinks,
+    },
+    { label: "Careers", href: "/company/careers" },
+    { label: "Blogs", href: "/#blog" },
+    { label: "About Us", href: "/company/overview" },
+  ];
+}
 
 function useDropdown() {
   const [open, setOpen] = useState<string | null>(null);
@@ -63,7 +48,8 @@ function useDropdown() {
 const activeBar = (active: boolean) =>
   `absolute inset-x-3 -bottom-[1px] h-[2px] rounded-full bg-tech-blue transition-transform duration-[var(--duration-standard)] ease-[var(--ease-standard)] ${active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`;
 
-export function Header() {
+export function Header({ serviceLinks = [] }: { serviceLinks?: NavChild[] }) {
+  const navItems = buildNavItems(serviceLinks);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const dropdown = useDropdown();
@@ -159,7 +145,7 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Link href="/#contact" prefetch={true} className="hidden items-center gap-2 rounded-md bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-micro hover:bg-tech-blue sm:inline-flex">
+          <Link href="/#contact" prefetch={true} className="hidden items-center gap-2 rounded-md border border-brand bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-all duration-micro hover:bg-transparent hover:text-brand sm:inline-flex">
             Contact Us
           </Link>
           <button

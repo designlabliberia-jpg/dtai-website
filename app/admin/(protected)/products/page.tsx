@@ -3,15 +3,13 @@ import { Plus } from "lucide-react";
 import { db } from "@/lib/db";
 import { Panel } from "@/components/admin/Panel";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
-import { AdminTable } from "@/components/admin/AdminTable";
-import { StatusBadge } from "@/components/admin/StatusBadge";
-import { ContentActions } from "@/components/admin/ContentActions";
-import { toggleProductPublished, deleteProduct } from "@/lib/actions/products";
+import { ProductsTable } from "./ProductsTable";
 
 export default async function ProductsPage() {
   const products = await db.product.findMany({
     where: { deletedAt: null },
     orderBy: [{ order: "asc" }, { createdAt: "desc" }],
+    select: { id: true, name: true, tagline: true, status: true, published: true, imageUrl: true },
   });
 
   return (
@@ -28,48 +26,7 @@ export default async function ProductsPage() {
         }
       />
       <Panel accent padding="none">
-        <AdminTable
-          rows={products}
-          getRowKey={(r) => r.id}
-          emptyMessage="No products yet."
-          columns={[
-            {
-              key: "name",
-              header: "Name",
-              render: (r) => (
-                <Link href={`/admin/products/${r.id}`}
-                  className="font-medium transition-colors"
-                  style={{ color: "var(--admin-text-primary)" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "var(--admin-brand)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "var(--admin-text-primary)")}>
-                  {r.name}
-                </Link>
-              ),
-            },
-            { key: "tagline", header: "Tagline", render: (r) => <span style={{ color: "var(--admin-text-secondary)" }}>{r.tagline}</span> },
-            { key: "status", header: "Status", width: "130px", render: (r) => <StatusBadge status={r.status as "In Development"} /> },
-            {
-              key: "published",
-              header: "Published",
-              width: "100px",
-              render: (r) => <StatusBadge status={r.published ? "Live" : "inactive"} />,
-            },
-            {
-              key: "actions",
-              header: "",
-              width: "100px",
-              render: (r) => (
-                <ContentActions
-                  id={r.id}
-                  editHref={`/admin/products/${r.id}`}
-                  published={r.published}
-                  onToggle={toggleProductPublished}
-                  onDelete={deleteProduct}
-                />
-              ),
-            },
-          ]}
-        />
+        <ProductsTable products={products} />
       </Panel>
     </div>
   );

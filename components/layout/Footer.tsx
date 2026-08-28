@@ -80,7 +80,7 @@ export function Footer() {
                       href={`/services/${s.slug}`}
                       className="text-sm text-neutral-300 transition-colors duration-micro hover:text-tech-blue"
                     >
-                      {s.title}
+                      {s.profile.eyebrow}
                     </Link>
                   </li>
                 ))}

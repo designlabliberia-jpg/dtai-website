@@ -3,6 +3,49 @@
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { serviceSchema } from "@/lib/validations/service.schema";
+import { services as fallbackServices } from "@/lib/services-data";
+
+export type DbService = {
+  id: string;
+  slug: string;
+  icon: string;
+  solutions: string[];
+  profileEyebrow: string;
+  profileHeading: string;
+  profileHeadingAccent: string | null;
+  profileParagraphs: string[];
+  profilePrimaryImageUrl: string;
+  profilePrimaryImageAlt: string;
+  published: boolean;
+  order: number;
+  methodology: { id: string; title: string; description: string; icon: string; order: number }[];
+};
+
+export async function getPublishedServices(): Promise<DbService[]> {
+  try {
+    return await db.service.findMany({
+      where: { published: true, deletedAt: null },
+      orderBy: [{ order: "asc" }],
+      include: { methodology: { orderBy: { order: "asc" } } },
+    });
+  } catch {
+    return fallbackServices.map((s, i) => ({
+      id: s.slug,
+      slug: s.slug,
+      icon: s.icon,
+      solutions: s.solutions,
+      profileEyebrow: s.profile.eyebrow,
+      profileHeading: s.profile.heading,
+      profileHeadingAccent: s.profile.headingAccent ?? null,
+      profileParagraphs: s.profile.paragraphs,
+      profilePrimaryImageUrl: s.profile.collage.primary.src,
+      profilePrimaryImageAlt: s.profile.collage.primary.alt,
+      published: true,
+      order: i,
+      methodology: s.methodology.map((m, j) => ({ id: `${s.slug}-${j}`, ...m, order: j })),
+    }));
+  }
+}
 
 export type ServiceActionState =
   | { success: true; id?: string }

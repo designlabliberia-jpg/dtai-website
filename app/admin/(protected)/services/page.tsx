@@ -3,10 +3,7 @@ import { Plus } from "lucide-react";
 import { db } from "@/lib/db";
 import { Panel } from "@/components/admin/Panel";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
-import { AdminTable } from "@/components/admin/AdminTable";
-import { ContentActions } from "@/components/admin/ContentActions";
-import { StatusBadge } from "@/components/admin/StatusBadge";
-import { toggleServicePublished, deleteService } from "@/lib/actions/services";
+import { ServicesTable } from "./ServicesTable";
 
 export default async function ServicesPage() {
   const services = await db.service.findMany({
@@ -29,36 +26,7 @@ export default async function ServicesPage() {
         }
       />
       <Panel accent padding="none">
-        <AdminTable
-          rows={services}
-          getRowKey={(r) => r.id}
-          emptyMessage="No services yet."
-          columns={[
-            {
-              key: "title",
-              header: "Title",
-              render: (r) => (
-                <Link href={`/admin/services/${r.id}`}
-                  className="font-medium transition-colors"
-                  style={{ color: "var(--admin-text-primary)" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "var(--admin-brand)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "var(--admin-text-primary)")}>
-                  {r.title}
-                </Link>
-              ),
-            },
-            { key: "icon", header: "Icon", width: "80px", render: (r) => <span className="font-technical text-[10px]" style={{ color: "var(--admin-text-muted)" }}>{r.icon}</span> },
-            { key: "steps", header: "Steps", width: "70px", render: (r) => <span className="font-technical text-[11px] tabular-nums" style={{ color: "var(--admin-text-muted)" }}>{r._count.methodology}</span> },
-            { key: "published", header: "Published", width: "100px", render: (r) => <StatusBadge status={r.published ? "Live" : "inactive"} /> },
-            {
-              key: "actions", header: "", width: "100px",
-              render: (r) => (
-                <ContentActions id={r.id} editHref={`/admin/services/${r.id}`}
-                  published={r.published} onToggle={toggleServicePublished} onDelete={deleteService} />
-              ),
-            },
-          ]}
-        />
+        <ServicesTable services={services} />
       </Panel>
     </div>
   );

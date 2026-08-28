@@ -12,6 +12,7 @@ export async function deleteContactSubmission(id: string): Promise<void> {
   await db.contactSubmission.update({ where: { id }, data: { deletedAt: new Date() } });
 }
 
+export async function submitContact(
   _prev: ContactActionState | null,
   formData: FormData
 ): Promise<ContactActionState> {

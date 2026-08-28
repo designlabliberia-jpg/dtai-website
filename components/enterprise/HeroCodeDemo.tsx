@@ -2,116 +2,15 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import {
-  MousePointer2,
-  Play,
-  Loader2,
-  Files,
-  Search,
-  GitBranch,
-  Bug,
-  Package,
-  Check,
-  Lock,
-  RotateCw,
-  Code2,
-  Smartphone,
-  Globe,
-  Building2,
-  Cloud,
-  Brain,
-  Database,
-  ShieldCheck,
-  Server,
-  Network,
-  Workflow,
-  MapPin,
+import { MousePointer2, Play, Loader2, Files, Search, GitBranch, Bug, Package, Check, Lock, RotateCw, Code2, Smartphone, Globe, Building2, Cloud, Brain, Database, ShieldCheck, Server, Network, Workflow, MapPin,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { services } from "@/lib/services-data";
+import { solutions } from "@/lib/solutions-data";
 
-interface DemoSnippet {
-  path: string;
-  language: string;
-  code: string;
-}
+const SNIPPETS = solutions.flatMap((s) => s.snippet ? [s.snippet] : []);
 
-const SNIPPETS: DemoSnippet[] = [
-  {
-    path: "src/infra/systemHealth.service.ts",
-    language: "typescript",
-    code: `export async function verifyDeployment(
-  system: System
-): Promise<HealthReport> {
-  await runSecurityAudit(system);
 
-  await validateUptimeTarget(system, {
-    target: 99.9,
-  });
-
-  const report = await generateComplianceReport(
-    system
-  );
-
-  return confirmProductionReady(report);
-}`,
-  },
-  {
-    path: "src/mobile/SyncManager.kt",
-    language: "kotlin",
-    code: `suspend fun syncOfflineQueue(
-  queue: List<PendingRecord>
-): SyncResult {
-  val connected =
-    NetworkMonitor.isAvailable()
-
-  if (!connected) {
-    return SyncResult.Deferred
-  }
-
-  val batch = queue.take(BATCH_SIZE)
-  return uploadRecords(batch, retry = 3)
-}`,
-  },
-  {
-    path: "src/spatial/riskModel.py",
-    language: "python",
-    code: `def score_service_gap(
-    region: Region,
-) -> float:
-    connectivity = region.connectivity_index
-    population = region.population_density
-    infra = region.infrastructure_coverage
-
-    return weighted_average(
-        [connectivity, population, infra],
-        weights=[0.4, 0.35, 0.25],
-    )`,
-  },
-  {
-    path: "src/security/authGuard.middleware.ts",
-    language: "typescript",
-    code: `export function requireClearance(
-  role: Role
-): Middleware {
-  return async (req, res, next) => {
-    const session = await verifySession(req);
-
-    if (!session || session.role < role) {
-      await logAccessAttempt(req, "denied");
-      return res.status(403).end();
-    }
-
-    await logAccessAttempt(req, "granted");
-    next();
-  };
-}`,
-  },
-];
-
-// Icons for the real, current capability list — kept in sync automatically
-// since this maps over `capabilities` from lib/capabilities-data.ts rather
-// than a hardcoded duplicate list.
 const SERVICE_ICONS: Record<string, LucideIcon> = {
   "software-engineering": Code2,
   "mobile-application-development": Smartphone,

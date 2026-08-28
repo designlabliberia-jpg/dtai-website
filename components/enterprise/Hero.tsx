@@ -169,13 +169,13 @@ export function Hero() {
           >
             <Link
               href="/#services"
-              className="rounded-md bg-brand px-6 py-3 text-sm font-semibold text-white transition-all duration-micro hover:bg-tech-blue hover:shadow-lg"
+              className="rounded-md border border-white/20 bg-brand px-6 py-3 text-sm font-semibold text-white transition-all duration-micro hover:border-tech-blue hover:bg-transparent hover:text-tech-blue"
             >
               Explore Services
             </Link>
             <Link
               href="/#contact"
-              className="rounded-md border border-white/20 px-6 py-3 text-sm font-semibold text-white transition-colors duration-micro hover:border-tech-blue hover:text-tech-blue"
+              className="rounded-md border border-white/20 px-6 py-3 text-sm font-semibold text-white transition-all duration-micro hover:border-transparent hover:bg-brand hover:text-white"
             >
               Get In Touch
             </Link>

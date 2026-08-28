@@ -27,7 +27,7 @@ export function PartnerCard() {
 
             <Link
               href="#contact"
-              className="mt-8 inline-flex items-center gap-2 self-start rounded-md bg-brand px-5 py-2.5 text-sm font-medium text-white hover:bg-brand/90 transition-colors"
+              className="mt-8 inline-flex items-center gap-2 self-start rounded-md border border-brand bg-brand px-5 py-2.5 text-sm font-medium text-white transition-all duration-micro hover:bg-transparent hover:text-brand"
             >
               Work With Us <ArrowRight className="w-4 h-4" />
             </Link>

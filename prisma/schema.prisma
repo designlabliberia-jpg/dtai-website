@@ -5,7 +5,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 // ─── Auth ────────────────────────────────────────────────────────────────────
@@ -38,7 +37,7 @@ model SiteSettings {
   logoUrl        String
   siteUrl        String
   contactEmail   String
-  whatsappNumber String
+  whatsappNumber String?
   facebookUrl    String?
   linkedinUrl    String?
   web3formsKey   String
@@ -76,7 +75,8 @@ model Product {
   status                   String    @default("In Development")
   imageUrl                 String
   features                 String[]
-  relatedProducts          String[]
+  builtFor                 String[]
+  relatedCapabilities      String[]
   profileEyebrow           String
   profileHeading           String
   profileHeadingAccent     String?
@@ -97,9 +97,7 @@ model Product {
 model Service {
   id                     String                   @id @default(cuid())
   slug                   String                   @unique
-  title                  String
   icon                   String
-  summary                String
   solutions              String[]
   profileEyebrow         String
   profileHeading         String
@@ -135,7 +133,6 @@ model Solution {
   overview        String
   focusAreas      String[]
   proofPoints     String[]
-  relatedServices String[]
   snippetFilename String?
   snippetLanguage String?
   snippetCode     String?

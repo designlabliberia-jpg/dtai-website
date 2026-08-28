@@ -1,24 +1,26 @@
 import { PrismaClient } from ".prisma/client";
 import { PrismaNeon } from "@prisma/adapter-neon";
 import bcrypt from "bcryptjs";
+import { products } from "../lib/products-data";
+import { services } from "../lib/services-data";
+import { solutions } from "../lib/solutions-data";
+import { leadershipTeam } from "../lib/leadership-data";
+import { partnerLogo, partnerCategories } from "../lib/partners-data";
 
 const adapter = new PrismaNeon({ connectionString: process.env.DATABASE_URL! });
 const db = new PrismaClient({ adapter });
 
 async function main() {
+  // ─── Admin User ───────────────────────────────────────────────────────────
   const passwordHash = await bcrypt.hash("Admin123", 12);
   await db.adminUser.upsert({
     where: { email: "admin@dtai.lr" },
     update: {},
-    create: {
-      email: "admin@dtai.lr",
-      passwordHash,
-      role: "super_admin",
-      name: "DTAI Admin",
-    },
+    create: { email: "admin@dtai.lr", passwordHash, role: "super_admin", name: "Garrison Sayor" },
   });
   console.log("✓ AdminUser seeded");
 
+  // ─── Site Settings ────────────────────────────────────────────────────────
   await db.siteSettings.upsert({
     where: { id: "global" },
     update: {},
@@ -36,8 +38,144 @@ async function main() {
       web3formsKey: process.env.NEXT_PUBLIC_WEB3FORMS_KEY ?? "",
     },
   });
-
   console.log("✓ SiteSettings seeded");
+
+  // ─── Products ─────────────────────────────────────────────────────────────
+  for (const [i, p] of products.entries()) {
+    await db.product.upsert({
+      where: { slug: p.slug },
+      update: {},
+      create: {
+        slug: p.slug,
+        name: p.name,
+        tagline: p.tagline,
+        description: p.description,
+        status: p.status,
+        imageUrl: p.image,
+        features: p.features,
+        builtFor: p.builtFor,
+        relatedCapabilities: p.relatedCapabilities,
+        profileEyebrow: p.profile.eyebrow,
+        profileHeading: p.profile.heading,
+        profileHeadingAccent: p.profile.headingAccent ?? null,
+        profileParagraphs: p.profile.paragraphs,
+        profilePrimaryImageUrl: p.profile.collage.primary.src,
+        profilePrimaryImageAlt: p.profile.collage.primary.alt,
+        profileSecondaryImageUrl: p.profile.collage.secondary?.src ?? null,
+        profileSecondaryImageAlt: p.profile.collage.secondary?.alt ?? null,
+        published: false,
+        order: i,
+      },
+    });
+  }
+  console.log(`✓ ${products.length} Products seeded`);
+
+  // ─── Services ─────────────────────────────────────────────────────────────
+  for (const [i, s] of services.entries()) {
+    const existing = await db.service.findUnique({ where: { slug: s.slug } });
+    if (!existing) {
+      await db.service.create({
+        data: {
+          slug: s.slug,
+          icon: s.icon,
+          solutions: s.solutions,
+          profileEyebrow: s.profile.eyebrow,
+          profileHeading: s.profile.heading,
+          profileHeadingAccent: s.profile.headingAccent ?? null,
+          profileParagraphs: s.profile.paragraphs,
+          profilePrimaryImageUrl: s.profile.collage.primary.src,
+          profilePrimaryImageAlt: s.profile.collage.primary.alt,
+          published: true,
+          order: i,
+          methodology: {
+            create: s.methodology.map((step, j) => ({
+              title: step.title,
+              description: step.description,
+              icon: step.icon,
+              order: j,
+            })),
+          },
+        },
+      });
+    }
+  }
+  console.log(`✓ ${services.length} Services seeded`);
+
+  // ─── Solutions ────────────────────────────────────────────────────────────
+  for (const [i, sol] of solutions.entries()) {
+    await db.solution.upsert({
+      where: { slug: sol.slug },
+      update: {},
+      create: {
+        slug: sol.slug,
+        title: sol.title,
+        summary: sol.summary,
+        overview: sol.summary,
+        focusAreas: [],
+        proofPoints: [],
+        snippetFilename: sol.snippet?.path ?? null,
+        snippetLanguage: sol.snippet?.language ?? null,
+        snippetCode: sol.snippet?.code ?? null,
+        published: true,
+        order: i,
+      },
+    });
+  }
+  console.log(`✓ ${solutions.length} Solutions seeded`);
+
+  // ─── Leadership ───────────────────────────────────────────────────────────
+  for (const [i, m] of leadershipTeam.entries()) {
+    await db.leadershipMember.upsert({
+      where: { memberId: m.id },
+      update: {},
+      create: {
+        memberId: m.id,
+        name: m.name,
+        title: m.title,
+        division: m.division,
+        focus: m.focus,
+        bio: m.bio,
+        imageUrl: m.image ?? null,
+        linkedin: m.linkedin || null,
+        order: i,
+      },
+    });
+  }
+  console.log(`✓ ${leadershipTeam.length} Leadership members seeded`);
+
+  // ─── Partners (logos) ─────────────────────────────────────────────────────
+  for (const [i, p] of partnerLogo.entries()) {
+    await db.partner.upsert({
+      where: { slug: `logo-${i}` },
+      update: {},
+      create: {
+        title: p.title,
+        logoUrl: p.src,
+        type: "logo",
+        slug: `logo-${i}`,
+        order: i,
+      },
+    });
+  }
+  console.log(`✓ ${partnerLogo.length} Partner logos seeded`);
+
+  // ─── Partners (categories) ────────────────────────────────────────────────
+  for (const [i, p] of partnerCategories.entries()) {
+    await db.partner.upsert({
+      where: { slug: p.slug! },
+      update: {},
+      create: {
+        title: p.title,
+        logoUrl: p.src,
+        type: "category",
+        slug: p.slug!,
+        summary: p.summary ?? null,
+        points: p.points ?? [],
+        order: i,
+      },
+    });
+  }
+  console.log(`✓ ${partnerCategories.length} Partner categories seeded`);
 }
 
 main()

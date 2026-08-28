@@ -27,11 +27,6 @@ export const solutionSchema = z.object({
 
   focusAreas: nonEmptyStringArray.max(10, "Maximum 10 focus areas allowed"),
   proofPoints: nonEmptyStringArray.max(10, "Maximum 10 proof points allowed"),
-  relatedServices: nonEmptyStringArray.max(10, "Maximum 10 related services allowed"),
-
-  snippetFilename: z.string().max(100).trim().optional(),
-  snippetLanguage: z.string().max(50).trim().optional(),
-  snippetCode: z.string().max(5000, "Code snippet must be under 5000 characters").optional(),
 
   published: z.boolean().default(false),
   order: z.number().int().min(0).default(0),

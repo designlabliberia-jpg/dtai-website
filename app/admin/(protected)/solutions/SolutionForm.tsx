@@ -14,9 +14,8 @@ import type { SolutionActionState } from "@/lib/actions/solutions";
 interface SolutionFormProps {
   solution?: {
     id: string; slug: string; title: string; summary: string; overview: string;
-    focusAreas: string[]; proofPoints: string[]; relatedServices: string[];
-    snippetFilename: string | null; snippetLanguage: string | null;
-    snippetCode: string | null; published: boolean; order: number;
+    focusAreas: string[]; proofPoints: string[];
+    published: boolean; order: number;
   };
 }
 
@@ -100,21 +99,6 @@ export function SolutionForm({ solution: s }: SolutionFormProps) {
               error={fe.focusAreas?.[0]} placeholder="Add focus area…" />
             <ArrayField label="Proof Points" name="proofPoints" defaultValue={s?.proofPoints}
               error={fe.proofPoints?.[0]} placeholder="Add proof point…" />
-            <ArrayField label="Related Services (slugs)" name="relatedServices" defaultValue={s?.relatedServices}
-              error={fe.relatedServices?.[0]} placeholder="Add service slug…" />
-          </div>
-        </Panel>
-
-        <Panel accent title="Code Snippet (optional)">
-          <div className="flex flex-col gap-4">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <FormField label="Filename" name="snippetFilename"
-                inputProps={{ defaultValue: s?.snippetFilename ?? "" }} />
-              <FormField label="Language" name="snippetLanguage"
-                inputProps={{ defaultValue: s?.snippetLanguage ?? "" }} />
-            </div>
-            <FormField label="Code" name="snippetCode" as="textarea" rows={6}
-              inputProps={{ defaultValue: s?.snippetCode ?? "", style: { fontFamily: "var(--font-mono)", fontSize: "0.8rem" } }} />
           </div>
         </Panel>
 

@@ -2,22 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Files, Search, GitBranch, Bug, Package, Check, X } from "lucide-react";
-
-interface Snippet {
-  filename: string;
-  language: string;
-  code: string;
-}
+import type { SolutionSnippet } from "@/lib/solutions-data";
 
 interface CodeWindowProps {
-  // Single-shot mode (used on service pages): types once when scrolled
-  // into view, then stops. Unchanged from before.
-  filename?: string;
+  path?: string;
   language?: string;
   code?: string;
-  // Loop mode (used in the Hero): cycles through multiple real snippets
-  // forever — types one out, holds briefly, clears, types the next.
-  snippets?: Snippet[];
+  snippets?: SolutionSnippet[];
   loopHoldMs?: number;
 }
 
@@ -60,7 +51,7 @@ const DEFAULT_HOLD_MS = 1800;
 const CLEAR_PAUSE_MS = 300;
 
 export function CodeWindow({
-  filename,
+  path,
   language,
   code,
   snippets,
@@ -69,13 +60,12 @@ export function CodeWindow({
   const isLoopMode = Array.isArray(snippets) && snippets.length > 0;
 
   const [typed, setTyped] = useState("");
-  const [done, setDone] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const hasStarted = useRef(false);
   const activeRef = useRef(true); // whether the window is currently in view
 
-  const currentFilename = isLoopMode ? snippets![activeIndex].filename : filename ?? "";
+  const currentFilename = isLoopMode ? snippets![activeIndex].path : path ?? "";
   const currentLanguage = isLoopMode ? snippets![activeIndex].language : language ?? "";
 
   useEffect(() => {
@@ -85,8 +75,9 @@ export function CodeWindow({
 
     // Reduced motion: show one static snippet, no animation, no loop.
     if (reduceMotion) {
-      setTyped(isLoopMode ? snippets![0].code : code ?? "");
-      setDone(true);
+      setTimeout(() => {
+        setTyped(isLoopMode ? snippets![0].code : code ?? "");
+      }, 0);
       return;
     }
 
@@ -134,7 +125,6 @@ export function CodeWindow({
       if (!isLoopMode) {
         // Single-shot: type once, then stop.
         await typeOut(code ?? "");
-        if (!cancelled) setDone(true);
         return;
       }
 
@@ -143,13 +133,10 @@ export function CodeWindow({
       while (!cancelled) {
         setActiveIndex(index);
         setTyped("");
-        setDone(false);
         await typeOut(snippets![index].code);
         if (cancelled) return;
-        setDone(true);
         await wait(loopHoldMs);
         if (cancelled) return;
-        setDone(false);
         setTyped("");
         await wait(CLEAR_PAUSE_MS);
         index = (index + 1) % snippets!.length;

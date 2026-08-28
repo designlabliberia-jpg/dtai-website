@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import type { InputHTMLAttributes, TextareaHTMLAttributes } from "react";
 
 interface BaseProps {
@@ -58,20 +59,13 @@ export function FormField(props: FormFieldProps) {
       </label>
 
       {props.as === "textarea" ? (
-        <textarea
-          id={name}
-          name={name}
-          rows={props.rows ?? 4}
-          style={{ ...style, resize: "vertical", lineHeight: 1.6 }}
-          {...(props.inputProps as TextareaHTMLAttributes<HTMLTextAreaElement>)}
-        />
+        (() => { const { key, ...rest } = (props.inputProps ?? {}) as TextareaHTMLAttributes<HTMLTextAreaElement> & { key?: React.Key }; return (
+          <textarea key={key} id={name} name={name} rows={props.rows ?? 4} style={{ ...style, resize: "vertical", lineHeight: 1.6 }} {...rest} />
+        ); })()
       ) : (
-        <input
-          id={name}
-          name={name}
-          style={style}
-          {...(props.inputProps as InputHTMLAttributes<HTMLInputElement>)}
-        />
+        (() => { const { key, ...rest } = (props.inputProps ?? {}) as InputHTMLAttributes<HTMLInputElement> & { key?: React.Key }; return (
+          <input key={key} id={name} name={name} style={style} {...rest} />
+        ); })()
       )}
 
       {hint && !error && (

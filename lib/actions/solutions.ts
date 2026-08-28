@@ -16,10 +16,6 @@ function parseSolution(formData: FormData) {
     overview: formData.get("overview"),
     focusAreas: formData.getAll("focusAreas"),
     proofPoints: formData.getAll("proofPoints"),
-    relatedServices: formData.getAll("relatedServices"),
-    snippetFilename: formData.get("snippetFilename") || undefined,
-    snippetLanguage: formData.get("snippetLanguage") || undefined,
-    snippetCode: formData.get("snippetCode") || undefined,
     published: formData.get("published") === "true",
     order: Number(formData.get("order") ?? 0),
   });

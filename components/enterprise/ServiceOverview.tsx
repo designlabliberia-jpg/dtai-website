@@ -1,8 +1,9 @@
 import { Container } from "@/components/layout/Container";
 import { ServiceCard } from "@/components/enterprise/ServiceCard";
-import { services } from "@/lib/services-data";
+import { getPublishedServices } from "@/lib/actions/services";
 
-export function ServiceOverview() {
+export async function ServiceOverview() {
+  const services = await getPublishedServices();
   return (
     <section id="services" className="py-12">
       <Container>
@@ -26,9 +27,9 @@ export function ServiceOverview() {
               {services.map((service) => (
                 <ServiceCard
                   key={service.slug}
-                  title={service.profile.eyebrow}
+                  title={service.profileEyebrow}
                   icon={service.icon}
-                  description={service.profile.paragraphs[0]}
+                  description={service.profileParagraphs[0]}
                   href={`/services/${service.slug}`}
                 />
               ))}

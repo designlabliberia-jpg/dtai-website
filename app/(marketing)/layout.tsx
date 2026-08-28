@@ -7,8 +7,11 @@ import { ScrollToHash } from "@/components/layout/ScrollToHash";
 import { AmbientField } from "@/components/layout/AmbientField";
 import { ChatLauncher } from "@/components/layout/ChatLauncher";
 import { organizationSchema } from "@/lib/seo";
+import { getPublishedServices } from "@/lib/actions/services";
 
-export default function MarketingLayout({ children }: { children: React.ReactNode }) {
+export default async function MarketingLayout({ children }: { children: React.ReactNode }) {
+  const services = await getPublishedServices();
+  const serviceLinks = services.map((s) => ({ title: s.profileEyebrow, href: `/services/${s.slug}` }));
   return (
     <>
       <AmbientField />
@@ -17,7 +20,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
       />
       <RouteProgressBar />
-      <Header />
+      <Header serviceLinks={serviceLinks} />
       <main className="overflow-x-clip">
         <PageTransition>{children}</PageTransition>
       </main>

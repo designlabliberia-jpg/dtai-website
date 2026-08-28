@@ -32,7 +32,7 @@ export function DropdownPanel({ items, isOpen, isActive, onClose, viewAllHref, v
                 prefetch={true}
                 onClick={onClose}
                 className={`flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors ${
-                  active ? "bg-brand/8 text-brand" : "text-neutral-800 hover:bg-neutral-100"
+                  active ? "bg-brand/8 text-brand" : "text-neutral-800 hover:bg-neutral-100 hover:text-brand"
                 }`}
               >
                 {Icon && (

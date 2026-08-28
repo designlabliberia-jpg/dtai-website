@@ -4,22 +4,32 @@ import { useState } from "react";
 import { MapPin, Clock, ArrowUpRight, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Container } from "@/components/layout/Container";
-import { jobListings, jobCategories } from "@/lib/careers-data";
-import type { JobCategory, JobListing } from "@/lib/careers-data";
+import { jobListings } from "@/lib/careers-data";
+import type { JobListing } from "@/lib/careers-data";
 import { CareersInterestForm } from "./CareersInterestForm";
 import { JobDetailPanel } from "./JobDetailPanel";
 import { JobCard } from "./JobCard";
-
-type Filter = "All" | JobCategory;
+import { JobFilterBar } from "./JobFilterBar";
+import type { CategoryFilter, TypeFilter, ViewMode } from "./JobFilterBar";
 
 const spring = { type: "spring", damping: 30, stiffness: 300 } as const;
 
 export function OpenPositions() {
-  const [active, setActive] = useState<Filter>("All");
+  const [query, setQuery] = useState("");
+  const [category, setCategory] = useState<CategoryFilter>("All");
+  const [type, setType] = useState<TypeFilter>("All");
+  const [view, setView] = useState<ViewMode>("list");
   const [selected, setSelected] = useState<JobListing | null>(null);
   const [applyOpen, setApplyOpen] = useState(false);
 
-  const filtered = active === "All" ? jobListings : jobListings.filter(j => j.category === active);
+  const hasFilters = query !== "" || category !== "All" || type !== "All";
+
+  const filtered = jobListings.filter(j => {
+    const matchesQuery = query === "" || j.title.toLowerCase().includes(query.toLowerCase());
+    const matchesCat = category === "All" || j.category === category;
+    const matchesType = type === "All" || j.type === type;
+    return matchesQuery && matchesCat && matchesType;
+  });
 
   const panelContent = selected && (
     <>
@@ -46,21 +56,23 @@ export function OpenPositions() {
           <span className="hidden sm:flex flex-1 max-w-[16rem] h-px bg-brand" />
         </div>
 
-        {/* Filter tabs */}
-        <div className="flex flex-wrap gap-2 mb-6">
-          {(["All", ...jobCategories] as Filter[]).map(cat => (
-            <button key={cat} onClick={() => setActive(cat)}
-              className={`rounded-full border px-4 py-1.5 text-sm font-medium transition-colors ${active === cat ? "border-brand bg-brand text-white" : "border-neutral-300 bg-white text-neutral-700 hover:border-neutral-400"}`}>
-              {cat === "All" ? "View all" : cat}
-            </button>
-          ))}
+        {/* Filter bar */}
+        <div className="mb-8">
+          <JobFilterBar
+            query={query} onQueryChange={setQuery}
+            category={category} onCategoryChange={setCategory}
+            type={type} onTypeChange={setType}
+            hasFilters={hasFilters}
+            onReset={() => { setQuery(""); setCategory("All"); setType("All"); }}
+            view={view} onViewChange={setView}
+          />
         </div>
 
         {/* Two-column row — both start at the same point, below filters */}
         <div className="flex gap-6 items-start">
 
           {/* Left — job cards */}
-          <div className="min-w-0 flex-1 space-y-3">
+          <div className={`min-w-0 flex-1 ${view === "grid" ? "grid grid-cols-1 sm:grid-cols-2 gap-3" : "space-y-3"}`}>
             {filtered.length === 0
               ? <div className="rounded-lg border border-neutral-300/60 p-6 sm:p-8"><CareersInterestForm /></div>
               : filtered.map(job => (

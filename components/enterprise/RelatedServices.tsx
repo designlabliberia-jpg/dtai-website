@@ -1,9 +1,9 @@
 import { ServiceCard } from "@/components/enterprise/ServiceCard";
-import type { Service } from "@/lib/services-data";
+import type { DbService } from "@/lib/actions/services";
 import { Container } from "../layout/Container";
 
 interface RelatedServicesProps {
-  items: Service[];
+  items: DbService[];
 }
 
 export function RelatedServices({ items }: RelatedServicesProps) {
@@ -26,9 +26,9 @@ export function RelatedServices({ items }: RelatedServicesProps) {
             {items.map((service) => (
               <ServiceCard
                 key={service.slug}
-                title={service.profile.eyebrow}
+                title={service.profileEyebrow}
                 icon={service.icon}
-                description={service.profile.paragraphs[0]}
+                description={service.profileParagraphs[0]}
                 href={`/services/${service.slug}`}
               />
             ))}

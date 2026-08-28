@@ -1,6 +1,6 @@
 import { MarketingPageShell } from "@/components/enterprise/MarketingPageShell";
 import { ServiceCard } from "@/components/enterprise/ServiceCard";
-import { services } from "@/lib/services-data";
+import { getPublishedServices } from "@/lib/actions/services";
 import { createPageMetadata } from "@/lib/seo";
 import { ContactSection } from "@/components/enterprise/ContactSection";
 
@@ -9,7 +9,8 @@ export const metadata = createPageMetadata(
   "Engineering domains DTAI builds and operates across."
 );
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const services = await getPublishedServices();
   return (
     <>
     <MarketingPageShell eyebrow="Core Services" title="Engineering across the full digital stack">
@@ -17,9 +18,9 @@ export default function ServicesPage() {
         {services.map((ser) => (
           <ServiceCard
             key={ser.slug}
-            title={ser.profile.eyebrow}
+            title={ser.profileEyebrow}
             icon={ser.icon}
-            description={ser.profile.paragraphs[0]}
+            description={ser.profileParagraphs[0]}
             href={`/services/${ser.slug}`}
           />
         ))}

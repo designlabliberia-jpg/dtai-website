@@ -3,11 +3,13 @@ import { MethodologyFlow } from "@/components/enterprise/MethodologyFlow";
 import { RelatedServices } from "@/components/enterprise/RelatedServices";
 import { ProfileBlock } from "@/components/enterprise/ProfileBlock";
 import { ValuesSlider } from "@/components/enterprise/ValuesSlider";
-import { services, getServiceBySlug } from "@/lib/services-data";
+import { getPublishedServices } from "@/lib/actions/services";
+import { services as fallbackServices } from "@/lib/services-data";
 import { ContactSection } from "@/components/enterprise/ContactSection";
 
-export function generateStaticParams() {
-  return services.map((c) => ({ slug: c.slug }));
+export async function generateStaticParams() {
+  const services = await getPublishedServices();
+  return services.map((s) => ({ slug: s.slug }));
 }
 
 export default async function ServiceDetailPage({
@@ -16,22 +18,28 @@ export default async function ServiceDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const service = getServiceBySlug(slug);
+  const services = await getPublishedServices();
+  const service = services.find((s) => s.slug === slug);
   if (!service) return notFound();
-  const otherServices = services.filter((c) => c.slug !== slug);
+  const otherServices = services.filter((s) => s.slug !== slug);
+
+  const profile = {
+    eyebrow: service.profileEyebrow,
+    heading: service.profileHeading,
+    headingAccent: service.profileHeadingAccent ?? undefined,
+    paragraphs: service.profileParagraphs,
+    collage: {
+      primary: { src: service.profilePrimaryImageUrl, alt: service.profilePrimaryImageAlt },
+    },
+  };
 
   return (
     <>
-      <ProfileBlock data={service.profile} />
-
+      <ProfileBlock data={profile} />
       <ValuesSlider items={service.solutions} label="Solutions" />
-
       <MethodologyFlow steps={service.methodology} />
-
-    <RelatedServices items={otherServices} />
-
-    <ContactSection/>
-
+      <RelatedServices items={otherServices} />
+      <ContactSection />
     </>
   );
 }

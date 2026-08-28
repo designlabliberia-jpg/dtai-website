@@ -7,7 +7,8 @@ import {
   Plug, Activity, BellRing, GitMerge, type LucideIcon,
 } from "lucide-react";
 import { Container } from "@/components/layout/Container";
-import type { MethodologyStep } from "@/lib/services-data";
+
+type MethodologyStep = { title: string; description: string; icon: string };
 
 const ICON_MAP: Record<string, LucideIcon> = {
   ScanSearch, Code2, FileCheck2, Map, Wifi, BarChart3,

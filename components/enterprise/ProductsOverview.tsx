@@ -7,7 +7,7 @@ import { db } from "@/lib/db";
 import { services as fallbackServices } from "@/lib/services-data";
 
 async function getData() {
-  const [products, services] = await Promise.all([
+  const [productsResult, servicesResult] = await Promise.allSettled([
     db.product.findMany({
       where: { published: true, deletedAt: null },
       orderBy: [{ order: "asc" }, { createdAt: "desc" }],
@@ -16,14 +16,16 @@ async function getData() {
     db.service.findMany({
       where: { deletedAt: null },
       orderBy: [{ order: "asc" }],
-      select: { title: true },
+      select: { profileEyebrow: true },
       take: 5,
     }),
   ]);
-  const resolvedServices = services.length
-    ? services
+  const products = productsResult.status === "fulfilled" ? productsResult.value : [];
+  const rawServices = servicesResult.status === "fulfilled" ? servicesResult.value : [];
+  const services = rawServices.length
+    ? rawServices.map((s) => ({ title: s.profileEyebrow }))
     : fallbackServices.slice(0, 5).map(({ profile }) => ({ title: profile.eyebrow }));
-  return { products, services: resolvedServices };
+  return { products, services };
 }
 
 export async function ProductsOverview() {
@@ -121,7 +123,7 @@ export async function ProductsOverview() {
 
               <Link
                 href="/#contact"
-                className="inline-flex items-center gap-2 self-start rounded-full bg-brand px-6 py-2.5 font-technical text-xs uppercase tracking-widest text-white transition-colors hover:bg-brand/90"
+                className="inline-flex items-center gap-2 self-start rounded-full border border-brand bg-brand px-6 py-2.5 font-technical text-xs uppercase tracking-widest text-white transition-all duration-micro hover:bg-transparent hover:text-brand"
               >
                 Contact Us <ArrowRight size={13} />
               </Link>

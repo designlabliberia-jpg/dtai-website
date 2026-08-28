@@ -128,7 +128,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="inline-flex items-center gap-2 rounded-md bg-brand px-6 py-3 text-sm font-semibold text-white transition-colors duration-micro hover:bg-tech-blue disabled:opacity-70"
+        className="inline-flex items-center gap-2 rounded-md border border-brand bg-brand px-6 py-3 text-sm font-semibold text-white transition-all duration-micro hover:bg-transparent hover:text-brand disabled:opacity-70"
       >
         {status === "submitting" ? (
           <>
