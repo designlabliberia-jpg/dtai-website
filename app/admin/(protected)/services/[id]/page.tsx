@@ -10,7 +10,10 @@ export default async function ServicePage({ params }: Props) {
 
   const service = await db.service.findUnique({
     where: { id, deletedAt: null },
-    include: { methodology: { orderBy: { order: "asc" } } },
+    include: {
+      methodology: { orderBy: { order: "asc" } },
+      solutions: { where: { deletedAt: null }, orderBy: { order: "asc" }, select: { id: true, title: true, published: true } },
+    },
   });
   if (!service) notFound();
   return <ServiceForm service={service} />;

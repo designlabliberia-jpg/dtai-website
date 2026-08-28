@@ -102,19 +102,65 @@ export const pageSeoSchema = z.object({
   ogImageUrl: optionalHttpsUrl,
 });
 
-export const aboutSettingsSchema = z.object({
-  mission:           z.string().max(1000).trim().optional().default(""),
-  vision:            z.string().max(1000).trim().optional().default(""),
-  aboutHeading:      z.string().max(200).trim().optional().default(""),
-  aboutSubheading:   z.string().max(300).trim().optional().default(""),
-  aboutDescription:  z.string().max(2000).trim().optional().default(""),
-  heroImageUrl:      z.string().max(500).trim().optional().default(""),
-  teamImageUrl:      z.string().max(500).trim().optional().default(""),
-  officeImageUrl:    z.string().max(500).trim().optional().default(""),
-  valuesHeading:     z.string().max(200).trim().optional().default(""),
-  valuesDescription: z.string().max(1000).trim().optional().default(""),
+const str = (max = 500) => z.string().max(max).trim().optional().default("");
+const lines = () =>
+  z.string().transform((v) =>
+    v.split("\n").map((s) => s.trim()).filter(Boolean)
+  ).pipe(z.string().array()).optional().default([]);
+
+export const aboutProfileSchema = z.object({
+  profileEyebrow:           str(100),
+  profileHeading:           str(200),
+  profileHeadingAccent:     str(200),
+  profileParagraphs:        lines(),
+  profilePrimaryImage:      str(),
+  profilePrimaryImageAlt:   str(200),
+  profileSecondaryImage:    str(),
+  profileSecondaryImageAlt: str(200),
+});
+
+export const aboutMissionSchema = z.object({
+  missionBody:              str(1000),
+  missionPoints:            lines(),
+  missionPrimaryImage:      str(),
+  missionPrimaryImageAlt:   str(200),
+  missionSecondaryImage:    str(),
+  missionSecondaryImageAlt: str(200),
+});
+
+export const aboutVisionSchema = z.object({
+  visionBody:              str(1000),
+  visionPoints:            lines(),
+  visionPrimaryImage:      str(),
+  visionPrimaryImageAlt:   str(200),
+  visionSecondaryImage:    str(),
+  visionSecondaryImageAlt: str(200),
+});
+
+export const aboutValuesSchema = z.object({
+  valuesLabels: lines(),
+});
+
+export const aboutCommitmentSchema = z.object({
+  commitmentBody:              str(1000),
+  commitmentPoints:            lines(),
+  commitmentPrimaryImage:      str(),
+  commitmentPrimaryImageAlt:   str(200),
+  commitmentSecondaryImage:    str(),
+  commitmentSecondaryImageAlt: str(200),
+});
+
+export const aboutWhySchema = z.object({
+  whyTitle:         str(200),
+  whyHeading:       str(200),
+  whyHeadingAccent: str(200),
+  why1Title: str(200), why1Description: str(1000),
+  why2Title: str(200), why2Description: str(1000),
+  why3Title: str(200), why3Description: str(1000),
+  why4Title: str(200), why4Description: str(1000),
+  why5Title: str(200), why5Description: str(1000),
+  why6Title: str(200), why6Description: str(1000),
 });
 
 export type SettingsInput = z.infer<typeof settingsSchema>;
 export type PageSeoInput = z.infer<typeof pageSeoSchema>;
-export type AboutSettingsInput = z.infer<typeof aboutSettingsSchema>;

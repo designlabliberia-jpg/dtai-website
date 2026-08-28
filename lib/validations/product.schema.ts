@@ -38,9 +38,7 @@ export const productSchema = z.object({
 
   builtFor: nonEmptyStringArray.max(10, "Maximum 10 built-for entries allowed"),
 
-  relatedCapabilities: z
-    .array(z.string().min(1).max(100))
-    .default([]),
+  serviceId: z.string().cuid().optional(),
 
   profileEyebrow: z.string().min(1, "Eyebrow is required").max(100).trim(),
   profileHeading: z.string().min(1, "Heading is required").max(150).trim(),

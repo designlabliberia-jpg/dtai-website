@@ -13,7 +13,7 @@ export interface Insight {
   author: string;
   summary: string;
   sections: InsightSection[];
-  relatedCapabilities: string[];
+  serviceId: string | null;
   coverImageUrl: string;
   likes: number;
 }
@@ -30,7 +30,7 @@ export async function getInsights(): Promise<Insight[]> {
       author: true,
       summary: true,
       sections: true,
-      relatedCapabilities: true,
+      serviceId: true,
       coverImageUrl: true,
       likes: true,
     },
@@ -38,7 +38,7 @@ export async function getInsights(): Promise<Insight[]> {
 
   return rows.map((r) => ({
     ...r,
-    sections: r.sections as InsightSection[],
+    sections: r.sections as unknown as InsightSection[],
   }));
 }
 
@@ -53,14 +53,14 @@ export async function getInsightBySlug(slug: string): Promise<Insight | null> {
       author: true,
       summary: true,
       sections: true,
-      relatedCapabilities: true,
+      serviceId: true,
       coverImageUrl: true,
       likes: true,
     },
   });
 
   if (!row) return null;
-  return { ...row, sections: row.sections as InsightSection[] };
+  return { ...row, sections: row.sections as unknown as InsightSection[] };
 }
 
 export function getReadTimeMinutes(insight: Insight): number {

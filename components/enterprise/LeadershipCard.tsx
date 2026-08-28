@@ -27,9 +27,10 @@ interface Props {
   member: LeadershipMember;
   isActive: boolean;
   dist: number;
+  onReadMore: () => void;
 }
 
-export function LeadershipCard({ member, isActive, dist }: Props) {
+export function LeadershipCard({ member, isActive, dist, onReadMore }: Props) {
   const Icon = divisionIcon[member.division];
   const scaleClass = dist === 0 ? "scale-100" : dist === 1 ? "scale-95" : "scale-90";
 
@@ -98,6 +99,14 @@ export function LeadershipCard({ member, isActive, dist }: Props) {
           <p className="mt-1 text-xs leading-relaxed text-neutral-600 line-clamp-4">
             {member.bio}
           </p>
+          {member.bio.length > 120 && (
+            <button
+              onClick={onReadMore}
+              className="mt-1.5 text-[10px] font-medium text-brand hover:underline self-start"
+            >
+              Read more
+            </button>
+          )}
         </div>
       )}
     </div>

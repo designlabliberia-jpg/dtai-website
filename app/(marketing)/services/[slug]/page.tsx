@@ -4,8 +4,8 @@ import { RelatedServices } from "@/components/enterprise/RelatedServices";
 import { ProfileBlock } from "@/components/enterprise/ProfileBlock";
 import { ValuesSlider } from "@/components/enterprise/ValuesSlider";
 import { getPublishedServices } from "@/lib/actions/services";
-import { services as fallbackServices } from "@/lib/services-data";
 import { ContactSection } from "@/components/enterprise/ContactSection";
+import { db } from "@/lib/db";
 
 export async function generateStaticParams() {
   const services = await getPublishedServices();
@@ -23,6 +23,12 @@ export default async function ServiceDetailPage({
   if (!service) return notFound();
   const otherServices = services.filter((s) => s.slug !== slug);
 
+  const solutions = await db.solution.findMany({
+    where: { serviceId: service.id, published: true, deletedAt: null },
+    orderBy: { order: "asc" },
+    select: { title: true },
+  });
+
   const profile = {
     eyebrow: service.profileEyebrow,
     heading: service.profileHeading,
@@ -36,7 +42,7 @@ export default async function ServiceDetailPage({
   return (
     <>
       <ProfileBlock data={profile} />
-      <ValuesSlider items={service.solutions} label="Solutions" />
+      <ValuesSlider items={solutions.map((s) => s.title)} label="Solutions" />
       <MethodologyFlow steps={service.methodology} />
       <RelatedServices items={otherServices} />
       <ContactSection />

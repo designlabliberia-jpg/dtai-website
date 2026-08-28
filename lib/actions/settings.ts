@@ -2,7 +2,11 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
-import { settingsSchema, pageSeoSchema, aboutSettingsSchema } from "@/lib/validations/settings.schema";
+import {
+  settingsSchema, pageSeoSchema,
+  aboutProfileSchema, aboutMissionSchema, aboutVisionSchema,
+  aboutValuesSchema, aboutCommitmentSchema, aboutWhySchema,
+} from "@/lib/validations/settings.schema";
 
 export type SettingsActionState =
   | { success: true }
@@ -73,37 +77,93 @@ export async function savePageSeo(
   return { success: true };
 }
 
-export async function saveAboutSettings(
+// ── Shared about upsert helper ────────────────────────────────────────────
+async function upsertAbout(data: Record<string, unknown>) {
+  await db.aboutSettings.upsert({
+    where: { id: "global" },
+    update: data,
+    create: { id: "global", ...data },
+  });
+  revalidatePath("/company/overview");
+}
+
+function getFields(formData: FormData, keys: string[]) {
+  return Object.fromEntries(keys.map((k) => [k, formData.get(k)]));
+}
+
+export async function saveAboutProfile(
   _prev: SettingsActionState | null,
   formData: FormData
 ): Promise<SettingsActionState> {
-  const parsed = aboutSettingsSchema.safeParse({
-    mission: formData.get("mission"),
-    vision: formData.get("vision"),
-    aboutHeading: formData.get("aboutHeading"),
-    aboutSubheading: formData.get("aboutSubheading"),
-    aboutDescription: formData.get("aboutDescription"),
-    heroImageUrl: formData.get("heroImageUrl"),
-    teamImageUrl: formData.get("teamImageUrl"),
-    officeImageUrl: formData.get("officeImageUrl"),
-    valuesHeading: formData.get("valuesHeading"),
-    valuesDescription: formData.get("valuesDescription"),
-  });
+  const parsed = aboutProfileSchema.safeParse(getFields(formData, [
+    "profileEyebrow", "profileHeading", "profileHeadingAccent", "profileParagraphs",
+    "profilePrimaryImage", "profilePrimaryImageAlt", "profileSecondaryImage", "profileSecondaryImageAlt",
+  ]));
+  if (!parsed.success) return { success: false, error: "Please fix the errors below.", fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]> };
+  await upsertAbout(parsed.data);
+  return { success: true };
+}
 
-  if (!parsed.success) {
-    return {
-      success: false,
-      error: "Please fix the errors below.",
-      fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]>,
-    };
-  }
+export async function saveAboutMission(
+  _prev: SettingsActionState | null,
+  formData: FormData
+): Promise<SettingsActionState> {
+  const parsed = aboutMissionSchema.safeParse(getFields(formData, [
+    "missionBody", "missionPoints",
+    "missionPrimaryImage", "missionPrimaryImageAlt", "missionSecondaryImage", "missionSecondaryImageAlt",
+  ]));
+  if (!parsed.success) return { success: false, error: "Please fix the errors below.", fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]> };
+  await upsertAbout(parsed.data);
+  return { success: true };
+}
 
-  await db.aboutSettings.upsert({
-    where: { id: "global" },
-    update: parsed.data,
-    create: { id: "global", ...parsed.data },
-  });
+export async function saveAboutVision(
+  _prev: SettingsActionState | null,
+  formData: FormData
+): Promise<SettingsActionState> {
+  const parsed = aboutVisionSchema.safeParse(getFields(formData, [
+    "visionBody", "visionPoints",
+    "visionPrimaryImage", "visionPrimaryImageAlt", "visionSecondaryImage", "visionSecondaryImageAlt",
+  ]));
+  if (!parsed.success) return { success: false, error: "Please fix the errors below.", fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]> };
+  await upsertAbout(parsed.data);
+  return { success: true };
+}
 
-  revalidatePath("/company");
+export async function saveAboutValues(
+  _prev: SettingsActionState | null,
+  formData: FormData
+): Promise<SettingsActionState> {
+  const parsed = aboutValuesSchema.safeParse(getFields(formData, ["valuesLabels"]));
+  if (!parsed.success) return { success: false, error: "Please fix the errors below.", fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]> };
+  await upsertAbout(parsed.data);
+  return { success: true };
+}
+
+export async function saveAboutCommitment(
+  _prev: SettingsActionState | null,
+  formData: FormData
+): Promise<SettingsActionState> {
+  const parsed = aboutCommitmentSchema.safeParse(getFields(formData, [
+    "commitmentBody", "commitmentPoints",
+    "commitmentPrimaryImage", "commitmentPrimaryImageAlt", "commitmentSecondaryImage", "commitmentSecondaryImageAlt",
+  ]));
+  if (!parsed.success) return { success: false, error: "Please fix the errors below.", fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]> };
+  await upsertAbout(parsed.data);
+  return { success: true };
+}
+
+export async function saveAboutWhy(
+  _prev: SettingsActionState | null,
+  formData: FormData
+): Promise<SettingsActionState> {
+  const parsed = aboutWhySchema.safeParse(getFields(formData, [
+    "whyTitle", "whyHeading", "whyHeadingAccent",
+    "why1Title", "why1Description", "why2Title", "why2Description",
+    "why3Title", "why3Description", "why4Title", "why4Description",
+    "why5Title", "why5Description", "why6Title", "why6Description",
+  ]));
+  if (!parsed.success) return { success: false, error: "Please fix the errors below.", fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]> };
+  await upsertAbout(parsed.data);
   return { success: true };
 }

@@ -14,8 +14,6 @@ export const serviceSchema = z.object({
 
   icon: z.string().min(1, "Icon is required").max(50).trim(),
 
-  solutions: nonEmptyStringArray.max(20, "Maximum 20 solutions allowed"),
-
   profileEyebrow: z.string().min(1, "Eyebrow is required").max(100).trim(),
   profileHeading: z.string().min(1, "Heading is required").max(150).trim(),
   profileHeadingAccent: z.string().max(150).trim().optional(),

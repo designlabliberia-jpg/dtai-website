@@ -1,9 +1,7 @@
 import type { MetadataRoute } from "next";
 import { services } from "@/lib/services-data";
-import { solutions } from "@/lib/solutions-data";
 import { industries } from "@/lib/industries-data";
 import { caseStudies } from "@/lib/case-studies-data";
-import { insights } from "@/lib/insights-data";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -36,10 +34,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const dynamicRoutes = [
     ...services.map((c) => `/services/${c.slug}`),
-    ...solutions.map((s) => `/solutions/${s.slug}`),
     ...industries.map((i) => `/industries/${i.slug}`),
     ...caseStudies.map((c) => `/case-studies/${c.slug}`),
-    ...insights.map((i) => `/insights/${i.slug}`),
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),

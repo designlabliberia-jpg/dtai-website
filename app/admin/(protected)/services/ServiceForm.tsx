@@ -14,17 +14,24 @@ import type { ServiceActionState } from "@/lib/actions/services";
 
 interface ServiceFormProps {
   service?: {
-    id: string; slug: string; icon: string;
-    solutions: string[]; profileEyebrow: string; profileHeading: string;
-    profileHeadingAccent: string | null; profileParagraphs: string[];
-    profilePrimaryImageUrl: string; profilePrimaryImageAlt: string;
-    published: boolean; order: number;
+    id: string;
+    slug: string;
+    icon: string;
+    profileEyebrow: string;
+    profileHeading: string;
+    profileHeadingAccent: string | null;
+    profileParagraphs: string[];
+    profilePrimaryImageUrl: string;
+    profilePrimaryImageAlt: string;
+    published: boolean;
+    order: number;
+    solutions: { id: string; title: string; published: boolean }[];
   };
 }
 
 const init: ServiceActionState = { success: false, error: "" };
 
-const selectStyle = {
+const inputStyle = {
   background: "var(--admin-surface)", border: "1px solid var(--admin-border-strong)",
   color: "var(--admin-text-primary)", borderRadius: "var(--radius-sm)",
   fontSize: "0.875rem", width: "100%", padding: "0.5rem 0.75rem", outline: "none",
@@ -83,17 +90,33 @@ export function ServiceForm({ service: s }: ServiceFormProps) {
             <div className="flex flex-col gap-1.5">
               <label className="font-technical text-[10px] uppercase tracking-[0.1em]"
                 style={{ color: "var(--admin-text-secondary)" }}>Order</label>
-              <input name="order" type="number" min="0" defaultValue={s?.order ?? 0} style={selectStyle} />
+              <input name="order" type="number" min="0" defaultValue={s?.order ?? 0} style={inputStyle} />
             </div>
           </div>
         </Panel>
 
-        <Panel accent title="Content">
-          <div className="flex flex-col gap-4">
-            <ArrayField label="Solutions" name="solutions" defaultValue={s?.solutions}
-              error={fe.solutions?.[0]} placeholder="Add solution…" />
-          </div>
-        </Panel>
+        {isEdit && (
+          <Panel accent title={`Linked Solutions (${s.solutions.length})`}>
+            {s.solutions.length === 0 ? (
+              <p className="font-technical text-[11px]" style={{ color: "var(--admin-text-muted)" }}>
+                No solutions linked yet. Create a solution and assign it to this service.
+              </p>
+            ) : (
+              <div className="flex flex-col gap-2">
+                {s.solutions.map((sol) => (
+                  <div key={sol.id} className="flex items-center justify-between rounded-[var(--radius-sm)] px-3 py-2"
+                    style={{ background: "var(--admin-surface-raised)", border: "1px solid var(--admin-border)" }}>
+                    <span className="text-sm" style={{ color: "var(--admin-text-primary)" }}>{sol.title}</span>
+                    <span className="font-technical text-[10px] uppercase tracking-[0.08em]"
+                      style={{ color: sol.published ? "var(--admin-success)" : "var(--admin-text-muted)" }}>
+                      {sol.published ? "Live" : "Draft"}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Panel>
+        )}
 
         <Panel accent title="Profile Section">
           <div className="flex flex-col gap-4">

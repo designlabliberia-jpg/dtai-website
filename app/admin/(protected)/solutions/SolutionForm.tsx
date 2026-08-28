@@ -1,22 +1,20 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState } from "react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { AdminFormShell } from "@/components/admin/AdminFormShell";
 import { Panel } from "@/components/admin/Panel";
 import { FormField } from "@/components/admin/FormField";
-import { SlugField } from "@/components/admin/SlugField";
-import { ArrayField } from "@/components/admin/ArrayField";
 import { createSolution, updateSolution } from "@/lib/actions/solutions";
 import type { SolutionActionState } from "@/lib/actions/solutions";
 
 interface SolutionFormProps {
   solution?: {
-    id: string; slug: string; title: string; summary: string; overview: string;
-    focusAreas: string[]; proofPoints: string[];
-    published: boolean; order: number;
+    id: string; title: string; summary: string;
+    serviceId: string | null; published: boolean; order: number;
   };
+  services: { id: string; profileEyebrow: string; slug: string }[];
 }
 
 const init: SolutionActionState = { success: false, error: "" };
@@ -27,10 +25,9 @@ const selectStyle = {
   fontSize: "0.875rem", width: "100%", padding: "0.5rem 0.75rem", outline: "none",
 } as const;
 
-export function SolutionForm({ solution: s }: SolutionFormProps) {
+export function SolutionForm({ solution: s, services }: SolutionFormProps) {
   const router = useRouter();
   const isEdit = !!s;
-  const [title, setTitle] = useState(s?.title ?? "");
 
   const action = isEdit ? updateSolution.bind(null, s.id) : createSolution;
   const [state, formAction, pending] = useActionState(
@@ -73,32 +70,25 @@ export function SolutionForm({ solution: s }: SolutionFormProps) {
           <div className="flex flex-col gap-4">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <FormField label="Title" name="title" required error={fe.title?.[0]}
-                inputProps={{ defaultValue: s?.title, onChange: (e) => setTitle(e.target.value) }} />
+                inputProps={{ defaultValue: s?.title }} />
               <div className="flex flex-col gap-1.5">
                 <label className="font-technical text-[10px] uppercase tracking-[0.1em]"
                   style={{ color: "var(--admin-text-secondary)" }}>Order</label>
                 <input name="order" type="number" min="0" defaultValue={s?.order ?? 0} style={selectStyle} />
               </div>
             </div>
-            <SlugField name="slug" sourceValue={title} defaultValue={s?.slug} error={fe.slug?.[0]} />
-          </div>
-        </Panel>
-
-        <Panel accent title="Content">
-          <div className="flex flex-col gap-4">
             <FormField label="Summary" name="summary" as="textarea" rows={2} required
               error={fe.summary?.[0]} inputProps={{ defaultValue: s?.summary }} />
-            <FormField label="Overview" name="overview" as="textarea" rows={5} required
-              error={fe.overview?.[0]} inputProps={{ defaultValue: s?.overview }} />
-          </div>
-        </Panel>
-
-        <Panel accent title="Details">
-          <div className="flex flex-col gap-4">
-            <ArrayField label="Focus Areas" name="focusAreas" defaultValue={s?.focusAreas}
-              error={fe.focusAreas?.[0]} placeholder="Add focus area…" />
-            <ArrayField label="Proof Points" name="proofPoints" defaultValue={s?.proofPoints}
-              error={fe.proofPoints?.[0]} placeholder="Add proof point…" />
+            <div className="flex flex-col gap-1.5">
+              <label className="font-technical text-[10px] uppercase tracking-[0.1em]"
+                style={{ color: "var(--admin-text-secondary)" }}>Service</label>
+              <select name="serviceId" defaultValue={s?.serviceId ?? ""} style={selectStyle}>
+                <option value="">— None —</option>
+                {services.map((svc) => (
+                  <option key={svc.id} value={svc.id}>{svc.profileEyebrow}</option>
+                ))}
+              </select>
+            </div>
           </div>
         </Panel>
 

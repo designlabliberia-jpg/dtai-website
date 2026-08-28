@@ -3,11 +3,13 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import { Container } from "@/components/layout/Container";
 import { LeadershipCard } from "@/components/enterprise/LeadershipCard";
-import { leadershipTeam } from "@/lib/leadership-data";
+import { LeadershipModal } from "@/components/enterprise/LeadershipModal";
+import { leadershipTeam, LeadershipMember } from "@/lib/leadership-data";
 
 export function LeadershipSection() {
   const middleIndex = Math.floor(leadershipTeam.length / 2);
   const [activeIndex, setActiveIndex] = useState(middleIndex);
+  const [modalMember, setModalMember] = useState<LeadershipMember | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -73,12 +75,20 @@ export function LeadershipSection() {
             : "w-[38vw] sm:w-[13vw]";
           return (
             <div key={member.id} className={`snap-center flex-shrink-0 ${wClass}`}>
-              <LeadershipCard member={member} isActive={i === activeIndex} dist={dist} />
+              <LeadershipCard
+                member={member}
+                isActive={i === activeIndex}
+                dist={dist}
+                onReadMore={() => setModalMember(member)}
+              />
             </div>
           );
         })}
       </div>
 
+      {modalMember && (
+        <LeadershipModal member={modalMember} onClose={() => setModalMember(null)} />
+      )}
     </section>
   );
 }

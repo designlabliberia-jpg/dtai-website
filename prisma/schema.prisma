@@ -51,17 +51,61 @@ model PageSeo {
 }
 
 model AboutSettings {
-  id                  String  @id @default("global")
-  mission             String  @default("")
-  vision              String  @default("")
-  aboutHeading        String  @default("")
-  aboutSubheading     String  @default("")
-  aboutDescription    String  @default("")
-  heroImageUrl        String  @default("")
-  teamImageUrl        String  @default("")
-  officeImageUrl      String  @default("")
-  valuesHeading       String  @default("")
-  valuesDescription   String  @default("")
+  id String @id @default("global")
+
+  // Profile block
+  profileEyebrow       String   @default("")
+  profileHeading       String   @default("")
+  profileHeadingAccent String   @default("")
+  profileParagraphs    String[]
+  profilePrimaryImage    String @default("")
+  profilePrimaryImageAlt String @default("")
+  profileSecondaryImage    String @default("")
+  profileSecondaryImageAlt String @default("")
+
+  // Mission
+  missionBody            String   @default("")
+  missionPoints          String[]
+  missionPrimaryImage    String   @default("")
+  missionPrimaryImageAlt String   @default("")
+  missionSecondaryImage    String @default("")
+  missionSecondaryImageAlt String @default("")
+
+  // Vision
+  visionBody            String   @default("")
+  visionPoints          String[]
+  visionPrimaryImage    String   @default("")
+  visionPrimaryImageAlt String   @default("")
+  visionSecondaryImage    String @default("")
+  visionSecondaryImageAlt String @default("")
+
+  // What We Stand For (values labels)
+  valuesLabels String[]
+
+  // Commitment
+  commitmentBody            String   @default("")
+  commitmentPoints          String[]
+  commitmentPrimaryImage    String   @default("")
+  commitmentPrimaryImageAlt String   @default("")
+  commitmentSecondaryImage    String @default("")
+  commitmentSecondaryImageAlt String @default("")
+
+  // Why Choose Us
+  whyTitle         String @default("")
+  whyHeading       String @default("")
+  whyHeadingAccent String @default("")
+  why1Title        String @default("")
+  why1Description  String @default("")
+  why2Title        String @default("")
+  why2Description  String @default("")
+  why3Title        String @default("")
+  why3Description  String @default("")
+  why4Title        String @default("")
+  why4Description  String @default("")
+  why5Title        String @default("")
+  why5Description  String @default("")
+  why6Title        String @default("")
+  why6Description  String @default("")
 }
 
 // ─── Products ────────────────────────────────────────────────────────────────
@@ -76,7 +120,8 @@ model Product {
   imageUrl                 String
   features                 String[]
   builtFor                 String[]
-  relatedCapabilities      String[]
+  serviceId                String?
+  service                  Service?  @relation(fields: [serviceId], references: [id])
   profileEyebrow           String
   profileHeading           String
   profileHeadingAccent     String?
@@ -90,6 +135,9 @@ model Product {
   deletedAt                DateTime?
   createdAt                DateTime  @default(now())
   updatedAt                DateTime  @updatedAt
+
+  @@index([serviceId])
+  @@index([published, deletedAt])
 }
 
 // ─── Services ────────────────────────────────────────────────────────────────
@@ -98,7 +146,6 @@ model Service {
   id                     String                   @id @default(cuid())
   slug                   String                   @unique
   icon                   String
-  solutions              String[]
   profileEyebrow         String
   profileHeading         String
   profileHeadingAccent   String?
@@ -109,8 +156,13 @@ model Service {
   order                  Int                      @default(0)
   deletedAt              DateTime?
   methodology            ServiceMethodologyStep[]
+  products               Product[]
+  solutions              Solution[]
+  articles               Article[]
   createdAt              DateTime                 @default(now())
   updatedAt              DateTime                 @updatedAt
+
+  @@index([published, deletedAt])
 }
 
 model ServiceMethodologyStep {
@@ -126,21 +178,19 @@ model ServiceMethodologyStep {
 // ─── Solutions ───────────────────────────────────────────────────────────────
 
 model Solution {
-  id              String    @id @default(cuid())
-  slug            String    @unique
-  title           String
-  summary         String
-  overview        String
-  focusAreas      String[]
-  proofPoints     String[]
-  snippetFilename String?
-  snippetLanguage String?
-  snippetCode     String?
-  published       Boolean   @default(false)
-  order           Int       @default(0)
-  deletedAt       DateTime?
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  id        String    @id @default(cuid())
+  title     String
+  summary   String
+  serviceId String?
+  service   Service?  @relation(fields: [serviceId], references: [id])
+  published Boolean   @default(false)
+  order     Int       @default(0)
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([serviceId])
+  @@index([published, deletedAt])
 }
 
 // ─── Careers ─────────────────────────────────────────────────────────────────
@@ -229,22 +279,27 @@ enum PartnerType {
 // ─── Articles (Sanity → Neon sync) ───────────────────────────────────────────
 
 model Article {
-  id                  String    @id @default(cuid())
-  sanityId            String    @unique
-  slug                String    @unique
-  title               String
-  category            String
-  publishDate         String
-  author              String
-  summary             String
-  sections            Json
-  relatedCapabilities String[]
-  coverImageUrl       String
-  likes               Int       @default(0)
-  published           Boolean   @default(false)
-  deletedAt           DateTime?
-  createdAt           DateTime  @default(now())
-  updatedAt           DateTime  @updatedAt
+  id            String    @id @default(cuid())
+  sanityId      String    @unique
+  slug          String    @unique
+  title         String
+  category      String
+  publishDate   String
+  author        String
+  summary       String
+  sections      Json
+  serviceId     String?
+  service       Service?  @relation(fields: [serviceId], references: [id])
+  coverImageUrl String
+  likes         Int       @default(0)
+  published     Boolean   @default(false)
+  deletedAt     DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([serviceId])
+  @@index([published, deletedAt])
+  @@index([category, published])
 }
 
 // ─── Contact ─────────────────────────────────────────────────────────────────

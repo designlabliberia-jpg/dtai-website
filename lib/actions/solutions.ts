@@ -10,12 +10,9 @@ export type SolutionActionState =
 
 function parseSolution(formData: FormData) {
   return solutionSchema.safeParse({
-    slug: formData.get("slug"),
     title: formData.get("title"),
     summary: formData.get("summary"),
-    overview: formData.get("overview"),
-    focusAreas: formData.getAll("focusAreas"),
-    proofPoints: formData.getAll("proofPoints"),
+    serviceId: (formData.get("serviceId") as string) || undefined,
     published: formData.get("published") === "true",
     order: Number(formData.get("order") ?? 0),
   });

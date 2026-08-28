@@ -9,7 +9,6 @@ export type DbService = {
   id: string;
   slug: string;
   icon: string;
-  solutions: string[];
   profileEyebrow: string;
   profileHeading: string;
   profileHeadingAccent: string | null;
@@ -33,7 +32,6 @@ export async function getPublishedServices(): Promise<DbService[]> {
       id: s.slug,
       slug: s.slug,
       icon: s.icon,
-      solutions: s.solutions,
       profileEyebrow: s.profile.eyebrow,
       profileHeading: s.profile.heading,
       profileHeadingAccent: s.profile.headingAccent ?? null,
@@ -55,7 +53,6 @@ function parseService(formData: FormData) {
   return serviceSchema.safeParse({
     slug: formData.get("slug"),
     icon: formData.get("icon"),
-    solutions: formData.getAll("solutions"),
     profileEyebrow: formData.get("profileEyebrow"),
     profileHeading: formData.get("profileHeading"),
     profileHeadingAccent: formData.get("profileHeadingAccent") || undefined,

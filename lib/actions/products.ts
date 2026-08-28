@@ -18,7 +18,7 @@ function parseProduct(formData: FormData) {
     imageUrl: formData.get("imageUrl"),
     features: formData.getAll("features"),
     builtFor: formData.getAll("builtFor"),
-    relatedCapabilities: formData.getAll("relatedCapabilities"),
+    serviceId: (formData.get("serviceId") as string) || undefined,
     profileEyebrow: formData.get("profileEyebrow"),
     profileHeading: formData.get("profileHeading"),
     profileHeadingAccent: formData.get("profileHeadingAccent") || undefined,

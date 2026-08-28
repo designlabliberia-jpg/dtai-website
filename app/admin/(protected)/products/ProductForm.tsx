@@ -16,13 +16,14 @@ interface ProductFormProps {
   product?: {
     id: string; slug: string; name: string; tagline: string; description: string;
     status: string; imageUrl: string; features: string[];
-    builtFor: string[]; relatedCapabilities: string[];
+    builtFor: string[]; serviceId: string | null;
     profileEyebrow: string; profileHeading: string;
     profileHeadingAccent: string | null; profileParagraphs: string[];
     profilePrimaryImageUrl: string; profilePrimaryImageAlt: string;
     profileSecondaryImageUrl: string | null; profileSecondaryImageAlt: string | null;
     published: boolean; order: number;
   };
+  services: { id: string; profileEyebrow: string; slug: string }[];
 }
 
 const init: ProductActionState = { success: false, error: "" };
@@ -33,7 +34,7 @@ const selectStyle = {
   fontSize: "0.875rem", width: "100%", padding: "0.5rem 0.75rem", outline: "none",
 } as const;
 
-export function ProductForm({ product: p }: ProductFormProps) {
+export function ProductForm({ product: p, services }: ProductFormProps) {
   const router = useRouter();
   const isEdit = !!p;
   const [name, setName] = useState(p?.name ?? "");
@@ -109,7 +110,16 @@ export function ProductForm({ product: p }: ProductFormProps) {
             <ImageUploadField label="Image" name="imageUrl" required error={fe.imageUrl?.[0]} defaultValue={p?.imageUrl} />
             <ArrayField label="Features" name="features" defaultValue={p?.features} error={fe.features?.[0]} />
             <ArrayField label="Built For" name="builtFor" defaultValue={p?.builtFor} error={fe.builtFor?.[0]} placeholder="Add audience…" />
-            <ArrayField label="Related Capabilities (slugs)" name="relatedCapabilities" defaultValue={p?.relatedCapabilities} placeholder="Add capability slug…" />
+            <div className="flex flex-col gap-1.5">
+              <label className="font-technical text-[10px] uppercase tracking-[0.1em]"
+                style={{ color: "var(--admin-text-secondary)" }}>Service</label>
+              <select name="serviceId" defaultValue={p?.serviceId ?? ""} style={selectStyle}>
+                <option value="">— None —</option>
+                {services.map((s) => (
+                  <option key={s.id} value={s.id}>{s.profileEyebrow}</option>
+                ))}
+              </select>
+            </div>
           </div>
         </Panel>
 

@@ -4,16 +4,9 @@ import { solutions } from "@/lib/solutions-data";
 import { leadershipTeam } from "@/lib/leadership-data";
 import { governancePages } from "@/lib/governance-data";
 import { partnerCategories } from "@/lib/partners-data";
-import { insights } from "@/lib/insights-data";
 import { caseStudies } from "@/lib/case-studies-data";
 import { products } from "@/lib/products-data";
 
-// Builds the grounding context for DTAI Agent directly from the same data
-// that powers the website's own pages. This means the agent's knowledge
-// never drifts out of sync with the site — if a service, industry, or
-// solution is added/edited/removed in its data file, the agent picks it
-// up automatically on the next request with no separate content to
-// maintain.
 export function buildDtaiKnowledgeBase(): string {
   const sections: string[] = [];
 
@@ -24,17 +17,14 @@ export function buildDtaiKnowledgeBase(): string {
   sections.push(
     "ENGINEERING CAPABILITIES:\n" +
       services
-        .map((c) => `- ${c.title}: ${c.summary}`)
+        .map((c) => `- ${c.profile.eyebrow}: ${c.profile.paragraphs[0]}`)
         .join("\n")
   );
 
   sections.push(
     "SOLUTIONS:\n" +
       solutions
-        .map(
-          (s) =>
-            `- ${s.title}: ${s.summary} Focus areas: ${s.focusAreas.join(", ")}.`
-        )
+        .map((s) => `- ${s.title}: ${s.summary}`)
         .join("\n")
   );
 
@@ -58,6 +48,7 @@ export function buildDtaiKnowledgeBase(): string {
         .map((p) => `- ${p.name}: ${p.description} Features: ${p.features.join(", ")}.`)
         .join("\n")
   );
+
   sections.push(
     "SECURITY & GOVERNANCE:\n" +
       governancePages
@@ -71,13 +62,6 @@ export function buildDtaiKnowledgeBase(): string {
         .map((p) => `- ${p.title}: ${p.summary}`)
         .join("\n")
   );
-
-  if (insights.length > 0) {
-    sections.push(
-      "PUBLISHED INSIGHTS / ARTICLES:\n" +
-        insights.map((a) => `- "${a.title}": ${a.summary}`).join("\n")
-    );
-  }
 
   if (caseStudies.length > 0) {
     sections.push(

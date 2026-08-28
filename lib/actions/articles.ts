@@ -48,6 +48,10 @@ export async function syncArticleFromWebhook(
 
   const data = parsed.data;
 
+  const serviceId = data.serviceSlug
+    ? (await db.service.findUnique({ where: { slug: data.serviceSlug }, select: { id: true } }))?.id ?? null
+    : null;
+
   await db.article.upsert({
     where: { sanityId: data._id },
     update: {
@@ -58,7 +62,7 @@ export async function syncArticleFromWebhook(
       author: data.author,
       summary: data.summary,
       sections: data.sections,
-      relatedCapabilities: data.relatedCapabilities,
+      serviceId,
       coverImageUrl: data.coverImageUrl,
       likes: data.likes,
       published: data.published,
@@ -72,7 +76,7 @@ export async function syncArticleFromWebhook(
       author: data.author,
       summary: data.summary,
       sections: data.sections,
-      relatedCapabilities: data.relatedCapabilities,
+      serviceId,
       coverImageUrl: data.coverImageUrl,
       likes: data.likes,
       published: data.published,
@@ -91,10 +95,15 @@ export async function syncAllArticlesFromSanity(): Promise<{ ok: boolean; count?
       _id: string; slug: string; title: string; category: string;
       publishDate: string; author: string; summary: string;
       sections: { _key: string; _type: string; heading?: string; body: string }[] | null;
-      relatedCapabilities: string[] | null; coverImage: object;
+      serviceSlug: string | null; coverImage: object;
       likes: number | null; published: boolean | null;
     }>>(
-      `*[_type == "article"] { _id, "slug": slug.current, title, category, publishDate, author, summary, sections, relatedCapabilities, coverImage, likes, published }`
+      `*[_type == "article"] { _id, "slug": slug.current, title, category, publishDate, author, summary, sections, serviceSlug, coverImage, likes, published }`
+    );
+
+    const serviceSlugMap = new Map(
+      (await db.service.findMany({ where: { deletedAt: null }, select: { id: true, slug: true } }))
+        .map((s) => [s.slug, s.id])
     );
 
     await Promise.all(
@@ -103,7 +112,7 @@ export async function syncAllArticlesFromSanity(): Promise<{ ok: boolean; count?
           slug: a.slug, title: a.title, category: a.category,
           publishDate: a.publishDate, author: a.author, summary: a.summary,
           sections: (a.sections ?? []) as object[],
-          relatedCapabilities: a.relatedCapabilities ?? [],
+          serviceId: a.serviceSlug ? (serviceSlugMap.get(a.serviceSlug) ?? null) : null,
           coverImageUrl: urlFor(a.coverImage).width(800).auto("format").url(),
           likes: a.likes ?? 0,
         };

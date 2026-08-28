@@ -6,9 +6,16 @@ interface Props { params: Promise<{ id: string }>; }
 
 export default async function ProductPage({ params }: Props) {
   const { id } = await params;
-  if (id === "new") return <ProductForm />;
+
+  const services = await db.service.findMany({
+    where: { deletedAt: null },
+    orderBy: { order: "asc" },
+    select: { id: true, profileEyebrow: true, slug: true },
+  });
+
+  if (id === "new") return <ProductForm services={services} />;
 
   const product = await db.product.findUnique({ where: { id, deletedAt: null } });
   if (!product) notFound();
-  return <ProductForm product={product} />;
+  return <ProductForm product={product} services={services} />;
 }

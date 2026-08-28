@@ -22,13 +22,13 @@ export default async function ProductsPage() {
     db.service.findMany({
       where: { deletedAt: null },
       orderBy: [{ order: "asc" }],
-      select: { title: true },
+      select: { profileEyebrow: true },
       take: 5,
     }),
   ]);
 
   const resolvedServices = services.length
-    ? services
+    ? services.map(({ profileEyebrow }) => ({ title: profileEyebrow }))
     : fallbackServices.slice(0, 5).map(({ profile }) => ({ title: profile.eyebrow }));
   const pcts = resolvedServices.map((_, i) =>
     resolvedServices.length === 1 ? 98 : Math.round(95 + (i / (resolvedServices.length - 1)) * 5)

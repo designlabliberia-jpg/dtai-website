@@ -54,7 +54,6 @@ async function main() {
         imageUrl: p.image,
         features: p.features,
         builtFor: p.builtFor,
-        relatedCapabilities: p.relatedCapabilities,
         profileEyebrow: p.profile.eyebrow,
         profileHeading: p.profile.heading,
         profileHeadingAccent: p.profile.headingAccent ?? null,
@@ -78,7 +77,6 @@ async function main() {
         data: {
           slug: s.slug,
           icon: s.icon,
-          solutions: s.solutions,
           profileEyebrow: s.profile.eyebrow,
           profileHeading: s.profile.heading,
           profileHeadingAccent: s.profile.headingAccent ?? null,
@@ -103,23 +101,12 @@ async function main() {
 
   // ─── Solutions ────────────────────────────────────────────────────────────
   for (const [i, sol] of solutions.entries()) {
-    await db.solution.upsert({
-      where: { slug: sol.slug },
-      update: {},
-      create: {
-        slug: sol.slug,
-        title: sol.title,
-        summary: sol.summary,
-        overview: sol.summary,
-        focusAreas: [],
-        proofPoints: [],
-        snippetFilename: sol.snippet?.path ?? null,
-        snippetLanguage: sol.snippet?.language ?? null,
-        snippetCode: sol.snippet?.code ?? null,
-        published: true,
-        order: i,
-      },
-    });
+    const existing = await db.solution.findFirst({ where: { title: sol.title, deletedAt: null } });
+    if (!existing) {
+      await db.solution.create({
+        data: { title: sol.title, summary: sol.summary, published: true, order: i },
+      });
+    }
   }
   console.log(`✓ ${solutions.length} Solutions seeded`);
 

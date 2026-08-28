@@ -46,9 +46,7 @@ export const webhookArticleSchema = z.object({
     .array(sectionSchema)
     .min(1, "At least one section is required"),
 
-  relatedCapabilities: z
-    .array(z.string().min(1).max(100))
-    .default([]),
+  serviceSlug: z.string().min(1).max(100).optional(),
 
   coverImageUrl: z
     .string()
