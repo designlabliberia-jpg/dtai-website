@@ -61,8 +61,11 @@ async function uploadToCloudinary(blob: Blob): Promise<string> {
     body: fd,
   });
   if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err?.error?.message ?? `Cloudinary upload failed (${res.status})`);
+    const text = await res.text().catch(() => "");
+    console.error("Cloudinary error:", res.status, text);
+    let msg = `Cloudinary upload failed (${res.status})`;
+    try { msg = JSON.parse(text)?.error?.message ?? msg; } catch {}
+    throw new Error(msg);
   }
   const data = await res.json();
   return data.secure_url as string;

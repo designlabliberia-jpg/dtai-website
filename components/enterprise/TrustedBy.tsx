@@ -1,9 +1,17 @@
 import Image from "next/image";
+import { db } from "@/lib/db";
 import { partnerLogo } from "@/lib/partners-data";
 
-const track = [...partnerLogo, ...partnerLogo];
+export async function TrustedBy() {
+  const dbPartners = await db.partner
+    .findMany({ where: { type: "logo", deletedAt: null }, orderBy: { order: "asc" } })
+    .catch(() => []);
 
-export function TrustedBy() {
+  const logos = dbPartners.length
+    ? dbPartners.map((p) => ({ title: p.title, src: p.logoUrl }))
+    : partnerLogo;
+
+  const track = [...logos, ...logos];
   return (
     <section className="py-8 overflow-hidden">
       <div className="flex items-center justify-center gap-4 mb-2">
