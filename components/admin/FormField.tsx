@@ -13,13 +13,13 @@ interface BaseProps {
 
 interface InputProps extends BaseProps {
   as?: "input";
-  inputProps?: InputHTMLAttributes<HTMLInputElement>;
+  inputProps?: InputHTMLAttributes<HTMLInputElement> & { key?: React.Key };
 }
 
 interface TextareaProps extends BaseProps {
   as: "textarea";
   rows?: number;
-  inputProps?: TextareaHTMLAttributes<HTMLTextAreaElement>;
+  inputProps?: TextareaHTMLAttributes<HTMLTextAreaElement> & { key?: React.Key };
 }
 
 type FormFieldProps = InputProps | TextareaProps;

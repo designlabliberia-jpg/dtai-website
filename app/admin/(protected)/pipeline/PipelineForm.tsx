@@ -1,8 +1,7 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { AdminFormShell } from "@/components/admin/AdminFormShell";
 import { Panel } from "@/components/admin/Panel";
 import { FormField } from "@/components/admin/FormField";
@@ -80,7 +79,7 @@ export function PipelineForm({ client }: PipelineFormProps) {
       }
     >
       <form id="pipeline-form" action={formAction} className="flex flex-col gap-4">
-        {state.error && !state.success && (
+        {!state.success && state.error && (
           <p className="rounded-[var(--radius-sm)] px-4 py-3 font-technical text-[11px]"
             style={{ background: "var(--admin-danger-bg)", color: "var(--admin-danger)", border: "1px solid #FECACA" }}>
             {state.error}

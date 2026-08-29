@@ -81,8 +81,8 @@ export default async function AboutPage() {
 
   const whyItems: WhyChooseItem[] = a?.why1Title
     ? ([1, 2, 3, 4, 5, 6] as const).map((n) => ({
-        title: (a as Record<string, string>)[`why${n}Title`] ?? "",
-        description: (a as Record<string, string>)[`why${n}Description`] ?? "",
+        title: (a as unknown as Record<string, string>)[`why${n}Title`] ?? "",
+        description: (a as unknown as Record<string, string>)[`why${n}Description`] ?? "",
       })).filter((i) => i.title)
     : whyChooseUsReasons;
 

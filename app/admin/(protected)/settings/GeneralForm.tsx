@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { Panel } from "@/components/admin/Panel";
 import { FormField } from "@/components/admin/FormField";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
@@ -10,7 +10,7 @@ import type { SettingsActionState } from "@/lib/actions/settings";
 interface Props {
   settings: {
     name: string; fullName: string; tagline: string; description: string;
-    logoUrl: string; siteUrl: string; contactEmail: string; whatsappNumber: string;
+    logoUrl: string; siteUrl: string; contactEmail: string; whatsappNumber: string | null;
     facebookUrl: string | null; linkedinUrl: string | null; web3formsKey: string;
   } | null;
 }
@@ -20,6 +20,9 @@ const init: SettingsActionState = { success: false, error: "" };
 export function GeneralForm({ settings: s }: Props) {
   const [state, formAction, pending] = useActionState(saveSettings, init);
   const fe = (state as { fieldErrors?: Record<string, string[]> }).fieldErrors ?? {};
+
+  const existing = s?.whatsappNumber ?? "";
+  const [digits, setDigits] = useState(existing.startsWith("+") ? existing.slice(1) : existing);
 
   return (
     <form action={formAction} className="flex flex-col gap-4">
@@ -52,7 +55,25 @@ export function GeneralForm({ settings: s }: Props) {
       <Panel accent title="Contact & Social">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <FormField label="Contact Email" name="contactEmail" required error={fe.contactEmail?.[0]} inputProps={{ type: "email", defaultValue: s?.contactEmail }} />
-          <FormField label="WhatsApp (E.164)" name="whatsappNumber" error={fe.whatsappNumber?.[0]} inputProps={{ defaultValue: s?.whatsappNumber }} />
+          <div className="flex flex-col gap-1.5">
+            <label className="font-technical text-[10px] uppercase tracking-[0.1em]" style={{ color: "var(--admin-text-secondary)" }}>WhatsApp</label>
+            <div className="flex overflow-hidden rounded-[var(--radius-sm)]" style={{ border: fe.whatsappNumber?.[0] ? "1px solid var(--admin-danger)" : "1px solid var(--admin-border-strong)" }}>
+              <span className="flex items-center px-3 text-sm select-none" style={{ background: "var(--admin-surface-2)", color: "var(--admin-text-muted)", borderRight: "1px solid var(--admin-border-strong)" }}>+</span>
+              <input
+                type="tel"
+                inputMode="numeric"
+                placeholder="2319876543"
+                value={digits}
+                onChange={(e) => setDigits(e.target.value.replace(/\D/g, ""))}
+                className="flex-1 px-3 py-2 text-sm outline-none"
+                style={{ background: "var(--admin-surface)", color: "var(--admin-text-primary)" }}
+              />
+            </div>
+            <input type="hidden" name="whatsappNumber" value={digits ? `+${digits}` : ""} />
+            {fe.whatsappNumber?.[0] && (
+              <p className="font-technical text-[10px]" style={{ color: "var(--admin-danger)" }}>{fe.whatsappNumber[0]}</p>
+            )}
+          </div>
           <FormField label="Facebook URL" name="facebookUrl" error={fe.facebookUrl?.[0]} inputProps={{ type: "url", defaultValue: s?.facebookUrl ?? "" }} />
           <FormField label="LinkedIn URL" name="linkedinUrl" error={fe.linkedinUrl?.[0]} inputProps={{ type: "url", defaultValue: s?.linkedinUrl ?? "" }} />
         </div>

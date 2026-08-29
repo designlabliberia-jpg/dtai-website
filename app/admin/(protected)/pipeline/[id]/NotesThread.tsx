@@ -58,7 +58,7 @@ export function NotesThread({ clientId, notes }: NotesThreadProps) {
             className="flex-1 rounded-[var(--radius-sm)] px-3 py-2 text-sm outline-none"
             style={{
               background: "var(--admin-surface)",
-              border: state.error ? "1px solid var(--admin-danger)" : "1px solid var(--admin-border-strong)",
+              border: !state.success && state.error ? "1px solid var(--admin-danger)" : "1px solid var(--admin-border-strong)",
               color: "var(--admin-text-primary)",
             }}
           />
@@ -72,7 +72,7 @@ export function NotesThread({ clientId, notes }: NotesThreadProps) {
           </button>
         </form>
 
-        {state.error && (
+        {!state.success && state.error && (
           <p className="font-technical text-[10px]" style={{ color: "var(--admin-danger)" }}>
             {state.error}
           </p>
