@@ -14,8 +14,8 @@ import type { ProductActionState } from "@/lib/actions/products";
 
 interface ProductFormProps {
   product?: {
-    id: string; slug: string; name: string; tagline: string; description: string;
-    status: string; imageUrl: string; features: string[];
+    id: string; slug: string; name: string; tagline: string;
+    status: string; features: string[];
     builtFor: string[]; serviceId: string | null;
     profileEyebrow: string; profileHeading: string;
     profileHeadingAccent: string | null; profileParagraphs: string[];
@@ -105,9 +105,6 @@ export function ProductForm({ product: p, services }: ProductFormProps) {
 
         <Panel accent title="Content">
           <div className="flex flex-col gap-4">
-            <FormField label="Description" name="description" as="textarea" rows={3} required
-              error={fe.description?.[0]} inputProps={{ defaultValue: p?.description }} />
-            <ImageUploadField label="Image" name="imageUrl" required error={fe.imageUrl?.[0]} defaultValue={p?.imageUrl} />
             <ArrayField label="Features" name="features" defaultValue={p?.features} error={fe.features?.[0]} />
             <ArrayField label="Built For" name="builtFor" defaultValue={p?.builtFor} error={fe.builtFor?.[0]} placeholder="Add audience…" />
             <div className="flex flex-col gap-1.5">

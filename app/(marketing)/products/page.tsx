@@ -18,6 +18,7 @@ export default async function ProductsPage() {
     db.product.findMany({
       where: { published: true, deletedAt: null },
       orderBy: [{ order: "asc" }, { createdAt: "desc" }],
+      select: { slug: true, name: true, profileParagraphs: true, features: true, builtFor: true, profilePrimaryImageUrl: true },
     }),
     db.service.findMany({
       where: { deletedAt: null },
@@ -48,9 +49,10 @@ export default async function ProductsPage() {
                 key={p.slug}
                 index={i}
                 name={p.name}
-                description={p.description}
+                description={p.profileParagraphs[0] ?? ""}
                 features={p.features}
-                image={p.imageUrl}
+                builtFor={p.builtFor}
+                image={p.profilePrimaryImageUrl}
                 href={`/products/${p.slug}`}
               />
             ))}

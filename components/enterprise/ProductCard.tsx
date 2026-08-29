@@ -6,12 +6,13 @@ export interface ProductCardProps {
   name: string;
   description: string;
   features: string[];
+  builtFor: string[];
   image: string;
   href: string;
   index?: number;
 }
 
-export function ProductCard({ name, description, features, image, href, index = 0 }: ProductCardProps) {
+export function ProductCard({ name, description, features, builtFor, image, href, index = 0 }: ProductCardProps) {
   const imageRight = index % 2 !== 0;
   return (
     <div className={`group relative flex flex-col sm:flex-row overflow-hidden rounded-lg border border-neutral-300/60 ${imageRight ? "sm:flex-row-reverse" : ""} bg-white`}>
@@ -38,6 +39,17 @@ export function ProductCard({ name, description, features, image, href, index = 
             </div>
           ))}
         </div>
+
+        {/* Built For pills */}
+        {builtFor.length > 0 && (
+          <div className="mt-4 flex flex-wrap gap-2">
+            {builtFor.map((b) => (
+              <span key={b} className="rounded-full border border-brand/30 bg-brand/5 px-3 py-0.5 font-technical text-[10px] uppercase tracking-wide text-brand">
+                {b}
+              </span>
+            ))}
+          </div>
+        )}
 
         <Link
           href={href}

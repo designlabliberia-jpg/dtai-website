@@ -9,7 +9,7 @@ export default async function ProductsPage() {
   const products = await db.product.findMany({
     where: { deletedAt: null },
     orderBy: [{ order: "asc" }, { createdAt: "desc" }],
-    select: { id: true, name: true, tagline: true, status: true, published: true, imageUrl: true },
+    select: { id: true, name: true, tagline: true, status: true, published: true, profilePrimaryImageUrl: true },
   });
 
   return (

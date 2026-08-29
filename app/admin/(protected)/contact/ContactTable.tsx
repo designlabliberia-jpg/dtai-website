@@ -54,7 +54,7 @@ const columns = [
   },
   {
     key: "actions",
-    header: "",
+    header: "Actions",
     width: "80px",
     render: (r: Submission) => <ContactActions id={r.id} status={r.status} />,
   },

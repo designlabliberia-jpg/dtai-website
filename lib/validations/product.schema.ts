@@ -24,15 +24,7 @@ export const productSchema = z.object({
     .max(200, "Tagline must be under 200 characters")
     .trim(),
 
-  description: z
-    .string()
-    .min(1, "Description is required")
-    .max(1000, "Description must be under 1000 characters")
-    .trim(),
-
   status: z.enum(["In Development", "Published"]),
-
-  imageUrl: cloudinaryOrRelativeUrl,
 
   features: nonEmptyStringArray.max(20, "Maximum 20 features allowed"),
 

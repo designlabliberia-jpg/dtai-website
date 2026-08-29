@@ -115,9 +115,7 @@ model Product {
   slug                     String    @unique
   name                     String
   tagline                  String
-  description              String
   status                   String    @default("In Development")
-  imageUrl                 String
   features                 String[]
   builtFor                 String[]
   serviceId                String?

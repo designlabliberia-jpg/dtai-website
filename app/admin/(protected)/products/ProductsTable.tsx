@@ -13,7 +13,7 @@ interface Product {
   tagline: string;
   status: string;
   published: boolean;
-  imageUrl: string;
+  profilePrimaryImageUrl: string;
 }
 
 const columns = [
@@ -29,7 +29,7 @@ const columns = [
         onMouseLeave={(e) => (e.currentTarget.style.color = "var(--admin-text-primary)")}
       >
         <div className="relative h-8 w-12 shrink-0 overflow-hidden rounded bg-neutral-100">
-          <Image src={r.imageUrl} alt={r.name} fill className="object-cover" sizes="48px" />
+          <Image src={r.profilePrimaryImageUrl} alt={r.name} fill className="object-cover" sizes="48px" />
         </div>
         {r.name}
       </Link>
