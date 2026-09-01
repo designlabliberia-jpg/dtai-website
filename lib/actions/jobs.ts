@@ -60,3 +60,28 @@ export async function deleteJob(id: string): Promise<void> {
   await db.jobListing.update({ where: { id }, data: { deletedAt: new Date() } });
   revalidatePath("/admin/jobs");
 }
+
+export type PublishedJob = {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  location: string;
+  type: string;
+  category: string;
+  minQualifications: string[];
+  preferredQualifications: string[];
+  aboutJob: string | null;
+};
+
+export async function getPublishedJobs(): Promise<PublishedJob[]> {
+  return db.jobListing.findMany({
+    where: { active: true, deletedAt: null },
+    orderBy: [{ order: "asc" }, { createdAt: "desc" }],
+    select: {
+      id: true, slug: true, title: true, description: true,
+      location: true, type: true, category: true,
+      minQualifications: true, preferredQualifications: true, aboutJob: true,
+    },
+  });
+}

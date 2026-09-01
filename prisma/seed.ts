@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { PrismaClient } from ".prisma/client";
 import { PrismaNeon } from "@prisma/adapter-neon";
 import bcrypt from "bcryptjs";
@@ -6,6 +7,7 @@ import { services } from "../lib/services-data";
 import { solutions } from "../lib/solutions-data";
 import { leadershipTeam } from "../lib/leadership-data";
 import { partnerLogo, partnerCategories } from "../lib/partners-data";
+import { jobListings, careerProfile } from "../lib/careers-data";
 
 const adapter = new PrismaNeon({ connectionString: process.env.DATABASE_URL! });
 const db = new PrismaClient({ adapter });
@@ -161,6 +163,44 @@ async function main() {
     });
   }
   console.log(`✓ ${partnerCategories.length} Partner categories seeded`);
+
+  // ─── Job Listings ─────────────────────────────────────────────────────────
+  for (const [i, j] of jobListings.entries()) {
+    await db.jobListing.upsert({
+      where: { slug: j.id },
+      update: {},
+      create: {
+        slug: j.id,
+        title: j.title,
+        description: j.description,
+        location: j.location,
+        type: j.type,
+        category: j.category,
+        minQualifications: j.minQualifications ?? [],
+        preferredQualifications: j.preferredQualifications ?? [],
+        aboutJob: j.aboutJob ?? null,
+        active: true,
+        order: i,
+      },
+    });
+  }
+  console.log(`✓ ${jobListings.length} Job listings seeded`);
+
+  // ─── Careers Page Profile ─────────────────────────────────────────────────
+  await db.pageProfileSettings.upsert({
+    where: { id: "global" },
+    update: {},
+    create: {
+      id: "global",
+      careersEyebrow: careerProfile.eyebrow,
+      careersHeading: careerProfile.heading,
+      careersHeadingAccent: careerProfile.headingAccent ?? "",
+      careersParagraphs: careerProfile.paragraphs,
+      careersPrimaryImageUrl: careerProfile.collage.primary.src,
+      careersPrimaryImageAlt: careerProfile.collage.primary.alt,
+    },
+  });
+  console.log("✓ Careers page profile seeded");
 }
 
 main()

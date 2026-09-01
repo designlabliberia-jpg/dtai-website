@@ -1,11 +1,13 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 import { db } from "@/lib/db";
 import {
   settingsSchema, pageSeoSchema,
   aboutProfileSchema, aboutMissionSchema, aboutVisionSchema,
   aboutValuesSchema, aboutCommitmentSchema, aboutWhySchema,
+  pageProfileSchema,
 } from "@/lib/validations/settings.schema";
 
 export type SettingsActionState =
@@ -24,6 +26,7 @@ export async function saveSettings(
     logoUrl: formData.get("logoUrl"),
     siteUrl: formData.get("siteUrl"),
     contactEmail: formData.get("contactEmail"),
+    directLine: formData.get("directLine"),
     whatsappNumber: formData.get("whatsappNumber"),
     facebookUrl: formData.get("facebookUrl"),
     linkedinUrl: formData.get("linkedinUrl"),
@@ -34,7 +37,7 @@ export async function saveSettings(
     return {
       success: false,
       error: "Please fix the errors below.",
-      fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]>,
+      fieldErrors: z.flattenError(parsed.error).fieldErrors as Record<string, string[]>,
     };
   }
 
@@ -63,7 +66,7 @@ export async function savePageSeo(
     return {
       success: false,
       error: "Please fix the errors below.",
-      fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]>,
+      fieldErrors: z.flattenError(parsed.error).fieldErrors as Record<string, string[]>,
     };
   }
 
@@ -74,6 +77,43 @@ export async function savePageSeo(
   });
 
   revalidatePath(`/${parsed.data.pageSlug}`);
+  return { success: true };
+}
+
+export async function savePageProfiles(
+  _prev: SettingsActionState | null,
+  formData: FormData
+): Promise<SettingsActionState> {
+  const parsed = pageProfileSchema.safeParse({
+    careersEyebrow:          formData.get("careersEyebrow"),
+    careersHeading:          formData.get("careersHeading"),
+    careersHeadingAccent:    formData.get("careersHeadingAccent"),
+    careersParagraphs:       formData.get("careersParagraphs"),
+    careersPrimaryImageUrl:  formData.get("careersPrimaryImageUrl"),
+    careersPrimaryImageAlt:  formData.get("careersPrimaryImageAlt"),
+    productsEyebrow:         formData.get("productsEyebrow"),
+    productsHeading:         formData.get("productsHeading"),
+    productsHeadingAccent:   formData.get("productsHeadingAccent"),
+    productsParagraphs:      formData.get("productsParagraphs"),
+    productsPrimaryImageUrl: formData.get("productsPrimaryImageUrl"),
+    productsPrimaryImageAlt: formData.get("productsPrimaryImageAlt"),
+    servicesEyebrow:         formData.get("servicesEyebrow"),
+    servicesHeading:         formData.get("servicesHeading"),
+    servicesHeadingAccent:   formData.get("servicesHeadingAccent"),
+    servicesParagraphs:      formData.get("servicesParagraphs"),
+    servicesPrimaryImageUrl: formData.get("servicesPrimaryImageUrl"),
+    servicesPrimaryImageAlt: formData.get("servicesPrimaryImageAlt"),
+  });
+  
+  if (!parsed.success) return { success: false, error: "Please fix the errors below.", fieldErrors: z.flattenError(parsed.error).fieldErrors as Record<string, string[]> };
+  await db.pageProfileSettings.upsert({
+    where: { id: "global" },
+    update: parsed.data,
+    create: { id: "global", ...parsed.data },
+  });
+  revalidatePath("/careers");
+  revalidatePath("/products");
+  revalidatePath("/services");
   return { success: true };
 }
 
@@ -99,7 +139,7 @@ export async function saveAboutProfile(
     "profileEyebrow", "profileHeading", "profileHeadingAccent", "profileParagraphs",
     "profilePrimaryImage", "profilePrimaryImageAlt", "profileSecondaryImage", "profileSecondaryImageAlt",
   ]));
-  if (!parsed.success) return { success: false, error: "Please fix the errors below.", fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]> };
+  if (!parsed.success) return { success: false, error: "Please fix the errors below.", fieldErrors: z.flattenError(parsed.error).fieldErrors as Record<string, string[]> };
   await upsertAbout(parsed.data);
   return { success: true };
 }
@@ -112,7 +152,7 @@ export async function saveAboutMission(
     "missionBody", "missionPoints",
     "missionPrimaryImage", "missionPrimaryImageAlt", "missionSecondaryImage", "missionSecondaryImageAlt",
   ]));
-  if (!parsed.success) return { success: false, error: "Please fix the errors below.", fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]> };
+  if (!parsed.success) return { success: false, error: "Please fix the errors below.", fieldErrors: z.flattenError(parsed.error).fieldErrors as Record<string, string[]> };
   await upsertAbout(parsed.data);
   return { success: true };
 }
@@ -125,7 +165,7 @@ export async function saveAboutVision(
     "visionBody", "visionPoints",
     "visionPrimaryImage", "visionPrimaryImageAlt", "visionSecondaryImage", "visionSecondaryImageAlt",
   ]));
-  if (!parsed.success) return { success: false, error: "Please fix the errors below.", fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]> };
+  if (!parsed.success) return { success: false, error: "Please fix the errors below.", fieldErrors: z.flattenError(parsed.error).fieldErrors as Record<string, string[]> };
   await upsertAbout(parsed.data);
   return { success: true };
 }
@@ -135,7 +175,7 @@ export async function saveAboutValues(
   formData: FormData
 ): Promise<SettingsActionState> {
   const parsed = aboutValuesSchema.safeParse(getFields(formData, ["valuesLabels"]));
-  if (!parsed.success) return { success: false, error: "Please fix the errors below.", fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]> };
+  if (!parsed.success) return { success: false, error: "Please fix the errors below.", fieldErrors: z.flattenError(parsed.error).fieldErrors as Record<string, string[]> };
   await upsertAbout(parsed.data);
   return { success: true };
 }
@@ -148,7 +188,7 @@ export async function saveAboutCommitment(
     "commitmentBody", "commitmentPoints",
     "commitmentPrimaryImage", "commitmentPrimaryImageAlt", "commitmentSecondaryImage", "commitmentSecondaryImageAlt",
   ]));
-  if (!parsed.success) return { success: false, error: "Please fix the errors below.", fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]> };
+  if (!parsed.success) return { success: false, error: "Please fix the errors below.", fieldErrors: z.flattenError(parsed.error).fieldErrors as Record<string, string[]> };
   await upsertAbout(parsed.data);
   return { success: true };
 }
@@ -163,7 +203,7 @@ export async function saveAboutWhy(
     "why3Title", "why3Description", "why4Title", "why4Description",
     "why5Title", "why5Description", "why6Title", "why6Description",
   ]));
-  if (!parsed.success) return { success: false, error: "Please fix the errors below.", fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]> };
+  if (!parsed.success) return { success: false, error: "Please fix the errors below.", fieldErrors: z.flattenError(parsed.error).fieldErrors as Record<string, string[]> };
   await upsertAbout(parsed.data);
   return { success: true };
 }

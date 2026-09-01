@@ -38,7 +38,7 @@ export const jobListings: JobListing[] = [
     location: "100% remote",
     type: "Full-time",
     category: "Engineering",
-    applyUrl: "/company/careers/apply?role=software-engineer",
+    applyUrl: "/careers/apply?role=software-engineer",
     minQualifications: [
       "Bachelor's degree in Computer Science or equivalent practical experience.",
       "3+ years of experience building production web or backend systems.",
@@ -57,7 +57,7 @@ export const jobListings: JobListing[] = [
     location: "100% remote",
     type: "Full-time",
     category: "Management",
-    applyUrl: "/company/careers/apply?role=engineering-manager",
+    applyUrl: "/careers/apply?role=engineering-manager",
     minQualifications: [
       "5+ years of software engineering experience with 2+ years in a management role.",
       "Track record of hiring, mentoring, and retaining engineering talent.",
@@ -76,7 +76,7 @@ export const jobListings: JobListing[] = [
     location: "100% remote",
     type: "Full-time",
     category: "Data & AI",
-    applyUrl: "/company/careers/apply?role=gis-specialist",
+    applyUrl: "/careers/apply?role=gis-specialist",
     minQualifications: [
       "Bachelor's degree in Geography, GIS, or a related field.",
       "3+ years of hands-on experience with ArcGIS, QGIS, or equivalent platforms.",
@@ -95,7 +95,7 @@ export const jobListings: JobListing[] = [
     location: "100% remote",
     type: "Full-time",
     category: "Design",
-    applyUrl: "/company/careers/apply?role=product-designer",
+    applyUrl: "/careers/apply?role=product-designer",
     minQualifications: [
       "Bachelor's degree in Design, HCI, or equivalent practical experience.",
       "3+ years of product or UX design experience with a strong portfolio.",
@@ -114,7 +114,7 @@ export const jobListings: JobListing[] = [
     location: "100% remote",
     type: "Full-time",
     category: "Engineering",
-    applyUrl: "/company/careers/apply?role=cybersecurity-analyst",
+    applyUrl: "/careers/apply?role=cybersecurity-analyst",
     minQualifications: [
       "Bachelor's degree in Cybersecurity, IT, or equivalent experience.",
       "2+ years of experience in security operations, threat analysis, or penetration testing.",
@@ -133,7 +133,7 @@ export const jobListings: JobListing[] = [
     location: "100% remote",
     type: "Full-time",
     category: "Data & AI",
-    applyUrl: "/company/careers/apply?role=ai-ml-engineer",
+    applyUrl: "/careers/apply?role=ai-ml-engineer",
     minQualifications: [
       "Bachelor's or Master's degree in Computer Science, Statistics, or a related field.",
       "3+ years of experience building and deploying ML models in production.",
@@ -152,7 +152,7 @@ export const jobListings: JobListing[] = [
     location: "100% remote",
     type: "Full-time",
     category: "Operations",
-    applyUrl: "/company/careers/apply?role=project-manager",
+    applyUrl: "/careers/apply?role=project-manager",
     minQualifications: [
       "Bachelor's degree in Business, IT, or a related field.",
       "3+ years of project management experience in technology or consulting.",

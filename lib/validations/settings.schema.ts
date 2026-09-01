@@ -10,6 +10,31 @@ const optionalHttpsUrl = z
   .optional()
   .transform((v) => v || undefined);
 
+/** E.164 — international numbers that always start with +country code (e.g. WhatsApp) */
+const e164Phone = z
+  .union([
+    z.string().check(z.regex(/^\+[1-9]\d{6,14}$/, "Must be in E.164 format (e.g. +2319876543)")),
+    z.literal(""),
+  ])
+  .optional()
+  .transform((v) => v || undefined);
+
+/**
+ * Flexible phone — digits only, 6–15 chars.
+ * Accepts toll-free (0800…), local (231…), or international without +.
+ * The form strips non-digits before submitting; schema validates the result.
+ */
+const flexPhone = z
+  .union([
+    z
+      .string()
+      .check(z.regex(/^\d{4,15}$/, "Enter 4–15 digits, numbers only (e.g. 2319876543 or 08001234567)"))
+      .transform((v) => v.trim()),
+    z.literal(""),
+  ])
+  .optional()
+  .transform((v) => v || undefined);
+
 export const settingsSchema = z.object({
   name: z
     .string()
@@ -49,13 +74,9 @@ export const settingsSchema = z.object({
     .check(z.email("Enter a valid email address"))
     .transform((v) => v.toLowerCase().trim()),
 
-  whatsappNumber: z
-    .union([
-      z.string().check(z.regex(/^\+[1-9]\d{6,14}$/, "Must be in E.164 format (e.g. +2319876543)")),
-      z.literal(""),
-    ])
-    .optional()
-    .transform((v) => v || undefined),
+  whatsappNumber: e164Phone,
+
+  directLine: flexPhone,
 
   facebookUrl: z
     .union([
@@ -160,6 +181,27 @@ export const aboutWhySchema = z.object({
   why4Title: str(200), why4Description: str(1000),
   why5Title: str(200), why5Description: str(1000),
   why6Title: str(200), why6Description: str(1000),
+});
+
+export const pageProfileSchema = z.object({
+  careersEyebrow:          str(100),
+  careersHeading:          str(200),
+  careersHeadingAccent:    str(200),
+  careersParagraphs:       lines(),
+  careersPrimaryImageUrl:  str(),
+  careersPrimaryImageAlt:  str(200),
+  productsEyebrow:         str(100),
+  productsHeading:         str(200),
+  productsHeadingAccent:   str(200),
+  productsParagraphs:      lines(),
+  productsPrimaryImageUrl: str(),
+  productsPrimaryImageAlt: str(200),
+  servicesEyebrow:         str(100),
+  servicesHeading:         str(200),
+  servicesHeadingAccent:   str(200),
+  servicesParagraphs:      lines(),
+  servicesPrimaryImageUrl: str(),
+  servicesPrimaryImageAlt: str(200),
 });
 
 export type SettingsInput = z.infer<typeof settingsSchema>;

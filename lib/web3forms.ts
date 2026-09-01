@@ -52,9 +52,9 @@ function buildFormattedMessage(lead: LeadSubmission): string {
   ].join("\n");
 }
 
-export async function submitLead(lead: LeadSubmission): Promise<boolean> {
-  const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
-  if (!accessKey) {
+export async function submitLead(lead: LeadSubmission, accessKey?: string): Promise<boolean> {
+  const key = accessKey ?? process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
+  if (!key) {
     console.error("Web3Forms access key is not configured.");
     return false;
   }
@@ -66,7 +66,7 @@ export async function submitLead(lead: LeadSubmission): Promise<boolean> {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify({
-        access_key: accessKey,
+        access_key: key,
         subject: `[DTAI Website] ${categoryLabel} — ${lead.name}`,
         from_name: "DTAI Website",
         replyto: lead.email,

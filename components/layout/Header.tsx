@@ -23,7 +23,7 @@ function buildNavItems(serviceLinks: NavChild[]): NavItem[] {
       viewAllLabel: "View All Services",
       children: serviceLinks,
     },
-    { label: "Careers", href: "/company/careers" },
+    { label: "Careers", href: "/careers" },
     { label: "Blogs", href: "/#blog" },
     { label: "About Us", href: "/company/overview" },
   ];
@@ -48,8 +48,11 @@ function useDropdown() {
 const activeBar = (active: boolean) =>
   `absolute inset-x-3 -bottom-[1px] h-[2px] rounded-full bg-tech-blue transition-transform duration-[var(--duration-standard)] ease-[var(--ease-standard)] ${active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`;
 
-export function Header({ serviceLinks = [] }: { serviceLinks?: NavChild[] }) {
+export function Header({ serviceLinks = [], settings }: { serviceLinks?: NavChild[]; settings?: { name: string; fullName: string; logoUrl: string } | null }) {
   const navItems = buildNavItems(serviceLinks);
+  const name = settings?.name ?? siteConfig.name;
+  const fullName = settings?.fullName ?? siteConfig.fullName;
+  const logo = settings?.logoUrl ?? siteConfig.logo;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const dropdown = useDropdown();
@@ -103,11 +106,11 @@ export function Header({ serviceLinks = [] }: { serviceLinks?: NavChild[] }) {
 
       <Container className={`flex items-center justify-between transition-all duration-[var(--duration-standard)] ${scrolled ? "h-16" : "h-20"}`}>
         <Link href="/" className="flex items-center gap-2.5">
-          <Image src={siteConfig.logo} alt={siteConfig.name} width={40} height={40} priority className="h-10 w-auto object-contain" />
+          <Image src={logo} alt={name} width={40} height={40} priority className="h-10 w-auto object-contain" />
           <div className="flex flex-col leading-none">
-            <span className="font-technical text-sm tracking-wide text-neutral-900">{siteConfig.name}</span>
+            <span className="font-technical text-sm tracking-wide text-neutral-900">{name}</span>
             <span className="mt-0.5 hidden font-technical text-[9px] uppercase tracking-wider text-neutral-500 sm:block">
-             {siteConfig.fullName}
+             {fullName}
             </span>
           </div>
         </Link>

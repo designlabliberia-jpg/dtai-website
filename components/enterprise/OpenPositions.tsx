@@ -4,8 +4,7 @@ import { useState } from "react";
 import { MapPin, Clock, ArrowUpRight, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Container } from "@/components/layout/Container";
-import { jobListings } from "@/lib/careers-data";
-import type { JobListing } from "@/lib/careers-data";
+import type { PublishedJob } from "@/lib/actions/jobs";
 import { CareersInterestForm } from "./CareersInterestForm";
 import { JobDetailPanel } from "./JobDetailPanel";
 import { JobCard } from "./JobCard";
@@ -14,17 +13,21 @@ import type { CategoryFilter, TypeFilter, ViewMode } from "./JobFilterBar";
 
 const spring = { type: "spring", damping: 30, stiffness: 300 } as const;
 
-export function OpenPositions() {
+interface Props {
+  jobs: PublishedJob[];
+}
+
+export function OpenPositions({ jobs }: Props) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<CategoryFilter>("All");
   const [type, setType] = useState<TypeFilter>("All");
   const [view, setView] = useState<ViewMode>("list");
-  const [selected, setSelected] = useState<JobListing | null>(null);
+  const [selected, setSelected] = useState<PublishedJob | null>(null);
   const [applyOpen, setApplyOpen] = useState(false);
 
   const hasFilters = query !== "" || category !== "All" || type !== "All";
 
-  const filtered = jobListings.filter(j => {
+  const filtered = jobs.filter(j => {
     const matchesQuery = query === "" || j.title.toLowerCase().includes(query.toLowerCase());
     const matchesCat = category === "All" || j.category === category;
     const matchesType = type === "All" || j.type === type;
@@ -46,8 +49,6 @@ export function OpenPositions() {
   return (
     <section className="bg-white sm:py-8">
       <Container className="max-w-6xl">
-
-        {/* Heading */}
         <div className="flex items-center justify-center gap-4 mb-12">
           <span className="hidden sm:flex flex-1 max-w-[16rem] h-px bg-brand" />
           <span className="w-1 h-6 bg-brand" />
@@ -56,7 +57,6 @@ export function OpenPositions() {
           <span className="hidden sm:flex flex-1 max-w-[16rem] h-px bg-brand" />
         </div>
 
-        {/* Filter bar */}
         <div className="mb-8">
           <JobFilterBar
             query={query} onQueryChange={setQuery}
@@ -68,10 +68,7 @@ export function OpenPositions() {
           />
         </div>
 
-        {/* Two-column row — both start at the same point, below filters */}
         <div className="flex gap-6 items-start">
-
-          {/* Left — job cards */}
           <div className={`min-w-0 flex-1 ${view === "grid" ? "grid grid-cols-1 sm:grid-cols-2 gap-3" : "space-y-3"}`}>
             {filtered.length === 0
               ? <div className="rounded-lg border border-neutral-300/60 p-6 sm:p-8"><CareersInterestForm /></div>
@@ -96,17 +93,11 @@ export function OpenPositions() {
             }
           </div>
 
-          {/* Right — sticky detail panel, desktop only, inline in the same row */}
           <AnimatePresence>
             {selected && (
-              <motion.div
-                key="detail"
+              <motion.div key="detail"
                 className="hidden lg:flex flex-col w-[42%] shrink-0 sticky top-6 self-start rounded-xl border border-neutral-200 bg-white shadow-md"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                transition={spring}
-              >
+                initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} transition={spring}>
                 <div className="flex items-center justify-between px-5 py-3 border-b border-neutral-200 shrink-0">
                   <span className="text-xs font-technical uppercase tracking-widest text-neutral-400">Job Details</span>
                   <button onClick={() => setSelected(null)} aria-label="Close" className="rounded-md p-1.5 text-neutral-400 hover:bg-neutral-100 transition-colors"><X size={18} /></button>
@@ -115,11 +106,9 @@ export function OpenPositions() {
               </motion.div>
             )}
           </AnimatePresence>
-
         </div>
       </Container>
 
-      {/* Mobile — bottom-sheet */}
       <div className="lg:hidden">
         <JobDetailPanel open={!!selected} onClose={() => setSelected(null)}>
           {panelContent}

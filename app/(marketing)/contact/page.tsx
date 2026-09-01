@@ -1,35 +1,33 @@
-import { Clock } from "lucide-react";
+import React from "react";
+import { Mail, MessageCircle } from "lucide-react";
+import { SocialIconLink, FacebookIcon, LinkedInIcon } from "@/components/enterprise/SocialIconLink";
 import { Container } from "@/components/layout/Container";
 import { ContactForm } from "@/components/enterprise/ContactForm";
 import { createPageMetadata } from "@/lib/seo";
+import { getSiteSettings } from "@/lib/site-settings";
 
 export const metadata = createPageMetadata(
   "Contact",
   "Talk to DTAI about government, institutional, or enterprise digital infrastructure."
 );
 
-const channels = [
-  {
-    label: "Email Us",
-    value: "info@dtai.com",
-  },
-  {
-    label: "Direct Line",
-    value: "+231 [PLACEHOLDER]",
-  },
-  {
-    label: "General Inquiries",
-    value: "Randall Street, Gibson Building, Monrovia Liberia",
-  },
-];
 
-const steps = [
-  { step: "01", title: "Message received", detail: "Routed to the relevant team same day." },
-  { step: "02", title: "Initial response", detail: "A DTAI team member replies within 1–2 business days." },
-  { step: "03", title: "Scoping call", detail: "We schedule a call to understand your requirements in detail." },
-];
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const s = await getSiteSettings();
+
+  const channels = [
+    ...(s?.contactEmail ? [{ icon: Mail, label: "Email Us", value: s.contactEmail, href: `mailto:${s.contactEmail}` }] : []),
+    { icon: null, label: "General Inquiries", value: "Randall Street, Gibson Building, Monrovia Liberia", href: null },
+  ];
+
+  const socials = [
+    ...(s?.whatsappNumber ? [{ icon: MessageCircle, label: "WhatsApp", href: `https://wa.me/${s.whatsappNumber.replace(/\D/g, "")}`, color: "#25D366" }] : []),
+    ...(s?.facebookUrl ? [{ icon: FacebookIcon as React.ElementType, label: "Facebook", href: s.facebookUrl, color: "#1877F2" }] : []),
+    ...(s?.linkedinUrl ? [{ icon: LinkedInIcon as React.ElementType, label: "LinkedIn", href: s.linkedinUrl, color: "#0A66C2" }] : []),
+    ...(s?.contactEmail ? [{ icon: Mail, label: "Email", href: `mailto:${s.contactEmail}`, color: "#6B7280" }] : []),
+  ];
+
   return (
     <section className="bg-white py-24">
       <Container>
@@ -50,7 +48,7 @@ export default function ContactPage() {
             </div>
 
 
-            <ContactForm />
+            <ContactForm web3formsKey={s?.web3formsKey} />
           </div>
 
           {/* Info column */}
@@ -67,10 +65,8 @@ export default function ContactPage() {
                     <span className="w-1 shrink-0 bg-brand rounded-full" />
                     <div>
                       <p className="font-technical text-xs font-bold text-neutral-800">{c.label}</p>
-                      {c.label === "Email Us" ? (
-                        <a href={`mailto:${c.value}`} className="text-sm text-neutral-500 hover:text-brand">{c.value}</a>
-                      ) : c.label === "Direct Line" ? (
-                        <a href={`tel:${c.value}`} className="text-sm text-neutral-500 hover:text-brand">{c.value}</a>
+                      {c.href ? (
+                        <a href={c.href} className="text-sm text-neutral-500 hover:text-brand break-all">{c.value}</a>
                       ) : (
                         <p className="text-sm text-neutral-500">{c.value}</p>
                       )}
@@ -79,24 +75,18 @@ export default function ContactPage() {
                 ))}
               </div>
 
-              {/* What happens next */}
-              <div>
-                <div className="flex items-center gap-2 mb-3">
-                  <Clock size={14} className="text-tech-blue" strokeWidth={1.75} />
-                  <span className="font-technical text-[10px] uppercase tracking-wide">What happens next</span>
-                </div>
-                <div className="space-y-3">
-                  {steps.map((s) => (
-                    <div key={s.step} className="flex gap-3">
-                      <span className="font-technical text-xs text-tech-blue">{s.step}</span>
-                      <div>
-                        <p className="text-sm font-medium">{s.title}</p>
-                        <p className="mt-0.5 text-xs leading-relaxed text-neutral-500">{s.detail}</p>
-                      </div>
-                    </div>
+              {/* Social icons */}
+              {socials.length > 0 && (
+                <div className="flex items-center gap-3">
+                  {socials.map(({ icon: Icon, label, href, color }) => (
+                    <SocialIconLink key={label} href={href} label={label} color={color}>
+                      <Icon size={16} />
+                    </SocialIconLink>
                   ))}
                 </div>
-              </div>
+              )}
+
+
             </div>
           </div>
 

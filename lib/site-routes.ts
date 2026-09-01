@@ -9,6 +9,6 @@ export const SITE_ROUTES: { path: string; label: string; keywords: string[] }[] 
   { path: "/insights", label: "Insights", keywords: ["insights", "articles", "blog", "research", "knowledge platform"] },
   { path: "/company/overview", label: "Company Overview", keywords: ["about", "company", "who are you"] },
   { path: "/company/leadership", label: "Leadership", keywords: ["leadership", "team", "who runs", "executives", "ceo"] },
-  { path: "/company/careers", label: "Careers", keywords: ["careers", "jobs", "hiring", "work here"] },
+  { path: "/careers", label: "Careers", keywords: ["careers", "jobs", "hiring", "work here"] },
   { path: "/contact", label: "Contact", keywords: ["contact", "talk to someone", "get in touch", "reach out"] },
 ];

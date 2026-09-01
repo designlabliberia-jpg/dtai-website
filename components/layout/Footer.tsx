@@ -1,28 +1,49 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { MessageCircle, Mail, Share2 } from "lucide-react";
+import { MessageCircle, Mail } from "lucide-react";
+import { FacebookIcon, LinkedInIcon } from "@/components/enterprise/SocialIconLink";
 import { Container } from "./Container";
 import { HashLink } from "./HashLink";
 import { siteConfig } from "@/lib/seo";
-import { services, companyLinks, socialLinks } from "@/lib/services-data";
+import { services, companyLinks } from "@/lib/services-data";
 
-function FacebookIcon({ size = 16 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-    </svg>
-  );
+interface SiteSettings {
+  name: string;
+  fullName: string;
+  tagline: string;
+  description: string;
+  logoUrl: string;
+  contactEmail: string;
+  whatsappNumber: string | null;
+  facebookUrl: string | null;
+  linkedinUrl: string | null;
+}
+
+function buildSocialLinks(s: SiteSettings) {
+  const links: { icon: string; label: string; href: string }[] = [];
+  if (s.whatsappNumber) links.push({ icon: "MessageCircle", label: "WhatsApp", href: `https://wa.me/${s.whatsappNumber.replace(/\D/g, "")}` });
+  links.push({ icon: "Mail", label: "Email", href: `mailto:${s.contactEmail}` });
+  if (s.facebookUrl) links.push({ icon: "Facebook", label: "Facebook", href: s.facebookUrl });
+  if (s.linkedinUrl) links.push({ icon: "LinkedIn", label: "LinkedIn", href: s.linkedinUrl });
+  return links;
 }
 
 const socialIconMap: Record<string, React.ElementType> = {
   MessageCircle,
   Mail,
   Facebook: FacebookIcon,
-  Share2,
+  LinkedIn: LinkedInIcon,
 };
 
-export function Footer() {
+export function Footer({ settings }: { settings?: SiteSettings | null }) {
+  const name = settings?.name ?? siteConfig.name;
+  const fullName = settings?.fullName ?? siteConfig.fullName;
+  const tagline = settings?.tagline ?? siteConfig.tagline;
+  const description = settings?.description ?? siteConfig.description;
+  const logo = settings?.logoUrl ?? siteConfig.logo;
+  const socials = settings ? buildSocialLinks(settings) : [];
+
   return (
     <footer className="border-t border-neutral-300/40 bg-infra-midnight text-white">
       <Container className="py-16">
@@ -31,24 +52,24 @@ export function Footer() {
           <div className="max-w-lg">
             <div className="flex items-center gap-3">
               <Image
-                src={siteConfig.logo}
-                alt={siteConfig.name}
+                src={logo}
+                alt={name}
                 width={36}
                 height={36}
                 className="h-9 w-auto object-contain"
               />
               <span className="font-primary text-lg font-semibold text-white">
-                {siteConfig.name}
+                {name}
               </span>
             </div>
             <p className="mt-2 font-technical text-[10px] uppercase tracking-wide text-tech-blue/70">
-              {siteConfig.tagline}
+              {tagline}
             </p>
             <p className="mt-4 text-sm leading-relaxed text-neutral-400">
-              {siteConfig.description}
+              {description}
             </p>
             <div className="mt-6 flex items-center gap-4">
-              {socialLinks.map(({ icon, label, href }) => {
+              {socials.map(({ icon, label, href }) => {
                 const Icon = socialIconMap[icon];
                 return (
                   <Link
@@ -120,7 +141,7 @@ export function Footer() {
 
       <Container className="flex flex-col items-center justify-between gap-4 border-t border-white/10 py-6 sm:flex-row">
         <p className="text-xs text-neutral-400">
-          © {new Date().getFullYear()} {siteConfig.fullName}. All rights reserved.
+          © {new Date().getFullYear()} {fullName}. All rights reserved.
         </p>
         <div className="flex items-center gap-5">
           <Link

@@ -6,7 +6,11 @@ import { submitLead } from "@/lib/web3forms";
 
 type Status = "idle" | "submitting" | "submitted" | "error";
 
-export function ContactForm() {
+interface Props {
+  web3formsKey?: string;
+}
+
+export function ContactForm({ web3formsKey }: Props) {
   const [status, setStatus] = useState<Status>("idle");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -22,7 +26,7 @@ export function ContactForm() {
       category: String(form.get("inquiryType") ?? "other"),
       message: String(form.get("message") ?? ""),
       source: "contact-form",
-    });
+    }, web3formsKey);
 
     setStatus(success ? "submitted" : "error");
   }

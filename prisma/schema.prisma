@@ -37,6 +37,7 @@ model SiteSettings {
   logoUrl        String
   siteUrl        String
   contactEmail   String
+  directLine     String?
   whatsappNumber String?
   facebookUrl    String?
   linkedinUrl    String?
@@ -192,6 +193,34 @@ model Solution {
 }
 
 // ─── Careers ─────────────────────────────────────────────────────────────────
+
+model PageProfileSettings {
+  id String @id @default("global")
+
+  // Careers
+  careersEyebrow           String   @default("")
+  careersHeading           String   @default("")
+  careersHeadingAccent     String   @default("")
+  careersParagraphs        String[]
+  careersPrimaryImageUrl   String   @default("")
+  careersPrimaryImageAlt   String   @default("")
+
+  // Products
+  productsEyebrow          String   @default("")
+  productsHeading          String   @default("")
+  productsHeadingAccent    String   @default("")
+  productsParagraphs       String[]
+  productsPrimaryImageUrl  String   @default("")
+  productsPrimaryImageAlt  String   @default("")
+
+  // Services
+  servicesEyebrow          String   @default("")
+  servicesHeading          String   @default("")
+  servicesHeadingAccent    String   @default("")
+  servicesParagraphs       String[]
+  servicesPrimaryImageUrl  String   @default("")
+  servicesPrimaryImageAlt  String   @default("")
+}
 
 model JobListing {
   id                      String           @id @default(cuid())

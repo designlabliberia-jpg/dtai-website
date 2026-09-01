@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { ChevronDown, ChevronUp } from "lucide-react";
-import type { JobListing } from "@/lib/careers-data";
+import { MapPin, Clock, ChevronDown, ChevronUp } from "lucide-react";
+import type { PublishedJob } from "@/lib/actions/jobs";
 
 interface Props {
-  job: JobListing;
+  job: PublishedJob;
   onApply: () => void;
 }
 
@@ -20,13 +20,29 @@ export function JobCard({ job, onApply }: Props) {
       {/* Header */}
       <div className="flex flex-col items-center text-center pb-5 border-b border-neutral-200">
         <Image src="/assets/dtai-logo.png" alt="DTAI" width={56} height={56} className="mb-3" />
-        <h2 className="font-primary text-xl font-bold text-brand">{job.title},</h2>
+        <h2 className="font-primary text-xl font-bold text-brand">{job.title}</h2>
         <p className="text-sm text-neutral-500">Digital Technology Agency Inc, Monrovia</p>
       </div>
 
+      {/* Description, location, type */}
+      <div className="space-y-3">
+        <p className="text-sm leading-relaxed text-neutral-600">{job.description}</p>
+        <div className="flex flex-wrap gap-2">
+          <span className="flex items-center gap-1.5 rounded-full border border-neutral-200 px-3 py-1 text-xs text-neutral-600">
+            <MapPin size={11} strokeWidth={1.75} />{job.location}
+          </span>
+          <span className="flex items-center gap-1.5 rounded-full border border-neutral-200 px-3 py-1 text-xs text-neutral-600">
+            <Clock size={11} strokeWidth={1.75} />{job.type}
+          </span>
+          <span className="flex items-center gap-1.5 rounded-full border border-neutral-200 px-3 py-1 text-xs text-neutral-600">
+            {job.category}
+          </span>
+        </div>
+      </div>
+
       {/* Qualifications */}
-      {job.minQualifications && <QualSection label="Minimum qualifications:" items={job.minQualifications} />}
-      {job.preferredQualifications && <QualSection label="Preferred qualifications:" items={job.preferredQualifications} />}
+      {job.minQualifications.length > 0 && <QualSection label="Minimum qualifications:" items={job.minQualifications} />}
+      {job.preferredQualifications.length > 0 && <QualSection label="Preferred qualifications:" items={job.preferredQualifications} />}
 
       {/* About */}
       {job.aboutJob && (

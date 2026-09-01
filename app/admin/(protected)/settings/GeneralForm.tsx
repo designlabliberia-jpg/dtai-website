@@ -10,8 +10,8 @@ import type { SettingsActionState } from "@/lib/actions/settings";
 interface Props {
   settings: {
     name: string; fullName: string; tagline: string; description: string;
-    logoUrl: string; siteUrl: string; contactEmail: string; whatsappNumber: string | null;
-    facebookUrl: string | null; linkedinUrl: string | null; web3formsKey: string;
+    logoUrl: string; siteUrl: string; contactEmail: string; directLine: string | null;
+    whatsappNumber: string | null; facebookUrl: string | null; linkedinUrl: string | null; web3formsKey: string;
   } | null;
 }
 
@@ -21,8 +21,10 @@ export function GeneralForm({ settings: s }: Props) {
   const [state, formAction, pending] = useActionState(saveSettings, init);
   const fe = (state as { fieldErrors?: Record<string, string[]> }).fieldErrors ?? {};
 
-  const existing = s?.whatsappNumber ?? "";
-  const [digits, setDigits] = useState(existing.startsWith("+") ? existing.slice(1) : existing);
+  const existingWa = s?.whatsappNumber ?? "";
+  const [waDigits, setWaDigits] = useState(existingWa.startsWith("+") ? existingWa.slice(1) : existingWa);
+
+  const [dlDigits, setDlDigits] = useState(s?.directLine ?? "");
 
   return (
     <form action={formAction} className="flex flex-col gap-4">
@@ -63,15 +65,35 @@ export function GeneralForm({ settings: s }: Props) {
                 type="tel"
                 inputMode="numeric"
                 placeholder="2319876543"
-                value={digits}
-                onChange={(e) => setDigits(e.target.value.replace(/\D/g, ""))}
+                value={waDigits}
+                onChange={(e) => setWaDigits(e.target.value.replace(/\D/g, ""))}
                 className="flex-1 px-3 py-2 text-sm outline-none"
                 style={{ background: "var(--admin-surface)", color: "var(--admin-text-primary)" }}
               />
             </div>
-            <input type="hidden" name="whatsappNumber" value={digits ? `+${digits}` : ""} />
+            <input type="hidden" name="whatsappNumber" value={waDigits ? `+${waDigits}` : ""} />
             {fe.whatsappNumber?.[0] && (
               <p className="font-technical text-[10px]" style={{ color: "var(--admin-danger)" }}>{fe.whatsappNumber[0]}</p>
+            )}
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className="font-technical text-[10px] uppercase tracking-[0.1em]" style={{ color: "var(--admin-text-secondary)" }}>Direct Line / Toll-Free</label>
+            <input
+              type="tel"
+              inputMode="numeric"
+              name="directLine"
+              placeholder="08001234567 or 2319876543"
+              value={dlDigits}
+              onChange={(e) => setDlDigits(e.target.value.replace(/\D/g, ""))}
+              className="px-3 py-2 text-sm outline-none rounded-[var(--radius-sm)]"
+              style={{
+                border: fe.directLine?.[0] ? "1px solid var(--admin-danger)" : "1px solid var(--admin-border-strong)",
+                background: "var(--admin-surface)",
+                color: "var(--admin-text-primary)",
+              }}
+            />
+            {fe.directLine?.[0] && (
+              <p className="font-technical text-[10px]" style={{ color: "var(--admin-danger)" }}>{fe.directLine[0]}</p>
             )}
           </div>
           <FormField label="Facebook URL" name="facebookUrl" error={fe.facebookUrl?.[0]} inputProps={{ type: "url", defaultValue: s?.facebookUrl ?? "" }} />
