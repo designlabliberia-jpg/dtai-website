@@ -24,7 +24,7 @@ export async function TrustedBy() {
       </div>
 
       <p className="text-center font-technical text-xs uppercase tracking-widest text-neutral-600 text-sm mb-8">
-        40+ partners have put their trust in us
+        {logos.length}+ partners have put their trust in us
       </p>
 
       <div className="relative flex overflow-x-hidden overflow-y-visible">

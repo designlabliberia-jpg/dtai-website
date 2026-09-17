@@ -195,6 +195,26 @@ export function ChatWidget({ open, onClose, fabOffset = { x: 0, y: 0 } }: ChatWi
     [resetInactivityTimer]
   );
 
+  const panelStyle = (() => {
+    if (typeof window === "undefined") return { left: 16, bottom: 96 };
+    const FAB_SIZE = 56;
+    const PANEL_H = Math.min(520, window.innerHeight - 160);
+    const MARGIN = 8;
+    const fabLeft = 16 + fabOffset.x;
+    const fabRight = window.innerWidth - fabLeft - FAB_SIZE;
+    const fabBottom = 24 - fabOffset.y;
+    const fabTop = window.innerHeight - fabBottom - FAB_SIZE;
+    const isNearRight = fabLeft > window.innerWidth / 2;
+    const isNearTop = fabTop < PANEL_H + MARGIN;
+    const horizontal = isNearRight
+      ? { right: Math.max(MARGIN, fabRight) }
+      : { left: Math.max(MARGIN, fabLeft) };
+    const vertical = isNearTop
+      ? { top: fabTop + FAB_SIZE + MARGIN }
+      : { bottom: fabBottom + FAB_SIZE + MARGIN };
+    return { ...horizontal, ...vertical, height: PANEL_H };
+  })();
+
   return (
     <AnimatePresence>
       {open && (
@@ -204,13 +224,7 @@ export function ChatWidget({ open, onClose, fabOffset = { x: 0, y: 0 } }: ChatWi
           animate="visible"
           exit="hidden"
           transition={{ duration: 0.2, ease: [0.2, 0, 0, 1] }}
-          style={{
-            position: "fixed",
-            bottom: `calc(6rem + ${-fabOffset.y}px)`,
-            left: `calc(1rem + ${fabOffset.x}px)`,
-            zIndex: 9999,
-            height: "min(520px, calc(100vh - 10rem))",
-          }}
+          style={{ position: "fixed", zIndex: 9999, ...panelStyle }}
           className="flex w-[calc(100vw-2rem)] max-w-[380px] flex-col overflow-hidden rounded-xl border border-white/10 bg-infra-midnight shadow-2xl"
         >
           <ChatHeader onClose={onClose} />

@@ -62,8 +62,8 @@ export function ChatLauncher() {
   const handleAgentClose = useCallback(() => setAgentOpen(false), []);
 
   const fabIsActive = pickerOpen || agentOpen;
-  // On large screens show channels on hover; on small screens use click picker
   const showChannels = pickerOpen || hovered;
+  const isNearRight = typeof window !== "undefined" && (16 + fabOffset.x) > window.innerWidth / 2;
 
   return (
     <>
@@ -84,11 +84,10 @@ export function ChatLauncher() {
         initial="hidden"
         animate="visible"
         style={{ position: "fixed", bottom: "1.5rem", left: "1rem", zIndex: 9999, touchAction: "none" }}
-        className="flex items-end gap-2"
         onHoverStart={() => setHovered(true)}
         onHoverEnd={() => setHovered(false)}
       >
-        {/* Fly-out channel buttons — visible on hover (lg) or picker open (sm) */}
+        {/* Fly-out channel buttons — absolutely positioned so they never push the FAB */}
         <AnimatePresence>
           {showChannels && (
             <motion.div
@@ -96,7 +95,12 @@ export function ChatLauncher() {
               initial="hidden"
               animate="visible"
               exit="hidden"
-              className="flex flex-col gap-2 mb-0"
+              style={{
+                position: "absolute",
+                bottom: "calc(100% + 0.5rem)",
+                ...(isNearRight ? { right: 0 } : { left: 0 }),
+              }}
+              className="flex flex-col gap-2"
               role="menu"
               aria-label="Chat channel options"
             >
@@ -107,17 +111,16 @@ export function ChatLauncher() {
                   role="menuitem"
                   aria-label={channel.ariaLabel}
                   onClick={() => handleChannelSelect(channel.id)}
-                  initial={{ opacity: 0, x: -12 }}
+                  initial={{ opacity: 0, x: isNearRight ? 12 : -12 }}
                   animate={{ opacity: 1, x: 0, transition: { delay: i * 0.06, duration: 0.18 } }}
-                  exit={{ opacity: 0, x: -12, transition: { duration: 0.12 } }}
-                  whileHover={{ x: 4 }}
+                  exit={{ opacity: 0, x: isNearRight ? 12 : -12, transition: { duration: 0.12 } }}
+                  whileHover={{ x: isNearRight ? -4 : 4 }}
                   transition={{ duration: 0.12 }}
                   className={`flex items-center gap-3 rounded-xl px-4 py-2.5 shadow-lg backdrop-blur-sm transition-colors duration-micro ${CHANNEL_COLORS[channel.id]}`}
                 >
                   {CHANNEL_ICON[channel.id]}
                   <div className="text-left">
                     <p className="text-sm font-semibold leading-none">{channel.label}</p>
-                    <p className="mt-0.5 text-[10px] opacity-70">{channel.sublabel}</p>
                   </div>
                 </motion.button>
               ))}
