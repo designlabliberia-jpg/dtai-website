@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { cache } from "react";
-import { db } from "@/lib/db";
 
 export const siteConfig = {
   url: process.env.NEXT_PUBLIC_SITE_URL!,
@@ -13,6 +12,7 @@ export const siteConfig = {
 
 /** Fetch live identity from DB, falling back to static defaults. */
 export const getSiteConfig = cache(async () => {
+  const { db } = await import("@/lib/db");
   const s = await db.siteSettings.findUnique({ where: { id: "global" } });
   return {
     url: s?.siteUrl ?? siteConfig.url,
