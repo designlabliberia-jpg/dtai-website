@@ -16,6 +16,7 @@ export interface ChatMessage {
 export interface ChatWidgetProps {
   open: boolean;
   onClose: () => void;
+  fabOffset?: { x: number; y: number };
 }
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -93,7 +94,7 @@ function ThinkingIndicator() {
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-export function ChatWidget({ open, onClose }: ChatWidgetProps) {
+export function ChatWidget({ open, onClose, fabOffset = { x: 0, y: 0 } }: ChatWidgetProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([GREETING]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -205,8 +206,8 @@ export function ChatWidget({ open, onClose }: ChatWidgetProps) {
           transition={{ duration: 0.2, ease: [0.2, 0, 0, 1] }}
           style={{
             position: "fixed",
-            bottom: "6rem",
-            left: "1rem",
+            bottom: `calc(6rem + ${-fabOffset.y}px)`,
+            left: `calc(1rem + ${fabOffset.x}px)`,
             zIndex: 9999,
             height: "min(520px, calc(100vh - 10rem))",
           }}

@@ -3,12 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { db } from "@/lib/db";
-import {
-  settingsSchema, pageSeoSchema,
-  aboutProfileSchema, aboutMissionSchema, aboutVisionSchema,
-  aboutValuesSchema, aboutCommitmentSchema, aboutWhySchema,
-  pageProfileSchema,
-} from "@/lib/validations/settings.schema";
+import {  settingsSchema, pageSeoSchema,  aboutProfileSchema, aboutMissionSchema, aboutVisionSchema,  aboutValuesSchema, aboutCommitmentSchema, aboutWhySchema,  pageProfileSchema,} from "@/lib/validations/settings.schema";
 
 export type SettingsActionState =
   | { success: true }
@@ -117,7 +112,7 @@ export async function savePageProfiles(
   return { success: true };
 }
 
-// ── Shared about upsert helper ────────────────────────────────────────────
+// Shared about upsert helper
 async function upsertAbout(data: Record<string, unknown>) {
   await db.aboutSettings.upsert({
     where: { id: "global" },

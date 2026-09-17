@@ -16,12 +16,16 @@ export async function submitContact(
   _prev: ContactActionState | null,
   formData: FormData
 ): Promise<ContactActionState> {
-  const parsed = contactSchema.safeParse({
-    name: formData.get("name"),
-    email: formData.get("email"),
-    subject: formData.get("subject"),
-    message: formData.get("message"),
-  });
+  const raw = {
+    name: String(formData.get("name") ?? "").trim(),
+    email: String(formData.get("email") ?? "").trim(),
+    organization: String(formData.get("organization") ?? "").trim(),
+    phone: String(formData.get("phone") ?? "").trim() || undefined,
+    inquiryType: String(formData.get("inquiryType") ?? ""),
+    message: String(formData.get("message") ?? "").trim(),
+  };
+
+  const parsed = contactSchema.safeParse(raw);
 
   if (!parsed.success) {
     return {
@@ -31,14 +35,23 @@ export async function submitContact(
     };
   }
 
-  await db.contactSubmission.create({ data: parsed.data });
+  await db.contactSubmission.create({
+    data: {
+      name: parsed.data.name,
+      email: parsed.data.email,
+      subject: parsed.data.inquiryType,
+      message: parsed.data.message,
+    },
+  });
 
   // Fire-and-forget email backup — DB write already succeeded
   submitLead({
     name: parsed.data.name,
     email: parsed.data.email,
-    category: "other",
-    message: `[${parsed.data.subject}]\n\n${parsed.data.message}`,
+    organization: parsed.data.organization,
+    phone: parsed.data.phone ?? "",
+    category: parsed.data.inquiryType,
+    message: parsed.data.message,
     source: "contact-form",
   }).catch((err) => console.error("[web3forms] contact backup failed:", err));
 

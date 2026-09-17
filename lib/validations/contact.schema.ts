@@ -14,11 +14,23 @@ export const contactSchema = z.object({
     .check(z.email("Enter a valid email address"))
     .transform((v) => v.toLowerCase().trim()),
 
-  subject: z
+  organization: z
     .string()
-    .min(3, "Subject must be at least 3 characters")
-    .max(150, "Subject must be under 150 characters")
+    .min(2, "Organization must be at least 2 characters")
+    .max(150, "Organization must be under 150 characters")
     .trim(),
+
+  phone: z
+    .string()
+    .max(20, "Phone number is too long")
+    .regex(/^\+[1-9]\d{6,14}$/, "Enter a valid phone number (e.g. +1234567890)")
+    .optional()
+    .or(z.literal("")),
+
+  inquiryType: z.enum(
+    ["government", "technical", "procurement", "partner", "careers", "other"],
+    { error: "Please select an inquiry type" }
+  ),
 
   message: z
     .string()

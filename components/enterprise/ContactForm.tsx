@@ -2,32 +2,37 @@
 
 import { useState } from "react";
 import { Loader2, CheckCircle2, AlertCircle } from "lucide-react";
-import { submitLead } from "@/lib/web3forms";
+import {
+  type ContactStatus,
+  INQUIRY_OPTIONS,
+  inputClass,
+  handlePhoneKeyDown,
+  handlePhonePaste,
+  extractContactFields,
+  validateContactForm,
+  submitContactForm,
+} from "@/lib/contact-form";
 
-type Status = "idle" | "submitting" | "submitted" | "error";
-
-interface Props {
+interface ContactFormProps {
   web3formsKey?: string;
 }
 
-export function ContactForm({ web3formsKey }: Props) {
-  const [status, setStatus] = useState<Status>("idle");
+export function ContactForm({ web3formsKey }: ContactFormProps) {
+  const [status, setStatus] = useState<ContactStatus>("idle");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const result = validateContactForm(extractContactFields(new FormData(e.currentTarget)));
+
+    if (!result.ok) {
+      setFieldErrors(result.errors);
+      return;
+    }
+
+    setFieldErrors({});
     setStatus("submitting");
-
-    const form = new FormData(e.currentTarget);
-    const success = await submitLead({
-      name: String(form.get("name") ?? ""),
-      email: String(form.get("email") ?? ""),
-      organization: String(form.get("organization") ?? ""),
-      phone: String(form.get("phone") ?? ""),
-      category: String(form.get("inquiryType") ?? "other"),
-      message: String(form.get("message") ?? ""),
-      source: "contact-form",
-    }, web3formsKey);
-
+    const success = await submitContactForm(result, web3formsKey);
     setStatus(success ? "submitted" : "error");
   }
 
@@ -35,9 +40,7 @@ export function ContactForm({ web3formsKey }: Props) {
     return (
       <div className="flex flex-col items-center rounded-lg border border-tech-blue/40 bg-tech-blue/5 p-10 text-center">
         <CheckCircle2 size={28} className="text-tech-blue" strokeWidth={1.75} />
-        <p className="mt-4 text-sm font-medium text-neutral-900">
-          Message received.
-        </p>
+        <p className="mt-4 text-sm font-medium text-neutral-900">Message received.</p>
         <p className="mt-1.5 max-w-sm text-sm leading-relaxed text-neutral-600">
           A member of the DTAI team will respond within 1–2 business days.
           You&rsquo;ll hear from us at the email address you provided.
@@ -46,80 +49,89 @@ export function ContactForm({ web3formsKey }: Props) {
     );
   }
 
+  const disabled = status === "submitting";
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} noValidate className="space-y-6">
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-neutral-900">
-            Full Name <span className="text-tech-blue">*</span>
+            Full Name <span className="text-red-600">*</span>
           </label>
           <input
-            id="name"
-            name="name"
-            type="text"
-            required
-            disabled={status === "submitting"}
-            className="mt-2 w-full rounded-md border border-neutral-300 px-4 py-2.5 text-base text-neutral-900 outline-none sm:text-sm transition-colors duration-micro focus:border-tech-blue focus:ring-2 focus:ring-tech-blue/20 disabled:opacity-60"
+            id="name" name="name" type="text" autoComplete="name"
+            placeholder="John Mulbah" disabled={disabled}
+            className={inputClass(!!fieldErrors.name)}
           />
+          {fieldErrors.name && <p className="mt-1 text-xs text-red-600">{fieldErrors.name}</p>}
         </div>
 
         <div>
           <label htmlFor="organization" className="block text-sm font-medium text-neutral-900">
-            Organization <span className="text-tech-blue">*</span>
+            Organization <span className="text-red-600">*</span>
           </label>
           <input
-            id="organization"
-            name="organization"
-            type="text"
-            required
-            disabled={status === "submitting"}
-            className="mt-2 w-full rounded-md border border-neutral-300 px-4 py-2.5 text-base text-neutral-900 outline-none sm:text-sm transition-colors duration-micro focus:border-tech-blue focus:ring-2 focus:ring-tech-blue/20 disabled:opacity-60"
+            id="organization" name="organization" type="text" autoComplete="organization"
+            placeholder="Acme Corporation" disabled={disabled}
+            className={inputClass(!!fieldErrors.organization)}
           />
+          {fieldErrors.organization && <p className="mt-1 text-xs text-red-600">{fieldErrors.organization}</p>}
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-neutral-900">
-            Email <span className="text-tech-blue">*</span>
+            Email <span className="text-red-600">*</span>
           </label>
           <input
-            id="email"
-            name="email"
-            type="email"
-            required
-            disabled={status === "submitting"}
-            className="mt-2 w-full rounded-md border border-neutral-300 px-4 py-2.5 text-base text-neutral-900 outline-none sm:text-sm transition-colors duration-micro focus:border-tech-blue focus:ring-2 focus:ring-tech-blue/20 disabled:opacity-60"
+            id="email" name="email" type="email" autoComplete="email"
+            placeholder="craft@example.com" disabled={disabled}
+            className={inputClass(!!fieldErrors.email)}
           />
+          {fieldErrors.email && <p className="mt-1 text-xs text-red-600">{fieldErrors.email}</p>}
         </div>
 
         <div>
           <label htmlFor="phone" className="block text-sm font-medium text-neutral-900">
-            Phone <span className="text-neutral-600">(optional)</span>
+            Phone <span className="text-neutral-500 font-normal">(optional)</span>
           </label>
           <input
-            id="phone"
-            name="phone"
-            type="tel"
-            disabled={status === "submitting"}
-            className="mt-2 w-full rounded-md border border-neutral-300 px-4 py-2.5 text-base text-neutral-900 outline-none sm:text-sm transition-colors duration-micro focus:border-tech-blue focus:ring-2 focus:ring-tech-blue/20 disabled:opacity-60"
+            id="phone" name="phone" type="tel" autoComplete="tel"
+            placeholder="Include country code (e.g. +1)" inputMode="tel" disabled={disabled}
+            onKeyDown={handlePhoneKeyDown} onPaste={handlePhonePaste}
+            className={inputClass(!!fieldErrors.phone)}
           />
+          {fieldErrors.phone && <p className="mt-1 text-xs text-red-600">{fieldErrors.phone}</p> }
         </div>
       </div>
 
       <div>
+        <label htmlFor="inquiryType" className="block text-sm font-medium text-neutral-900">
+          Inquiry Type <span className="text-red-600">*</span>
+        </label>
+        <select
+          id="inquiryType" name="inquiryType" disabled={disabled} defaultValue=""
+          className={inputClass(!!fieldErrors.inquiryType, "bg-white")}
+        >
+          <option value="" disabled>Select an inquiry type</option>
+          {INQUIRY_OPTIONS.map((o) => (
+            <option key={o.value} value={o.value}>{o.label}</option>
+          ))}
+        </select>
+        {fieldErrors.inquiryType && <p className="mt-1 text-xs text-red-600">{fieldErrors.inquiryType}</p>}
+      </div>
+
+      <div>
         <label htmlFor="message" className="block text-sm font-medium text-neutral-900">
-          Message <span className="text-tech-blue">*</span>
+          Message <span className="text-red-600">*</span>
         </label>
         <textarea
-          id="message"
-          name="message"
-          rows={3}
-          required
-          disabled={status === "submitting"}
+          id="message" name="message" rows={3} disabled={disabled}
           placeholder="Tell us about your organization, timeline, and what you're looking to build."
-          className="mt-2 w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-base text-neutral-900 outline-none sm:text-sm transition-colors duration-micro focus:border-tech-blue focus:ring-2 focus:ring-tech-blue/20 disabled:opacity-60"
+          className={inputClass(!!fieldErrors.message, "rounded-lg")}
         />
+        {fieldErrors.message && <p className="mt-1 text-xs text-red-600">{fieldErrors.message}</p>}
       </div>
 
       {status === "error" && (
@@ -130,23 +142,19 @@ export function ContactForm({ web3formsKey }: Props) {
       )}
 
       <button
-        type="submit"
-        disabled={status === "submitting"}
+        type="submit" disabled={disabled}
         className="inline-flex items-center gap-2 rounded-md border border-brand bg-brand px-6 py-3 text-sm font-semibold text-white transition-all duration-micro hover:bg-transparent hover:text-brand disabled:opacity-70"
       >
-        {status === "submitting" ? (
-          <>
-            <Loader2 size={16} className="animate-spin" />
-            Sending...
-          </>
-        ) : (
-          "Send Message"
-        )}
+        {disabled ? (
+          <><Loader2 size={16} className="animate-spin" /> Sending...</>
+        ) : "Send Message"}
       </button>
 
-      <p className="font-technical text-[11px] text-neutral-600">
-        Fields marked <span className="text-tech-blue">*</span> are required.
-      </p>
+      {Object.keys(fieldErrors).length > 0 && (
+        <p className="font-technical text-[11px] text-neutral-600">
+          Fields marked <span className="text-red-600">*</span> are required.
+        </p>
+      )}
     </form>
   );
 }
