@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { cache } from "react";
 
 export const siteConfig = {
   url: process.env.NEXT_PUBLIC_SITE_URL!,
@@ -9,20 +8,6 @@ export const siteConfig = {
   description:"DTAI is a Liberian technology company where advanced software engineering meets environmental purpose, that empower governments, businesses, healthcare institutions, non-governmental organizations, and communities across Liberia and Africa.",
   logo: "/assets/dtai-logo.png",
 } as const;
-
-/** Fetch live identity from DB, falling back to static defaults. */
-export const getSiteConfig = cache(async () => {
-  const { db } = await import("@/lib/db");
-  const s = await db.siteSettings.findUnique({ where: { id: "global" } });
-  return {
-    url: s?.siteUrl ?? siteConfig.url,
-    name: s?.name ?? siteConfig.name,
-    fullName: s?.fullName ?? siteConfig.fullName,
-    tagline: s?.tagline ?? siteConfig.tagline,
-    description: s?.description ?? siteConfig.description,
-    logo: s?.logoUrl ?? siteConfig.logo,
-  };
-});
 
 export const siteMetadata: Metadata = {
   metadataBase: new URL(siteConfig.url),

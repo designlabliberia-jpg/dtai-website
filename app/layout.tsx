@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { getSiteConfig } from "@/lib/seo";
+import { getSiteConfig } from "@/lib/site-config.server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const s = await getSiteConfig();

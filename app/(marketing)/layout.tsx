@@ -6,7 +6,7 @@ import { ScrollToTop } from "@/components/layout/ScrollToTop";
 import { ScrollToHash } from "@/components/layout/ScrollToHash";
 import { AmbientField } from "@/components/layout/AmbientField";
 import { ChatLauncher } from "@/components/layout/ChatLauncher";
-import { getSiteConfig } from "@/lib/seo";
+import { getSiteConfig } from "@/lib/site-config.server";
 import { getPublishedServices } from "@/lib/actions/services";
 import { getSiteSettings } from "@/lib/site-settings";
 
