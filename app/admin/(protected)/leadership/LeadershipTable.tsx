@@ -10,7 +10,6 @@ type Member = {
   name: string;
   title: string;
   division: string;
-  order: number;
   imageUrl: string | null;
 };
 
@@ -57,16 +56,6 @@ export function LeadershipTable({ members }: { members: Member[] }) {
           render: (r) => (
             <span className="font-technical text-[10px] uppercase tracking-[0.08em]" style={{ color: "var(--admin-text-muted)" }}>
               {r.division}
-            </span>
-          ),
-        },
-        {
-          key: "order",
-          header: "Order",
-          width: "70px",
-          render: (r) => (
-            <span className="font-technical text-[11px] tabular-nums" style={{ color: "var(--admin-text-muted)" }}>
-              {r.order}
             </span>
           ),
         },

@@ -10,8 +10,6 @@ interface Partner {
   id: string;
   title: string;
   type: string;
-  slug: string | null;
-  order: number;
   logoUrl: string;
 }
 
@@ -39,26 +37,6 @@ const columns = [
     header: "Type",
     width: "110px",
     render: (r: Partner) => <StatusBadge status={r.type === "logo" ? "active" : "new"} />,
-  },
-  {
-    key: "slug",
-    header: "Slug",
-    width: "140px",
-    render: (r: Partner) => (
-      <span className="font-technical text-[10px]" style={{ color: "var(--admin-text-muted)" }}>
-        {r.slug ?? "—"}
-      </span>
-    ),
-  },
-  {
-    key: "order",
-    header: "Order",
-    width: "70px",
-    render: (r: Partner) => (
-      <span className="font-technical text-[11px] tabular-nums" style={{ color: "var(--admin-text-muted)" }}>
-        {r.order}
-      </span>
-    ),
   },
   {
     key: "actions",

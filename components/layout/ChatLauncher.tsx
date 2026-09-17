@@ -14,8 +14,8 @@ const FAB_VARIANTS = {
 };
 
 const PICKER_VARIANTS = {
-  hidden: { opacity: 0, y: 8, scale: 0.95 },
-  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.18, ease: [0.2, 0, 0, 1] as [number, number, number, number] } },
+  hidden: { opacity: 0, scale: 0.95 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.18, ease: [0.2, 0, 0, 1] as [number, number, number, number] } },
 };
 
 const CHANNEL_ICON: Record<ChannelId, React.ReactNode> = {
@@ -64,6 +64,7 @@ export function ChatLauncher() {
   const fabIsActive = pickerOpen || agentOpen;
   const showChannels = pickerOpen || hovered;
   const isNearRight = typeof window !== "undefined" && (16 + fabOffset.x) > window.innerWidth / 2;
+  const isNearTop = typeof window !== "undefined" && (24 - fabOffset.y) > window.innerHeight / 2;
 
   return (
     <>
@@ -83,6 +84,12 @@ export function ChatLauncher() {
         variants={FAB_VARIANTS}
         initial="hidden"
         animate="visible"
+        dragConstraints={{
+          left: -(16),
+          right: typeof window !== "undefined" ? window.innerWidth - 16 - 56 : 0,
+          top: typeof window !== "undefined" ? -(window.innerHeight - 24 - 56) : 0,
+          bottom: 24,
+        }}
         style={{ position: "fixed", bottom: "1.5rem", left: "1rem", zIndex: 9999, touchAction: "none" }}
         onHoverStart={() => setHovered(true)}
         onHoverEnd={() => setHovered(false)}
@@ -97,7 +104,7 @@ export function ChatLauncher() {
               exit="hidden"
               style={{
                 position: "absolute",
-                bottom: "calc(100% + 0.5rem)",
+                ...(isNearTop ? { top: "calc(100% + 0.5rem)" } : { bottom: "calc(100% + 0.5rem)" }),
                 ...(isNearRight ? { right: 0 } : { left: 0 }),
               }}
               className="flex flex-col gap-2"
