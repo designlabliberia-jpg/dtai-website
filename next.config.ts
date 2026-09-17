@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
+  serverExternalPackages: ["@prisma/client", "@prisma/adapter-neon"],
   images: {
     qualities: [70, 75],
     remotePatterns: [
