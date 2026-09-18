@@ -1,15 +1,9 @@
 import { db } from "@/lib/db";
+import { PartnerLogo } from "./PartnerLogo";
 
 export async function TrustedBy() {
-  const approvedIds = await db.contentApproval
-    .findMany({ where: { entityType: "partner", status: "approved" }, select: { entityId: true } })
-    .then((rows) => rows.map((r) => r.entityId))
-    .catch(() => []);
-
-  if (!approvedIds.length) return null;
-
   const dbPartners = await db.partner
-    .findMany({ where: { type: "logo", deletedAt: null, id: { in: approvedIds } }, orderBy: { order: "asc" } })
+    .findMany({ where: { type: "logo", published: true, deletedAt: null }, orderBy: { order: "asc" } })
     .catch(() => []);
 
   if (!dbPartners.length) return null;
