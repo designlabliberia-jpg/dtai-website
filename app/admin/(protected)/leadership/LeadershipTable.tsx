@@ -2,17 +2,44 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
+import { Pencil, Trash2 } from "lucide-react";
 import { AdminTable } from "@/components/admin/AdminTable";
-import { LeadershipActions } from "./LeadershipActions";
+import { PublishToggle } from "@/components/admin/PublishToggle";
+import { toggleLeadershipPublished, deleteLeadershipMember } from "@/lib/actions/leadership";
 
 type Member = {
   id: string;
   name: string;
   title: string;
   division: string;
-  order: number;
+  published: boolean;
   imageUrl: string | null;
 };
+
+function MemberActions({ id }: { id: string }) {
+  const [pending, startTransition] = useTransition();
+  const router = useRouter();
+  return (
+    <div className="flex items-center gap-2">
+      <Link href={`/admin/leadership/${id}`} title="Edit"
+        className="transition-colors" style={{ color: "var(--admin-text-muted)" }}
+        onMouseEnter={(e) => (e.currentTarget.style.color = "var(--admin-brand)")}
+        onMouseLeave={(e) => (e.currentTarget.style.color = "var(--admin-text-muted)")}>
+        <Pencil size={13} />
+      </Link>
+      <button type="button" disabled={pending}
+        onClick={() => startTransition(async () => { await deleteLeadershipMember(id); router.refresh(); })}
+        title="Archive" className="transition-colors disabled:opacity-40"
+        style={{ color: "var(--admin-text-muted)" }}
+        onMouseEnter={(e) => (e.currentTarget.style.color = "var(--admin-danger)")}
+        onMouseLeave={(e) => (e.currentTarget.style.color = "var(--admin-text-muted)")}>
+        <Trash2 size={13} />
+      </button>
+    </div>
+  );
+}
 
 export function LeadershipTable({ members }: { members: Member[] }) {
   return (
@@ -61,20 +88,18 @@ export function LeadershipTable({ members }: { members: Member[] }) {
           ),
         },
         {
-          key: "order",
-          header: "Order",
-          width: "70px",
+          key: "visible",
+          header: "Visible",
+          width: "100px",
           render: (r) => (
-            <span className="font-technical text-[11px] tabular-nums" style={{ color: "var(--admin-text-muted)" }}>
-              {r.order}
-            </span>
+            <PublishToggle id={r.id} published={r.published} onToggle={(_, v) => toggleLeadershipPublished(r.id, v)} labelOn="Visible" labelOff="Hidden" />
           ),
         },
         {
           key: "actions",
-          header: "",
+          header: "Actions",
           width: "80px",
-          render: (r) => <LeadershipActions id={r.id} />,
+          render: (r) => <MemberActions id={r.id} />,
         },
       ]}
     />

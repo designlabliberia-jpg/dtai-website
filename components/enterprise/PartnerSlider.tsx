@@ -3,11 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-import { partnerCategories } from "@/lib/partners-data";
+import type { PartnerCategory } from "@/lib/partners-data";
 
 const CYCLE_MS = 3000;
 
-export function PartnerSlider() {
+export function PartnerSlider({ partners = [] }: { partners: PartnerCategory[] }) {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const [reduceMotion] = useState(
@@ -18,14 +18,14 @@ export function PartnerSlider() {
   useEffect(() => {
     if (paused) return;
     timerRef.current = setInterval(() => {
-      setActive((prev) => (prev + 1) % partnerCategories.length);
+      setActive((prev) => (prev + 1) % partners.length);
     }, CYCLE_MS);
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [paused]);
+  }, [paused, partners.length]);
 
-  const partner = partnerCategories[active];
+  const partner = partners[active];
 
   return (
     <div
@@ -77,7 +77,7 @@ export function PartnerSlider() {
             className="flex flex-1 flex-col"
           >
             <span className="font-technical text-xs uppercase tracking-wide text-tech-blue/50">
-              Sector {active + 1} of {partnerCategories.length}
+              Sector {active + 1} of {partners.length}
             </span>
             <h2 className="mt-2 font-primary text-lg font-semibold leading-snug text-tech-blue sm:text-xl">
               {partner.title}
@@ -91,9 +91,9 @@ export function PartnerSlider() {
 
       {/* Dot navigation */}
       <div className="relative z-10 flex justify-center gap-2 py-4">
-        {partnerCategories.map((p, i) => (
+        {partners.map((p, i) => (
           <button
-            key={p.slug}
+            key={i}
             onClick={() => setActive(i)}
             aria-label={`Show ${p.title}`}
             className={`h-1.5 rounded-full transition-all duration-standard ${

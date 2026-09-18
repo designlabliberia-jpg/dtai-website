@@ -9,21 +9,29 @@ datasource db {
 
 // ─── Auth ────────────────────────────────────────────────────────────────────
 
+model Role {
+  id          String      @id @default(cuid())
+  name        String      @unique
+  label       String
+  permissions Json        @default("{}")
+  isSystem    Boolean     @default(false)
+  users       AdminUser[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
 model AdminUser {
   id           String   @id @default(cuid())
   email        String   @unique
   passwordHash String
-  role         Role
   name         String
+  active       Boolean  @default(true)
+  roleId       String
+  role         Role     @relation(fields: [roleId], references: [id])
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-}
 
-enum Role {
-  super_admin
-  editor
-  recruiter
-  support
+  @@index([roleId])
 }
 
 // ─── Site ────────────────────────────────────────────────────────────────────
@@ -144,7 +152,6 @@ model Product {
 model Service {
   id                     String                   @id @default(cuid())
   slug                   String                   @unique
-  icon                   String
   profileEyebrow         String
   profileHeading         String
   profileHeadingAccent   String?
@@ -279,6 +286,7 @@ model LeadershipMember {
   imageUrl  String?
   linkedin  String?
   order     Int       @default(0)
+  published Boolean   @default(false)
   deletedAt DateTime?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -295,12 +303,37 @@ model Partner {
   summary   String?
   points    String[]
   order     Int         @default(0)
+  published Boolean     @default(false)
   deletedAt DateTime?
 }
 
 enum PartnerType {
   logo
   category
+}
+
+// ─── Content Approvals ───────────────────────────────────────────────────────
+
+model ContentApproval {
+  id            String         @id @default(cuid())
+  entityType    String
+  entityId      String
+  entityTitle   String         @default("")
+  status        ApprovalStatus @default(pending)
+  requestedById String
+  reviewedById  String?
+  note          String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@unique([entityType, entityId])
+  @@index([status])
+}
+
+enum ApprovalStatus {
+  pending
+  approved
+  rejected
 }
 
 // ─── Articles (Sanity → Neon sync) ───────────────────────────────────────────

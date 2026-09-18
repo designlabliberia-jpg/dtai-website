@@ -4,23 +4,23 @@ import Link from "next/link";
 import { ArrowRight, Monitor, Leaf, TreePine, Building2, ShieldAlert } from "lucide-react";
 import { useState } from "react";
 
-const iconMap: Record<string, React.ElementType> = {
-  Monitor,
-  Leaf,
-  TreePine,
-  Building2,
-  ShieldAlert,
+const SLUG_ICON_MAP: Record<string, React.ElementType> = {
+  "digital-technology": Monitor,
+  "environmental-technology": Leaf,
+  "environmental-consulting": TreePine,
+  "smart-city-infrastructure": Building2,
+  "climate-disaster-management": ShieldAlert,
 };
 
 export interface ServiceCardProps {
+  slug: string;
   title: string;
-  icon: string;
   description: string;
   href: string;
 }
 
-export function ServiceCard({ title, icon, description, href }: ServiceCardProps) {
-  const Icon = iconMap[icon] ?? Monitor;
+export function ServiceCard({ slug, title, description, href }: ServiceCardProps) {
+  const Icon = SLUG_ICON_MAP[slug] ?? Monitor;
   const [open, setOpen] = useState(false);
 
   return (

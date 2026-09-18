@@ -18,8 +18,8 @@ export default async function ServicesPage() {
         {services.map((ser) => (
           <ServiceCard
             key={ser.slug}
+            slug={ser.slug}
             title={ser.profileEyebrow}
-            icon={ser.icon}
             description={ser.profileParagraphs[0]}
             href={`/services/${ser.slug}`}
           />

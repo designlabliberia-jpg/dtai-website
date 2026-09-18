@@ -27,8 +27,8 @@ export async function ServiceOverview() {
               {services.map((service) => (
                 <ServiceCard
                   key={service.slug}
+                  slug={service.slug}
                   title={service.profileEyebrow}
-                  icon={service.icon}
                   description={service.profileParagraphs[0]}
                   href={`/services/${service.slug}`}
                 />

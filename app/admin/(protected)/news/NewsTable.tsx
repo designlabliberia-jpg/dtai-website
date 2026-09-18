@@ -69,15 +69,15 @@ export function NewsTable({ articles }: { articles: ArticleRow[] }) {
           ),
         },
         {
-          key: "published",
+          key: "visible",
           header: "Visible",
           width: "90px",
           render: (r) => <NewsPublishToggle id={r.id} published={r.published} />,
         },
         {
-          key: "sanity",
-          header: "",
-          width: "50px",
+          key: "actions",
+          header: "Actions",
+          width: "60px",
           render: (r) => (
             <Link
               href={`/studio/desk/article;${r.sanityId}`}

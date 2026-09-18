@@ -1,16 +1,21 @@
 import Image from "next/image";
 import { db } from "@/lib/db";
-import { partnerLogo } from "@/lib/partners-data";
 
 export async function TrustedBy() {
-  const dbPartners = await db.partner
-    .findMany({ where: { type: "logo", deletedAt: null }, orderBy: { order: "asc" } })
+  const approvedIds = await db.contentApproval
+    .findMany({ where: { entityType: "partner", status: "approved" }, select: { entityId: true } })
+    .then((rows) => rows.map((r) => r.entityId))
     .catch(() => []);
 
-  const logos = dbPartners.length
-    ? dbPartners.map((p) => ({ title: p.title, src: p.logoUrl }))
-    : partnerLogo;
+  if (!approvedIds.length) return null;
 
+  const dbPartners = await db.partner
+    .findMany({ where: { type: "logo", deletedAt: null, id: { in: approvedIds } }, orderBy: { order: "asc" } })
+    .catch(() => []);
+
+  if (!dbPartners.length) return null;
+
+  const logos = dbPartners.map((p) => ({ title: p.title, src: p.logoUrl }));
   const track = [...logos, ...logos];
   return (
     <section className="py-8 overflow-hidden">

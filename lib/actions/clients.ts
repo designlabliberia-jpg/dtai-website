@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
+import { requirePermission } from "@/lib/rbac";
 import { clientSchema, clientNoteSchema } from "@/lib/validations/client.schema";
 import type { ClientStatus } from "@/lib/validations/client.schema";
 
@@ -12,6 +13,7 @@ export async function createClient(
   _prev: ClientActionState | null,
   formData: FormData
 ): Promise<ClientActionState> {
+  await requirePermission("pipeline:write");
   const parsed = clientSchema.safeParse({
     companyName: formData.get("companyName"),
     contactName: formData.get("contactName"),
@@ -41,6 +43,7 @@ export async function updateClient(
   _prev: ClientActionState | null,
   formData: FormData
 ): Promise<ClientActionState> {
+  await requirePermission("pipeline:write");
   const parsed = clientSchema.safeParse({
     companyName: formData.get("companyName"),
     contactName: formData.get("contactName"),
@@ -66,10 +69,12 @@ export async function updateClient(
 }
 
 export async function updateClientStatus(id: string, status: ClientStatus): Promise<void> {
+  await requirePermission("pipeline:write");
   await db.client.update({ where: { id }, data: { status } });
 }
 
 export async function deleteClient(id: string): Promise<void> {
+  await requirePermission("pipeline:delete");
   await db.client.update({ where: { id }, data: { deletedAt: new Date() } });
 }
 

@@ -1,22 +1,24 @@
 "use client";
 
 import { useState } from "react";
-import { Settings, Search, Info, LayoutTemplate } from "lucide-react";
+import { Settings, Search, Info, LayoutTemplate, ShieldCheck } from "lucide-react";
 import { SettingsTile } from "./SettingsTile";
 import { SettingsDrawer } from "./SettingsDrawer";
 import { GeneralForm } from "./GeneralForm";
 import { SeoForm } from "./SeoForm";
 import { AboutForm } from "./AboutForm";
 import { PageProfilesForm } from "./PageProfilesForm";
+import { AccessControlDrawer } from "./AccessControlDrawer";
 import type { SiteSettings, AboutSettings, PageSeo, PageProfileSettings } from "@prisma/client";
 
-type DrawerKey = "general" | "seo" | "about" | "pageProfiles" | null;
+type DrawerKey = "general" | "seo" | "about" | "pageProfiles" | "access" | null;
 
 const TILES = [
-  { key: "general"      as const, icon: Settings,       title: "General",       description: "Identity, contact & social links" },
-  { key: "seo"          as const, icon: Search,         title: "SEO",           description: "Page titles, meta & OG images" },
-  { key: "about"        as const, icon: Info,           title: "About",         description: "Profile, mission, vision & values" },
-  { key: "pageProfiles" as const, icon: LayoutTemplate, title: "Page Profiles", description: "Careers, Products & Services hero blocks" },
+  { key: "general"      as const, icon: Settings,       title: "General",        description: "Identity, contact & social links" },
+  { key: "seo"          as const, icon: Search,         title: "SEO",            description: "Page titles, meta & OG images" },
+  { key: "about"        as const, icon: Info,           title: "About",          description: "Profile, mission, vision & values" },
+  { key: "pageProfiles" as const, icon: LayoutTemplate, title: "Page Profiles",  description: "Careers, Products & Services hero blocks" },
+  { key: "access"       as const, icon: ShieldCheck,    title: "Access Control", description: "Roles, permissions & user accounts" },
 ];
 
 interface Props {
@@ -31,7 +33,7 @@ export function SettingsShell({ settings, pageSeoRows, about, pageProfiles }: Pr
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 justify-items-center">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-5 justify-items-center">
         {TILES.map(({ key, icon, title, description }) => (
           <SettingsTile
             key={key}
@@ -58,6 +60,8 @@ export function SettingsShell({ settings, pageSeoRows, about, pageProfiles }: Pr
       <SettingsDrawer title="Page Profile Sections" open={open === "pageProfiles"} onClose={() => setOpen(null)}>
         <PageProfilesForm data={pageProfiles} />
       </SettingsDrawer>
+
+      <AccessControlDrawer open={open === "access"} onClose={() => setOpen(null)} />
     </>
   );
 }

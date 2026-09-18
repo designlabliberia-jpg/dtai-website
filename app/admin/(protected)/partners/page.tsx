@@ -9,7 +9,7 @@ export default async function PartnersPage() {
   const partners = await db.partner.findMany({
     where: { deletedAt: null },
     orderBy: [{ order: "asc" }],
-    select: { id: true, title: true, type: true, slug: true, order: true, logoUrl: true },
+    select: { id: true, title: true, type: true, slug: true, published: true, logoUrl: true },
   });
 
   return (

@@ -8,17 +8,71 @@ import { solutions } from "../lib/solutions-data";
 import { leadershipTeam } from "../lib/leadership-data";
 import { partnerLogo, partnerCategories } from "../lib/partners-data";
 import { jobListings, careerProfile } from "../lib/careers-data";
+import { ALL_PERMISSIONS } from "../lib/permissions";
 
 const adapter = new PrismaNeon({ connectionString: process.env.DATABASE_URL! });
 const db = new PrismaClient({ adapter });
 
+// ─── System Roles ─────────────────────────────────────────────────────────────
+
+const SYSTEM_ROLES = [
+  {
+    name: "super_admin",
+    label: "Super Admin",
+    permissions: ALL_PERMISSIONS,
+  },
+  {
+    name: "editor",
+    label: "Content Editor",
+    permissions: {
+      "products:read": true, "products:write": true,
+      "services:read": true, "services:write": true,
+      "solutions:read": true, "solutions:write": true,
+      "news:read": true, "news:write": true,
+      "leadership:read": true, "leadership:write": true,
+      "partners:read": true, "partners:write": true,
+    },
+  },
+  {
+    name: "recruiter",
+    label: "Recruiter",
+    permissions: {
+      "jobs:read": true, "jobs:write": true, "jobs:delete": true,
+      "applications:read": true, "applications:write": true,
+    },
+  },
+  {
+    name: "support",
+    label: "Support",
+    permissions: {
+      "contact:read": true, "contact:write": true,
+    },
+  },
+];
+
 async function main() {
+  // ─── Roles ────────────────────────────────────────────────────────────────
+  // Only create missing system roles. Never overwrite permissions that may
+  // have been customised in production.
+  for (const role of SYSTEM_ROLES) {
+    await db.role.upsert({
+      where: { name: role.name },
+      update: {},
+      create: { name: role.name, label: role.label, permissions: role.permissions, isSystem: true },
+    });
+  }
+  console.log("✓ System roles seeded");
+
   // ─── Admin User ───────────────────────────────────────────────────────────
+  const superAdminRole = await db.role.findUnique({ where: { name: "super_admin" } });
+  if (!superAdminRole) throw new Error("super_admin role not found after seed");
+
   const passwordHash = await bcrypt.hash("Admin123", 12);
+  // update: {} — never overwrite a password that was changed in production
   await db.adminUser.upsert({
     where: { email: "admin@dtai.lr" },
     update: {},
-    create: { email: "admin@dtai.lr", passwordHash, role: "super_admin", name: "Garrison Sayor" },
+    create: { email: "admin@dtai.lr", passwordHash, roleId: superAdminRole.id, name: "Garrison Sayor" },
   });
   console.log("✓ AdminUser seeded");
 
@@ -76,7 +130,6 @@ async function main() {
       await db.service.create({
         data: {
           slug: s.slug,
-          icon: s.icon,
           profileEyebrow: s.profile.eyebrow,
           profileHeading: s.profile.heading,
           profileHeadingAccent: s.profile.headingAccent ?? null,

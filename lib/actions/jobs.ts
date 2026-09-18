@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { requirePermission } from "@/lib/rbac";
 import { jobSchema } from "@/lib/validations/job.schema";
 
 export type JobActionState =
@@ -28,10 +29,9 @@ export async function createJob(
   _prev: JobActionState | null,
   formData: FormData
 ): Promise<JobActionState> {
+  await requirePermission("jobs:write");
   const parsed = parseJob(formData);
-  if (!parsed.success) {
-    return { success: false, error: "Please fix the errors below.", fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]> };
-  }
+  if (!parsed.success) return { success: false, error: "Please fix the errors below.", fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]> };
   const job = await db.jobListing.create({ data: parsed.data });
   revalidatePath("/admin/jobs");
   return { success: true, id: job.id };
@@ -42,36 +42,30 @@ export async function updateJob(
   _prev: JobActionState | null,
   formData: FormData
 ): Promise<JobActionState> {
+  await requirePermission("jobs:write");
   const parsed = parseJob(formData);
-  if (!parsed.success) {
-    return { success: false, error: "Please fix the errors below.", fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]> };
-  }
+  if (!parsed.success) return { success: false, error: "Please fix the errors below.", fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]> };
   await db.jobListing.update({ where: { id }, data: parsed.data });
   revalidatePath("/admin/jobs");
   return { success: true };
 }
 
 export async function toggleJobActive(id: string, value: boolean): Promise<void> {
+  await requirePermission("jobs:write");
   await db.jobListing.update({ where: { id }, data: { active: value } });
   revalidatePath("/admin/jobs");
 }
 
 export async function deleteJob(id: string): Promise<void> {
+  await requirePermission("jobs:delete");
   await db.jobListing.update({ where: { id }, data: { deletedAt: new Date() } });
   revalidatePath("/admin/jobs");
 }
 
 export type PublishedJob = {
-  id: string;
-  slug: string;
-  title: string;
-  description: string;
-  location: string;
-  type: string;
-  category: string;
-  minQualifications: string[];
-  preferredQualifications: string[];
-  aboutJob: string | null;
+  id: string; slug: string; title: string; description: string;
+  location: string; type: string; category: string;
+  minQualifications: string[]; preferredQualifications: string[]; aboutJob: string | null;
 };
 
 export async function getPublishedJobs(): Promise<PublishedJob[]> {

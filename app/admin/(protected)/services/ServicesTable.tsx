@@ -1,17 +1,41 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
+import { Pencil, Trash2 } from "lucide-react";
 import { AdminTable } from "@/components/admin/AdminTable";
-import { StatusBadge } from "@/components/admin/StatusBadge";
-import { ContentActions } from "@/components/admin/ContentActions";
+import { PublishToggle } from "@/components/admin/PublishToggle";
 import { toggleServicePublished, deleteService } from "@/lib/actions/services";
 
 interface Service {
   id: string;
   profileEyebrow: string;
-  icon: string;
   published: boolean;
-  _count: { methodology: number };
+  _count: { solutions: number };
+}
+
+function ServiceActions({ id }: { id: string }) {
+  const [pending, startTransition] = useTransition();
+  const router = useRouter();
+  return (
+    <div className="flex items-center gap-2">
+      <Link href={`/admin/services/${id}`} title="Edit"
+        className="transition-colors" style={{ color: "var(--admin-text-muted)" }}
+        onMouseEnter={(e) => (e.currentTarget.style.color = "var(--admin-brand)")}
+        onMouseLeave={(e) => (e.currentTarget.style.color = "var(--admin-text-muted)")}>
+        <Pencil size={13} />
+      </Link>
+      <button type="button" disabled={pending}
+        onClick={() => startTransition(async () => { await deleteService(id); router.refresh(); })}
+        title="Archive" className="transition-colors disabled:opacity-40"
+        style={{ color: "var(--admin-text-muted)" }}
+        onMouseEnter={(e) => (e.currentTarget.style.color = "var(--admin-danger)")}
+        onMouseLeave={(e) => (e.currentTarget.style.color = "var(--admin-text-muted)")}>
+        <Trash2 size={13} />
+      </button>
+    </div>
+  );
 }
 
 const columns = [
@@ -31,44 +55,28 @@ const columns = [
     ),
   },
   {
-    key: "icon",
-    header: "Icon",
-    width: "80px",
-    render: (r: Service) => (
-      <span className="font-technical text-[10px]" style={{ color: "var(--admin-text-muted)" }}>
-        {r.icon}
-      </span>
-    ),
-  },
-  {
-    key: "steps",
-    header: "Steps",
-    width: "70px",
+    key: "solutions",
+    header: "Solutions",
+    width: "90px",
     render: (r: Service) => (
       <span className="font-technical text-[11px] tabular-nums" style={{ color: "var(--admin-text-muted)" }}>
-        {r._count.methodology}
+        {r._count.solutions}
       </span>
     ),
   },
   {
-    key: "published",
-    header: "Published",
+    key: "visible",
+    header: "Visible",
     width: "100px",
-    render: (r: Service) => <StatusBadge status={r.published ? "Live" : "inactive"} />,
+    render: (r: Service) => (
+      <PublishToggle id={r.id} published={r.published} onToggle={(_, v) => toggleServicePublished(r.id, v)} />
+    ),
   },
   {
     key: "actions",
-    header: "",
-    width: "100px",
-    render: (r: Service) => (
-      <ContentActions
-        id={r.id}
-        editHref={`/admin/services/${r.id}`}
-        published={r.published}
-        onToggle={toggleServicePublished}
-        onDelete={deleteService}
-      />
-    ),
+    header: "Actions",
+    width: "80px",
+    render: (r: Service) => <ServiceActions id={r.id} />,
   },
 ];
 

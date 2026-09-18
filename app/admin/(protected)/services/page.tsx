@@ -9,7 +9,7 @@ export default async function ServicesPage() {
   const services = await db.service.findMany({
     where: { deletedAt: null },
     orderBy: [{ order: "asc" }, { createdAt: "desc" }],
-    include: { _count: { select: { methodology: true } } },
+    include: { _count: { select: { solutions: true } } },
   });
 
   return (

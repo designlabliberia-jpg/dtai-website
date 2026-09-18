@@ -15,7 +15,7 @@ interface LeadershipFormProps {
   member?: {
     id: string; memberId: string; name: string; title: string;
     division: string; focus: string; bio: string;
-    imageUrl: string | null; linkedin: string | null; order: number;
+    imageUrl: string | null; linkedin: string | null;
   };
 }
 
@@ -128,15 +128,6 @@ export function LeadershipForm({ member: m }: LeadershipFormProps) {
               error={fe.focus?.[0]}
               inputProps={{ defaultValue: m?.focus }}
             />
-            <div className="flex flex-col gap-1.5">
-              <label
-                className="font-technical text-[10px] uppercase tracking-[0.1em]"
-                style={{ color: "var(--admin-text-secondary)" }}
-              >
-                Order
-              </label>
-              <input name="order" type="number" min="0" defaultValue={m?.order ?? 0} style={selectStyle} />
-            </div>
           </div>
         </Panel>
 

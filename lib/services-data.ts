@@ -8,7 +8,6 @@ export interface MethodologyStep {
 
 export interface Service {
   slug: string;
-  icon: string;
   solutions: string[];
   methodology: MethodologyStep[];
   profile: ProfileSection;
@@ -17,7 +16,6 @@ export interface Service {
 export const services: Service[] = [
   {
     slug: "digital-technology",
-    icon: "Monitor",
     solutions: [
       "Custom Software Development",
       "Mobile Applications",
@@ -49,7 +47,6 @@ export const services: Service[] = [
   },
   {
     slug: "environmental-technology",
-    icon: "Leaf",
     solutions: [
       "Environmental Information Management Systems",
       "Environmental Impact Assessment (digital data collection)",
@@ -85,7 +82,6 @@ export const services: Service[] = [
   },
   {
     slug: "environmental-consulting",
-    icon: "TreePine",
     solutions: [
       "Environmental Compliance",
       "Environmental Audits",
@@ -116,7 +112,6 @@ export const services: Service[] = [
   },
   {
     slug: "smart-city-infrastructure",
-    icon: "Building2",
     solutions: [
       "Smart Waste Collection",
       "Smart Street Lighting",
@@ -145,7 +140,6 @@ export const services: Service[] = [
   },
   {
     slug: "climate-disaster-management",
-    icon: "ShieldAlert",
     solutions: [
       "Flood Prediction Systems",
       "Wildfire Monitoring",

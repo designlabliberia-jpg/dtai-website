@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
+import { requirePermission } from "@/lib/rbac";
 import { contactSchema } from "@/lib/validations/contact.schema";
 import { submitLead } from "@/lib/web3forms";
 
@@ -9,6 +10,7 @@ export type ContactActionState =
   | { success: false; error: string; fieldErrors?: Record<string, string[]> };
 
 export async function deleteContactSubmission(id: string): Promise<void> {
+  await requirePermission("contact:write");
   await db.contactSubmission.update({ where: { id }, data: { deletedAt: new Date() } });
 }
 
