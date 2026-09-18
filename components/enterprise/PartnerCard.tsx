@@ -2,8 +2,17 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { PartnerSlider } from "@/components/enterprise/PartnerSlider";
+import { db } from "@/lib/db";
 
-export function PartnerCard() {
+export async function PartnerCard() {
+  const categoryPartners = await db.partner
+    .findMany({ where: { type: "category", published: true, deletedAt: null }, orderBy: { order: "asc" } })
+    .catch(() => []);
+
+  if (!categoryPartners.length) return null;
+
+  const partners = categoryPartners.map((p) => ({ slug: p.slug ?? undefined, title: p.title, src: p.logoUrl, summary: p.summary ?? undefined }));
+
   return (
     <section id="partners" className="py-16">
       <Container>
@@ -35,7 +44,7 @@ export function PartnerCard() {
 
           {/* Right — 40% */}
           <div className="lg:w-[40%]">
-            <PartnerSlider />
+            <PartnerSlider partners={partners} />
           </div>
         </div>
       </Container>

@@ -2,9 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
+import { Pencil, Trash2 } from "lucide-react";
 import { AdminTable } from "@/components/admin/AdminTable";
 import { StatusBadge } from "@/components/admin/StatusBadge";
-import { ContentActions } from "@/components/admin/ContentActions";
+import { PublishToggle } from "@/components/admin/PublishToggle";
 import { toggleProductPublished, deleteProduct } from "@/lib/actions/products";
 
 interface Product {
@@ -14,6 +17,29 @@ interface Product {
   status: string;
   published: boolean;
   profilePrimaryImageUrl: string;
+}
+
+function ProductActions({ id }: Readonly<{ id: string }>) {
+  const [pending, startTransition] = useTransition();
+  const router = useRouter();
+  return (
+    <div className="flex items-center gap-2">
+      <Link href={`/admin/products/${id}`} title="Edit"
+        className="transition-colors" style={{ color: "var(--admin-text-muted)" }}
+        onMouseEnter={(e) => (e.currentTarget.style.color = "var(--admin-brand)")}
+        onMouseLeave={(e) => (e.currentTarget.style.color = "var(--admin-text-muted)")}>
+        <Pencil size={13} />
+      </Link>
+      <button type="button" disabled={pending}
+        onClick={() => startTransition(async () => { await deleteProduct(id); router.refresh(); })}
+        title="Archive" className="transition-colors disabled:opacity-40"
+        style={{ color: "var(--admin-text-muted)" }}
+        onMouseEnter={(e) => (e.currentTarget.style.color = "var(--admin-danger)")}
+        onMouseLeave={(e) => (e.currentTarget.style.color = "var(--admin-text-muted)")}>
+        <Trash2 size={13} />
+      </button>
+    </div>
+  );
 }
 
 const columns = [
@@ -51,18 +77,18 @@ const columns = [
     ),
   },
   {
-    key: "actions",
-    header: "",
+    key: "visible",
+    header: "Visible",
     width: "100px",
     render: (r: Product) => (
-      <ContentActions
-        id={r.id}
-        editHref={`/admin/products/${r.id}`}
-        published={r.published}
-        onToggle={toggleProductPublished}
-        onDelete={deleteProduct}
-      />
+      <PublishToggle id={r.id} published={r.published} onToggle={(_, v) => toggleProductPublished(r.id, v)} />
     ),
+  },
+  {
+    key: "actions",
+    header: "Actions",
+    width: "80px",
+    render: (r: Product) => <ProductActions id={r.id} />,
   },
 ];
 

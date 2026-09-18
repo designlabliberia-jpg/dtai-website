@@ -2,10 +2,12 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { requirePermission, can } from "@/lib/rbac";
 import { productSchema } from "@/lib/validations/product.schema";
+import { submitForApproval } from "./approvals";
 
 export type ProductActionState =
-  | { success: true; id?: string }
+  | { success: true; id?: string; pendingApproval?: boolean }
   | { success: false; error: string; fieldErrors?: Record<string, string[]> };
 
 function parseProduct(formData: FormData) {
@@ -34,11 +36,20 @@ export async function createProduct(
   _prev: ProductActionState | null,
   formData: FormData
 ): Promise<ProductActionState> {
+  const user = await requirePermission("products:write");
   const parsed = parseProduct(formData);
   if (!parsed.success) {
     return { success: false, error: "Please fix the errors below.", fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]> };
   }
-  const product = await db.product.create({ data: parsed.data });
+  const canPublish = can(user, "products:publish");
+  const product = await db.product.create({
+    data: { ...parsed.data, published: canPublish ? parsed.data.published : false },
+  });
+  if (!canPublish && parsed.data.published) {
+    await submitForApproval("product", product.id, parsed.data.name);
+    revalidatePath("/admin/products");
+    return { success: true, id: product.id, pendingApproval: true };
+  }
   revalidatePath("/admin/products");
   return { success: true, id: product.id };
 }
@@ -48,21 +59,33 @@ export async function updateProduct(
   _prev: ProductActionState | null,
   formData: FormData
 ): Promise<ProductActionState> {
+  const user = await requirePermission("products:write");
   const parsed = parseProduct(formData);
   if (!parsed.success) {
     return { success: false, error: "Please fix the errors below.", fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]> };
   }
-  await db.product.update({ where: { id }, data: parsed.data });
+  const canPublish = can(user, "products:publish");
+  await db.product.update({
+    where: { id },
+    data: { ...parsed.data, published: canPublish ? parsed.data.published : false },
+  });
+  if (!canPublish && parsed.data.published) {
+    await submitForApproval("product", id, parsed.data.name);
+    revalidatePath("/admin/products");
+    return { success: true, pendingApproval: true };
+  }
   revalidatePath("/admin/products");
   return { success: true };
 }
 
 export async function toggleProductPublished(id: string, value: boolean): Promise<void> {
+  await requirePermission("products:publish");
   await db.product.update({ where: { id }, data: { published: value } });
   revalidatePath("/admin/products");
 }
 
 export async function deleteProduct(id: string): Promise<void> {
+  await requirePermission("products:delete");
   await db.product.update({ where: { id }, data: { deletedAt: new Date() } });
   revalidatePath("/admin/products");
 }

@@ -4,7 +4,10 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { LayoutDashboard, Mail, Briefcase, Users, Settings, ChevronLeft, ChevronRight, LogOut, Package, Wrench, Lightbulb, Newspaper, UserCircle, Handshake, ClipboardList, Sun, Moon,
+import {
+  LayoutDashboard, Mail, Briefcase, Users, Settings, ChevronLeft, ChevronRight,
+  LogOut, Package, Wrench, Lightbulb, Newspaper, UserCircle, Handshake,
+  ClipboardList, Sun, Moon, ShieldCheck, CheckSquare,
 } from "lucide-react";
 import { NavItem } from "./NavItem";
 import { NavSection } from "./NavSection";
@@ -12,7 +15,8 @@ import { NavSection } from "./NavSection";
 interface AdminSidebarProps {
   unreadContacts: number;
   unreadApplications: number;
-  role: string;
+  permissions: Record<string, boolean>;
+  roleName: string;
   userName: string;
   userEmail: string;
 }
@@ -20,7 +24,8 @@ interface AdminSidebarProps {
 export function AdminSidebar({
   unreadContacts,
   unreadApplications,
-  role,
+  permissions,
+  roleName,
   userName,
   userEmail,
 }: Readonly<AdminSidebarProps>) {
@@ -32,7 +37,6 @@ export function AdminSidebar({
     const saved = localStorage.getItem("admin-theme");
     const light = saved === "light";
     document.documentElement.dataset.theme = light ? "light" : "";
-    // defer state update to avoid cascading render in effect body
     const id = setTimeout(() => setIsLight(light), 0);
     return () => clearTimeout(id);
   }, []);
@@ -44,14 +48,24 @@ export function AdminSidebar({
     localStorage.setItem("admin-theme", next ? "light" : "dark");
   }
 
-  const isSuperAdmin = role === "super_admin";
-  const isEditor     = role === "editor" || isSuperAdmin;
-  const isRecruiter  = role === "recruiter" || isSuperAdmin;
+  const isSuperAdmin = roleName === "super_admin";
+  const p = (key: string) => isSuperAdmin || permissions[key] === true;
 
   async function handleLogout() {
     await fetch("/api/auth/logout", { method: "POST" });
     router.push("/admin/login");
   }
+
+  const showContent    = p("products:read") || p("services:read") || p("solutions:read") || p("news:read");
+  const showPeople     = p("leadership:read") || p("partners:read");
+  const showCareers    = p("jobs:read");
+  const showInbox      = p("contact:read");
+  const showApps       = p("applications:read");
+  const showPipeline   = p("pipeline:read");
+  const showSettings   = p("settings:read");
+  const showUsers      = p("users:read");
+  const showRoles      = p("roles:read");
+  const showApprovals  = p("approvals:review");
 
   return (
     <aside
@@ -69,36 +83,14 @@ export function AdminSidebar({
       >
         {collapsed ? (
           <Link href="/" className="flex items-center justify-center w-full">
-            <Image
-              src="/assets/dtai-logo.png"
-              alt="DTAI"
-              width={26}
-              height={26}
-              className="object-contain"
-            />
+            <Image src="/assets/dtai-logo.png" alt="DTAI" width={26} height={26} className="object-contain" />
           </Link>
         ) : (
           <Link href="/" className="flex items-center gap-2.5">
-            <Image
-              src="/assets/dtai-logo.png"
-              alt="DTAI"
-              width={26}
-              height={26}
-              className="object-contain"
-            />
+            <Image src="/assets/dtai-logo.png" alt="DTAI" width={26} height={26} className="object-contain" />
             <div className="flex flex-col leading-none">
-              <span
-                className="font-technical text-[11px] font-semibold uppercase tracking-[0.12em]"
-                style={{ color: "var(--admin-text-inverse)" }}
-              >
-                DTAI
-              </span>
-              <span
-                className="font-technical text-[8px] uppercase tracking-[0.15em]"
-                style={{ color: "var(--admin-text-inverse-muted)" }}
-              >
-                Command
-              </span>
+              <span className="font-technical text-[11px] font-semibold uppercase tracking-[0.12em]" style={{ color: "var(--admin-text-inverse)" }}>DTAI</span>
+              <span className="font-technical text-[8px] uppercase tracking-[0.15em]" style={{ color: "var(--admin-text-inverse-muted)" }}>Command</span>
             </div>
           </Link>
         )}
@@ -127,113 +119,91 @@ export function AdminSidebar({
           <NavItem href="/admin" label="Dashboard" icon={LayoutDashboard} collapsed={collapsed} />
         </NavSection>
 
-        <NavSection label="Inbox" collapsed={collapsed}>
-          <NavItem
-            href="/admin/contact"
-            label="Contact"
-            icon={Mail}
-            badge={unreadContacts}
-            collapsed={collapsed}
-          />
-          {isRecruiter && (
-            <NavItem
-              href="/admin/applications"
-              label="Applications"
-              icon={Briefcase}
-              badge={unreadApplications}
-              collapsed={collapsed}
-            />
-          )}
-        </NavSection>
+        {(showInbox || showApps) && (
+          <NavSection label="Inbox" collapsed={collapsed}>
+            {showInbox && (
+              <NavItem href="/admin/contact" label="Contact" icon={Mail} badge={unreadContacts} collapsed={collapsed} />
+            )}
+            {showApps && (
+              <NavItem href="/admin/applications" label="Applications" icon={Briefcase} badge={unreadApplications} collapsed={collapsed} />
+            )}
+          </NavSection>
+        )}
 
-        {isEditor && (
+        {showContent && (
           <NavSection label="Content" collapsed={collapsed}>
-            <NavItem href="/admin/products"  label="Products"  icon={Package}   collapsed={collapsed} />
-            <NavItem href="/admin/services"  label="Services"  icon={Wrench}    collapsed={collapsed} />
-            <NavItem href="/admin/solutions" label="Solutions" icon={Lightbulb} collapsed={collapsed} />
-            <NavItem href="/admin/news"      label="News"      icon={Newspaper} collapsed={collapsed} />
+            {p("products:read")  && <NavItem href="/admin/products"  label="Products"  icon={Package}   collapsed={collapsed} />}
+            {p("services:read")  && <NavItem href="/admin/services"  label="Services"  icon={Wrench}    collapsed={collapsed} />}
+            {p("solutions:read") && <NavItem href="/admin/solutions" label="Solutions" icon={Lightbulb} collapsed={collapsed} />}
+            {p("news:read")      && <NavItem href="/admin/news"      label="News"      icon={Newspaper} collapsed={collapsed} />}
           </NavSection>
         )}
 
-        {isEditor && (
+        {showPeople && (
           <NavSection label="People" collapsed={collapsed}>
-            <NavItem href="/admin/leadership" label="Leadership" icon={UserCircle}  collapsed={collapsed} />
-            <NavItem href="/admin/partners"   label="Partners"   icon={Handshake}   collapsed={collapsed} />
+            {p("leadership:read") && <NavItem href="/admin/leadership" label="Leadership" icon={UserCircle} collapsed={collapsed} />}
+            {p("partners:read")   && <NavItem href="/admin/partners"   label="Partners"   icon={Handshake}  collapsed={collapsed} />}
           </NavSection>
         )}
 
-        {isRecruiter && (
+        {showCareers && (
           <NavSection label="Careers" collapsed={collapsed}>
             <NavItem href="/admin/jobs" label="Job Listings" icon={ClipboardList} collapsed={collapsed} />
           </NavSection>
         )}
 
-        {isSuperAdmin && (
+        {showPipeline && (
           <NavSection label="CRM" collapsed={collapsed}>
             <NavItem href="/admin/pipeline" label="Pipeline" icon={Users} collapsed={collapsed} />
           </NavSection>
         )}
 
-        {isSuperAdmin && (
+        {showApprovals && (
+          <NavSection label="Workflow" collapsed={collapsed}>
+            <NavItem href="/admin/approvals" label="Approvals" icon={CheckSquare} collapsed={collapsed} />
+          </NavSection>
+        )}
+
+        {(showSettings || showUsers || showRoles) && (
           <NavSection label="System" collapsed={collapsed}>
-            <NavItem href="/admin/settings" label="Settings" icon={Settings} collapsed={collapsed} />
+            {showSettings && <NavItem href="/admin/settings" label="Settings" icon={Settings}     collapsed={collapsed} />}
+            {showUsers    && <NavItem href="/admin/users"    label="Users"    icon={Users}         collapsed={collapsed} />}
+            {showRoles    && <NavItem href="/admin/roles"    label="Roles"    icon={ShieldCheck}   collapsed={collapsed} />}
           </NavSection>
         )}
       </nav>
 
       {/* ── Footer ──────────────────────────────────────────────────────── */}
-      <div
-        className="shrink-0 px-3 py-4"
-        style={{ borderTop: "1px solid var(--admin-sidebar-border)" }}
-      >
+      <div className="shrink-0 px-3 py-4" style={{ borderTop: "1px solid var(--admin-sidebar-border)" }}>
         <div className="flex items-center gap-2.5 overflow-hidden">
           <div
             className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full font-technical text-[11px] font-semibold uppercase"
-            style={{
-              background: "rgba(0,166,255,0.15)",
-              color: "var(--admin-accent)",
-              border: "1px solid rgba(0,166,255,0.2)",
-            }}
+            style={{ background: "rgba(0,166,255,0.15)", color: "var(--admin-accent)", border: "1px solid rgba(0,166,255,0.2)" }}
           >
             {userName.charAt(0)}
           </div>
           {!collapsed && (
             <div className="flex-1 overflow-hidden">
-              <p
-                className="truncate text-[11px] font-medium"
-                style={{ color: "var(--admin-text-inverse)" }}
-              >
-                {userName}
-              </p>
-              <p
-                className="truncate font-technical text-[9px]"
-                style={{ color: "var(--admin-text-inverse-muted)" }}
-              >
-                {userEmail}
-              </p>
+              <p className="truncate text-[11px] font-medium" style={{ color: "var(--admin-text-inverse)" }}>{userName}</p>
+              <p className="truncate font-technical text-[9px]" style={{ color: "var(--admin-text-inverse-muted)" }}>{userEmail}</p>
             </div>
           )}
           <div className="ml-auto flex items-center gap-1.5 shrink-0">
             <button
-              type="button"
-              onClick={toggleTheme}
+              type="button" onClick={toggleTheme}
               title={isLight ? "Switch to dark mode" : "Switch to light mode"}
               className="transition-colors"
               style={{ color: "var(--admin-text-inverse-muted)" }}
               onMouseEnter={(e) => (e.currentTarget.style.color = "var(--admin-accent)")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--admin-text-inverse-muted)")}
-            >
+              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--admin-text-inverse-muted)")}>
               {isLight ? <Moon size={13} /> : <Sun size={13} />}
             </button>
             <button
-              type="button"
-              onClick={handleLogout}
-              title="Sign out"
+              type="button" onClick={handleLogout} title="Sign out"
               className="transition-colors"
               style={{ color: "var(--admin-text-inverse-muted)" }}
               onMouseEnter={(e) => (e.currentTarget.style.color = "var(--admin-danger)")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--admin-text-inverse-muted)")}
-            >
+              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--admin-text-inverse-muted)")}>
               <LogOut size={13} />
             </button>
           </div>

@@ -6,7 +6,6 @@ import { useEffect } from "react";
 import { AdminFormShell } from "@/components/admin/AdminFormShell";
 import { Panel } from "@/components/admin/Panel";
 import { FormField } from "@/components/admin/FormField";
-import { ArrayField } from "@/components/admin/ArrayField";
 import { SlugField } from "@/components/admin/SlugField";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 import { createPartner, updatePartner } from "@/lib/actions/partners";
@@ -17,7 +16,6 @@ interface PartnerFormProps {
   partner?: {
     id: string; title: string; logoUrl: string;
     type: string; slug: string | null; summary: string | null;
-    points: string[]; order: number;
   };
 }
 
@@ -119,15 +117,6 @@ export function PartnerForm({ partner: p }: PartnerFormProps) {
               error={fe.logoUrl?.[0]}
               defaultValue={p?.logoUrl}
             />
-            <div className="flex flex-col gap-1.5">
-              <label
-                className="font-technical text-[10px] uppercase tracking-[0.1em]"
-                style={{ color: "var(--admin-text-secondary)" }}
-              >
-                Order
-              </label>
-              <input name="order" type="number" min="0" defaultValue={p?.order ?? 0} style={selectStyle} />
-            </div>
           </div>
         </Panel>
 
@@ -138,7 +127,6 @@ export function PartnerForm({ partner: p }: PartnerFormProps) {
                 name="slug"
                 sourceValue={title}
                 defaultValue={p?.slug ?? ""}
-                error={fe.slug?.[0]}
               />
               <FormField
                 label="Summary"
@@ -148,22 +136,12 @@ export function PartnerForm({ partner: p }: PartnerFormProps) {
                 error={fe.summary?.[0]}
                 inputProps={{ defaultValue: p?.summary ?? "" }}
               />
-              <ArrayField
-                label="Key Points"
-                name="points"
-                defaultValue={p?.points}
-                error={fe.points?.[0]}
-                placeholder="Add point…"
-              />
             </div>
           </Panel>
         )}
 
         {type === "logo" && (
-          <>
-            <input type="hidden" name="slug" value="" />
-            <input type="hidden" name="summary" value="" />
-          </>
+          <input type="hidden" name="summary" value="" />
         )}
       </form>
     </AdminFormShell>

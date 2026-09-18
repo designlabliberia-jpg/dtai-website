@@ -1,21 +1,17 @@
 import { redirect } from "next/navigation";
-import { getSession } from "@/lib/auth";
+import { requireAuth, can } from "@/lib/rbac";
 import { db } from "@/lib/db";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 
 export default async function ProtectedLayout({ children }: { readonly children: React.ReactNode }) {
-  const session = await getSession();
-  if (!session.adminId) redirect("/admin/login");
+  const user = await requireAuth();
 
-  const user = await db.adminUser.findUnique({
-    where: { id: session.adminId },
-    select: { name: true, email: true, role: true },
-  });
-  if (!user) redirect("/admin/login");
+  const showContacts     = can(user, "contact:read");
+  const showApplications = can(user, "applications:read");
 
   const [unreadContacts, unreadApplications] = await Promise.all([
-    db.contactSubmission.count({ where: { status: "new", deletedAt: null } }),
-    db.jobApplication.count({ where: { status: "new", deletedAt: null } }),
+    showContacts     ? db.contactSubmission.count({ where: { status: "new", deletedAt: null } }) : Promise.resolve(0),
+    showApplications ? db.jobApplication.count({ where: { status: "new", deletedAt: null } })   : Promise.resolve(0),
   ]);
 
   return (
@@ -23,7 +19,8 @@ export default async function ProtectedLayout({ children }: { readonly children:
       <AdminSidebar
         unreadContacts={unreadContacts}
         unreadApplications={unreadApplications}
-        role={user.role}
+        permissions={user.role.permissions}
+        roleName={user.role.name}
         userName={user.name}
         userEmail={user.email}
       />

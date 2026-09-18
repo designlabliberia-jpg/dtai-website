@@ -16,7 +16,6 @@ interface ServiceFormProps {
   service?: {
     id: string;
     slug: string;
-    icon: string;
     profileEyebrow: string;
     profileHeading: string;
     profileHeadingAccent: string | null;
@@ -24,18 +23,11 @@ interface ServiceFormProps {
     profilePrimaryImageUrl: string;
     profilePrimaryImageAlt: string;
     published: boolean;
-    order: number;
     solutions: { id: string; title: string; published: boolean }[];
   };
 }
 
 const init: ServiceActionState = { success: false, error: "" };
-
-const inputStyle = {
-  background: "var(--admin-surface)", border: "1px solid var(--admin-border-strong)",
-  color: "var(--admin-text-primary)", borderRadius: "var(--radius-sm)",
-  fontSize: "0.875rem", width: "100%", padding: "0.5rem 0.75rem", outline: "none",
-} as const;
 
 export function ServiceForm({ service: s }: ServiceFormProps) {
   const router = useRouter();
@@ -80,19 +72,7 @@ export function ServiceForm({ service: s }: ServiceFormProps) {
         )}
 
         <Panel accent title="Identity">
-          <div className="flex flex-col gap-4">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <FormField label="Icon Name" name="icon" required error={fe.icon?.[0]}
-                hint="Lucide icon name e.g. Cloud"
-                inputProps={{ defaultValue: s?.icon }} />
-            </div>
-            <SlugField name="slug" sourceValue={eyebrow} defaultValue={s?.slug} error={fe.slug?.[0]} />
-            <div className="flex flex-col gap-1.5">
-              <label className="font-technical text-[10px] uppercase tracking-[0.1em]"
-                style={{ color: "var(--admin-text-secondary)" }}>Order</label>
-              <input name="order" type="number" min="0" defaultValue={s?.order ?? 0} style={inputStyle} />
-            </div>
-          </div>
+          <SlugField name="slug" sourceValue={eyebrow} defaultValue={s?.slug} error={fe.slug?.[0]} />
         </Panel>
 
         {isEdit && (

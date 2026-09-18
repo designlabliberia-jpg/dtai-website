@@ -19,7 +19,10 @@ export async function loginAction(
     return { error: parsed.error.issues[0].message };
   }
 
-  const user = await db.adminUser.findUnique({ where: { email: parsed.data.email } });
+  const user = await db.adminUser.findUnique({
+    where: { email: parsed.data.email, active: true },
+    include: { role: { select: { name: true } } },
+  });
   if (!user || !(await bcrypt.compare(parsed.data.password, user.passwordHash))) {
     return { error: "Invalid email or password" };
   }
@@ -27,6 +30,7 @@ export async function loginAction(
   const session = await getSession();
   session.adminId = user.id;
   session.email = user.email;
+  session.roleName = user.role.name;
   await session.save();
 
   redirect("/admin");
