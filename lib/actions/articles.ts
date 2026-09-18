@@ -11,9 +11,28 @@ export async function deleteArticle(sanityId: string): Promise<void> {
   await db.article.update({ where: { sanityId }, data: { deletedAt: new Date() } });
 }
 
-export async function toggleArticlePublished(id: string, value: boolean): Promise<void> {
-  await db.article.update({ where: { id }, data: { published: value } });
+export async function toggleArticlePublished(
+  id: string,
+  value: boolean
+): Promise<{ pendingApproval?: boolean }> {
+  const { requireAuth, can } = await import("@/lib/rbac");
+  const user = await requireAuth();
+  if (!value) {
+    await db.article.update({ where: { id }, data: { published: false } });
+    await db.contentApproval.deleteMany({ where: { entityType: "article", entityId: id } });
+    revalidatePath("/admin/news");
+    return {};
+  }
+  if (can(user, "news:publish")) {
+    await db.article.update({ where: { id }, data: { published: true } });
+    revalidatePath("/admin/news");
+    return {};
+  }
+  const article = await db.article.findUnique({ where: { id }, select: { title: true } });
+  const { submitForApproval } = await import("./approvals");
+  await submitForApproval("article", id, article?.title ?? id);
   revalidatePath("/admin/news");
+  return { pendingApproval: true };
 }
 
 export async function syncArticleFromWebhook(

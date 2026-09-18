@@ -78,10 +78,26 @@ export async function updateProduct(
   return { success: true };
 }
 
-export async function toggleProductPublished(id: string, value: boolean): Promise<void> {
-  await requirePermission("products:publish");
-  await db.product.update({ where: { id }, data: { published: value } });
+export async function toggleProductPublished(
+  id: string,
+  value: boolean
+): Promise<{ pendingApproval?: boolean }> {
+  const user = await requirePermission("products:write");
+  if (!value) {
+    await db.product.update({ where: { id }, data: { published: false } });
+    await db.contentApproval.deleteMany({ where: { entityType: "product", entityId: id } });
+    revalidatePath("/admin/products");
+    return {};
+  }
+  if (can(user, "products:publish")) {
+    await db.product.update({ where: { id }, data: { published: true } });
+    revalidatePath("/admin/products");
+    return {};
+  }
+  const product = await db.product.findUnique({ where: { id }, select: { name: true } });
+  await submitForApproval("product", id, product?.name ?? id);
   revalidatePath("/admin/products");
+  return { pendingApproval: true };
 }
 
 export async function deleteProduct(id: string): Promise<void> {

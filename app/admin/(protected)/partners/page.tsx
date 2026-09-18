@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { Panel } from "@/components/admin/Panel";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { PartnersTable } from "./PartnersTable";
+import { getApprovalMap } from "@/lib/actions/approvals";
 
 export default async function PartnersPage() {
   const partners = await db.partner.findMany({
@@ -11,6 +12,9 @@ export default async function PartnersPage() {
     orderBy: [{ order: "asc" }],
     select: { id: true, title: true, type: true, slug: true, published: true, logoUrl: true },
   });
+
+  const approvalMap = await getApprovalMap("partner", partners.map((p) => p.id));
+  const rows = partners.map((p) => ({ ...p, approvalStatus: approvalMap[p.id] ?? null }));
 
   return (
     <div className="flex flex-col gap-6">
@@ -29,7 +33,7 @@ export default async function PartnersPage() {
         }
       />
       <Panel accent padding="none">
-        <PartnersTable partners={partners} />
+        <PartnersTable partners={rows} />
       </Panel>
     </div>
   );

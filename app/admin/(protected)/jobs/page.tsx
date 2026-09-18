@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { Panel } from "@/components/admin/Panel";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { JobsTable } from "./JobsTable";
+import { getApprovalMap } from "@/lib/actions/approvals";
 
 export default async function JobsPage() {
   const jobs = await db.jobListing.findMany({
@@ -11,6 +12,9 @@ export default async function JobsPage() {
     orderBy: [{ order: "asc" }, { createdAt: "desc" }],
     include: { _count: { select: { applications: true } } },
   });
+
+  const approvalMap = await getApprovalMap("job", jobs.map((j) => j.id));
+  const rows = jobs.map((j) => ({ ...j, approvalStatus: approvalMap[j.id] ?? null }));
 
   return (
     <div className="flex flex-col gap-6">
@@ -29,7 +33,7 @@ export default async function JobsPage() {
         }
       />
       <Panel accent padding="none">
-        <JobsTable jobs={jobs} />
+        <JobsTable jobs={rows} />
       </Panel>
     </div>
   );

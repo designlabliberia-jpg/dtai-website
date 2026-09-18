@@ -57,10 +57,26 @@ export async function updateSolution(
   return { success: true };
 }
 
-export async function toggleSolutionPublished(id: string, value: boolean): Promise<void> {
-  await requirePermission("solutions:publish");
-  await db.solution.update({ where: { id }, data: { published: value } });
+export async function toggleSolutionPublished(
+  id: string,
+  value: boolean
+): Promise<{ pendingApproval?: boolean }> {
+  const user = await requirePermission("solutions:write");
+  if (!value) {
+    await db.solution.update({ where: { id }, data: { published: false } });
+    await db.contentApproval.deleteMany({ where: { entityType: "solution", entityId: id } });
+    revalidatePath("/admin/solutions");
+    return {};
+  }
+  if (can(user, "solutions:publish")) {
+    await db.solution.update({ where: { id }, data: { published: true } });
+    revalidatePath("/admin/solutions");
+    return {};
+  }
+  const solution = await db.solution.findUnique({ where: { id }, select: { title: true } });
+  await submitForApproval("solution", id, solution?.title ?? id);
   revalidatePath("/admin/solutions");
+  return { pendingApproval: true };
 }
 
 export async function deleteSolution(id: string): Promise<void> {

@@ -4,12 +4,16 @@ import { db } from "@/lib/db";
 import { Panel } from "@/components/admin/Panel";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { LeadershipTable } from "./LeadershipTable";
+import { getApprovalMap } from "@/lib/actions/approvals";
 
 export default async function LeadershipPage() {
   const members = await db.leadershipMember.findMany({
     where: { deletedAt: null },
     orderBy: [{ order: "asc" }, { createdAt: "asc" }],
   });
+
+  const approvalMap = await getApprovalMap("leadership", members.map((m) => m.id));
+  const rows = members.map((m) => ({ ...m, approvalStatus: approvalMap[m.id] ?? null }));
 
   return (
     <div className="flex flex-col gap-6">
@@ -28,7 +32,7 @@ export default async function LeadershipPage() {
         }
       />
       <Panel accent padding="none">
-        <LeadershipTable members={members} />
+        <LeadershipTable members={rows} />
       </Panel>
     </div>
   );

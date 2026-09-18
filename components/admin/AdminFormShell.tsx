@@ -1,13 +1,17 @@
+"use client";
+
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
+import { ApprovalToast } from "./ApprovalToast";
 
 interface AdminFormShellProps {
   title: string;
   backHref: string;
   backLabel?: string;
   children: ReactNode;
-  actions?: ReactNode;   // replaces default save/cancel if provided
+  actions?: ReactNode;
+  pendingApproval?: boolean;
 }
 
 export function AdminFormShell({
@@ -16,9 +20,14 @@ export function AdminFormShell({
   backLabel = "Back",
   children,
   actions,
-}: AdminFormShellProps) {
+  pendingApproval,
+}: Readonly<AdminFormShellProps>) {
+  const [toastVisible, setToastVisible] = useState(!!pendingApproval);
+
   return (
     <div className="flex flex-col gap-6">
+      <ApprovalToast title={title} visible={toastVisible} onDismiss={() => setToastVisible(false)} />
+
       {/* Breadcrumb */}
       <div className="flex items-center gap-2">
         <Link
@@ -31,25 +40,14 @@ export function AdminFormShell({
           <ChevronLeft size={11} />
           {backLabel}
         </Link>
-        <span
-          className="font-technical text-[10px]"
-          style={{ color: "var(--admin-border-strong)" }}
-        >
-          /
-        </span>
-        <span
-          className="font-technical text-[10px] uppercase tracking-[0.1em]"
-          style={{ color: "var(--admin-text-secondary)" }}
-        >
+        <span className="font-technical text-[10px]" style={{ color: "var(--admin-border-strong)" }}>/</span>
+        <span className="font-technical text-[10px] uppercase tracking-[0.1em]" style={{ color: "var(--admin-text-secondary)" }}>
           {title}
         </span>
       </div>
 
       {/* Title */}
-      <h1
-        className="text-[18px] font-semibold leading-tight tracking-tight"
-        style={{ color: "var(--admin-text-primary)" }}
-      >
+      <h1 className="text-[18px] font-semibold leading-tight tracking-tight" style={{ color: "var(--admin-text-primary)" }}>
         {title}
       </h1>
 

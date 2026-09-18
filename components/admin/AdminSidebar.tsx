@@ -15,6 +15,7 @@ import { NavSection } from "./NavSection";
 interface AdminSidebarProps {
   unreadContacts: number;
   unreadApplications: number;
+  pendingApprovals: number;
   permissions: Record<string, boolean>;
   roleName: string;
   userName: string;
@@ -24,6 +25,7 @@ interface AdminSidebarProps {
 export function AdminSidebar({
   unreadContacts,
   unreadApplications,
+  pendingApprovals,
   permissions,
   roleName,
   userName,
@@ -160,7 +162,7 @@ export function AdminSidebar({
 
         {showApprovals && (
           <NavSection label="Workflow" collapsed={collapsed}>
-            <NavItem href="/admin/approvals" label="Approvals" icon={CheckSquare} collapsed={collapsed} />
+            <NavItem href="/admin/approvals" label="Approvals" icon={CheckSquare} badge={pendingApprovals} collapsed={collapsed} />
           </NavSection>
         )}
 

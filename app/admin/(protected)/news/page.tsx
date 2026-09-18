@@ -4,6 +4,7 @@ import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { NewsTable } from "./NewsTable";
 import { SanityStudioLink } from "./SanityStudioLink";
 import { SyncArticlesButton } from "./SyncArticlesButton";
+import { getApprovalMap } from "@/lib/actions/approvals";
 
 export default async function NewsPage() {
   const articles = await db.article.findMany({
@@ -11,6 +12,9 @@ export default async function NewsPage() {
     orderBy: { publishDate: "desc" },
     select: { id: true, sanityId: true, title: true, category: true, author: true, publishDate: true, likes: true, published: true },
   });
+
+  const approvalMap = await getApprovalMap("article", articles.map((a) => a.id));
+  const rows = articles.map((a) => ({ ...a, approvalStatus: approvalMap[a.id] ?? null }));
 
   return (
     <div className="flex flex-col gap-6">
@@ -24,9 +28,8 @@ export default async function NewsPage() {
           </div>
         }
       />
-
       <Panel accent padding="none">
-        <NewsTable articles={articles} />
+        <NewsTable articles={rows} />
       </Panel>
     </div>
   );

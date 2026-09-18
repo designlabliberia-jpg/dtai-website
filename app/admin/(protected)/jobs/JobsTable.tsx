@@ -13,6 +13,7 @@ interface Job {
   location: string;
   active: boolean;
   _count: { applications: number };
+  approvalStatus: "pending" | "rejected" | null;
 }
 
 const columns = [
@@ -68,7 +69,7 @@ const columns = [
     key: "actions",
     header: "",
     width: "80px",
-    render: (r: Job) => <JobActions id={r.id} active={r.active} />,
+    render: (r: Job) => <JobActions id={r.id} active={r.active} title={r.title} approvalStatus={r.approvalStatus} />,
   },
 ];
 

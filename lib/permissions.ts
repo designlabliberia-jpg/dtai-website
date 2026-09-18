@@ -20,17 +20,20 @@ export const PERMISSIONS = {
   "news:publish":      "Publish Articles",
 
   // People
-  "leadership:read":   "View Leadership",
-  "leadership:write":  "Create / Edit Leadership",
-  "leadership:delete": "Delete Leadership",
+  "leadership:read":    "View Leadership",
+  "leadership:write":   "Create / Edit Leadership",
+  "leadership:publish": "Publish Leadership",
+  "leadership:delete":  "Delete Leadership",
 
   "partners:read":     "View Partners",
   "partners:write":    "Create / Edit Partners",
+  "partners:publish":  "Publish Partners",
   "partners:delete":   "Delete Partners",
 
   // Careers
   "jobs:read":              "View Job Listings",
   "jobs:write":             "Create / Edit Jobs",
+  "jobs:publish":           "Publish Jobs",
   "jobs:delete":            "Delete Jobs",
   "applications:read":      "View Applications",
   "applications:write":     "Update Application Status",
@@ -70,14 +73,14 @@ export const PERMISSION_GROUPS: { label: string; keys: Permission[] }[] = [
   {
     label: "People",
     keys: [
-      "leadership:read", "leadership:write", "leadership:delete",
-      "partners:read", "partners:write", "partners:delete",
+      "leadership:read", "leadership:write", "leadership:publish", "leadership:delete",
+      "partners:read", "partners:write", "partners:publish", "partners:delete",
     ],
   },
   {
     label: "Careers",
     keys: [
-      "jobs:read", "jobs:write", "jobs:delete",
+      "jobs:read", "jobs:write", "jobs:publish", "jobs:delete",
       "applications:read", "applications:write",
     ],
   },

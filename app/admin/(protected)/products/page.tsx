@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { Panel } from "@/components/admin/Panel";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { ProductsTable } from "./ProductsTable";
+import { getApprovalMap } from "@/lib/actions/approvals";
 
 export default async function ProductsPage() {
   const products = await db.product.findMany({
@@ -11,6 +12,9 @@ export default async function ProductsPage() {
     orderBy: [{ order: "asc" }, { createdAt: "desc" }],
     select: { id: true, name: true, tagline: true, status: true, published: true, profilePrimaryImageUrl: true },
   });
+
+  const approvalMap = await getApprovalMap("product", products.map((p) => p.id));
+  const rows = products.map((p) => ({ ...p, approvalStatus: approvalMap[p.id] ?? null }));
 
   return (
     <div className="flex flex-col gap-6">
@@ -26,7 +30,7 @@ export default async function ProductsPage() {
         }
       />
       <Panel accent padding="none">
-        <ProductsTable products={products} />
+        <ProductsTable products={rows} />
       </Panel>
     </div>
   );

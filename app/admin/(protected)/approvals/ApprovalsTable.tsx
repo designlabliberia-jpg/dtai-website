@@ -20,8 +20,20 @@ type ApprovalRow = {
 };
 
 const ENTITY_LABEL: Record<string, string> = {
-  product: "Product", service: "Service", solution: "Solution", article: "Article",
+  product: "Product",
+  service: "Service",
+  solution: "Solution",
+  article: "Article",
+  partner: "Partner",
+  leadership: "Leadership",
+  job: "Job",
 };
+
+function statusVariant(status: ApprovalRow["status"]) {
+  if (status === "pending") return "reviewing";
+  if (status === "approved") return "responded";
+  return "rejected";
+}
 
 export function ApprovalsTable({ approvals }: { approvals: ApprovalRow[] }) {
   return (
@@ -42,6 +54,11 @@ export function ApprovalsTable({ approvals }: { approvals: ApprovalRow[] }) {
               >
                 {ENTITY_LABEL[a.entityType] ?? a.entityType}
               </span>
+              {a.status === "rejected" && a.note && (
+                <span className="mt-0.5 text-[10px]" style={{ color: "var(--admin-danger)" }}>
+                  Rejected: {a.note}
+                </span>
+              )}
             </div>
           ),
         },
@@ -58,7 +75,7 @@ export function ApprovalsTable({ approvals }: { approvals: ApprovalRow[] }) {
           key: "status",
           header: "Status",
           width: "100px",
-          render: (a) => <StatusBadge status={a.status === "pending" ? "reviewing" : a.status === "approved" ? "responded" : "rejected"} />,
+          render: (a) => <StatusBadge status={statusVariant(a.status)} />,
         },
         {
           key: "date",

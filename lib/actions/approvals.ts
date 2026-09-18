@@ -41,12 +41,14 @@ export async function reviewApproval(
   });
 
   if (status === "approved") {
-    const publishField = { published: true };
     switch (approval.entityType) {
-      case "product":  await db.product.update({ where: { id: approval.entityId }, data: publishField }); break;
-      case "service":  await db.service.update({ where: { id: approval.entityId }, data: publishField }); break;
-      case "solution": await db.solution.update({ where: { id: approval.entityId }, data: publishField }); break;
-      case "article":  await db.article.update({ where: { id: approval.entityId }, data: publishField }); break;
+      case "product":    await db.product.update({ where: { id: approval.entityId }, data: { published: true } }); break;
+      case "service":    await db.service.update({ where: { id: approval.entityId }, data: { published: true } }); break;
+      case "solution":   await db.solution.update({ where: { id: approval.entityId }, data: { published: true } }); break;
+      case "article":    await db.article.update({ where: { id: approval.entityId }, data: { published: true } }); break;
+      case "partner":    await db.partner.update({ where: { id: approval.entityId }, data: { published: true } }); break;
+      case "leadership": await db.leadershipMember.update({ where: { id: approval.entityId }, data: { published: true } }); break;
+      case "job":        await db.jobListing.update({ where: { id: approval.entityId }, data: { active: true } }); break;
     }
   }
 
@@ -60,4 +62,18 @@ export async function getApprovalStatus(entityType: string, entityId: string) {
     where: { entityType_entityId: { entityType, entityId } },
     select: { id: true, status: true, note: true },
   });
+}
+
+export async function getApprovalMap(
+  entityType: string,
+  ids: string[]
+): Promise<Record<string, "pending" | "rejected">> {
+  if (!ids.length) return {};
+  const rows = await db.contentApproval.findMany({
+    where: { entityType, entityId: { in: ids }, status: { in: ["pending", "rejected"] } },
+    select: { entityId: true, status: true },
+  });
+  return Object.fromEntries(
+    rows.map((r) => [r.entityId, r.status as "pending" | "rejected"])
+  );
 }

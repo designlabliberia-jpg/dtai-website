@@ -9,9 +9,10 @@ export default async function ProtectedLayout({ children }: { readonly children:
   const showContacts     = can(user, "contact:read");
   const showApplications = can(user, "applications:read");
 
-  const [unreadContacts, unreadApplications] = await Promise.all([
+  const [unreadContacts, unreadApplications, pendingApprovals] = await Promise.all([
     showContacts     ? db.contactSubmission.count({ where: { status: "new", deletedAt: null } }) : Promise.resolve(0),
     showApplications ? db.jobApplication.count({ where: { status: "new", deletedAt: null } })   : Promise.resolve(0),
+    db.contentApproval.count({ where: { status: "pending" } }),
   ]);
 
   return (
@@ -19,6 +20,7 @@ export default async function ProtectedLayout({ children }: { readonly children:
       <AdminSidebar
         unreadContacts={unreadContacts}
         unreadApplications={unreadApplications}
+        pendingApprovals={pendingApprovals}
         permissions={user.role.permissions}
         roleName={user.role.name}
         userName={user.name}

@@ -90,10 +90,26 @@ export async function updateService(
   return { success: true };
 }
 
-export async function toggleServicePublished(id: string, value: boolean): Promise<void> {
-  await requirePermission("services:publish");
-  await db.service.update({ where: { id }, data: { published: value } });
+export async function toggleServicePublished(
+  id: string,
+  value: boolean
+): Promise<{ pendingApproval?: boolean }> {
+  const user = await requirePermission("services:write");
+  if (!value) {
+    await db.service.update({ where: { id }, data: { published: false } });
+    await db.contentApproval.deleteMany({ where: { entityType: "service", entityId: id } });
+    revalidatePath("/admin/services");
+    return {};
+  }
+  if (can(user, "services:publish")) {
+    await db.service.update({ where: { id }, data: { published: true } });
+    revalidatePath("/admin/services");
+    return {};
+  }
+  const service = await db.service.findUnique({ where: { id }, select: { slug: true } });
+  await submitForApproval("service", id, service?.slug ?? id);
   revalidatePath("/admin/services");
+  return { pendingApproval: true };
 }
 
 export async function deleteService(id: string): Promise<void> {
