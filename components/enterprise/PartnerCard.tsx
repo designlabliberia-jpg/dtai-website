@@ -5,22 +5,11 @@ import { PartnerSlider } from "@/components/enterprise/PartnerSlider";
 import { db } from "@/lib/db";
 
 export async function PartnerCard() {
-  const approvedIds = await db.contentApproval
-    .findMany({ where: { entityType: "partner", status: "approved" }, select: { entityId: true } })
-    .then((rows) => rows.map((r) => r.entityId))
-    .catch(() => []);
-
-  if (!approvedIds.length) return null;
-
-  const count = await db.partner
-    .count({ where: { type: "category", deletedAt: null, id: { in: approvedIds } } })
-    .catch(() => 0);
-
-  if (!count) return null;
-
   const categoryPartners = await db.partner
-    .findMany({ where: { type: "category", deletedAt: null, id: { in: approvedIds } }, orderBy: { order: "asc" } })
+    .findMany({ where: { type: "category", published: true, deletedAt: null }, orderBy: { order: "asc" } })
     .catch(() => []);
+
+  if (!categoryPartners.length) return null;
 
   const partners = categoryPartners.map((p) => ({ slug: p.slug ?? undefined, title: p.title, src: p.logoUrl, summary: p.summary ?? undefined }));
 

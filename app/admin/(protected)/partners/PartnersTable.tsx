@@ -3,10 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { useTransition, useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
 import { AdminTable } from "@/components/admin/AdminTable";
-import { StatusBadge } from "@/components/admin/StatusBadge";
 import { PublishToggle } from "@/components/admin/PublishToggle";
 import { togglePartnerPublished, deletePartner } from "@/lib/actions/partners";
 
@@ -65,7 +64,17 @@ const columns = [
     key: "type",
     header: "Type",
     width: "110px",
-    render: (r: Partner) => <StatusBadge status={r.type === "logo" ? "active" : "new"} />,
+    render: (r: Partner) => (
+      <span
+        className="inline-flex items-center rounded-full px-2 py-0.5 font-technical text-[9px] uppercase tracking-[0.1em]"
+        style={r.type === "logo"
+          ? { background: "var(--admin-info-bg)", color: "var(--admin-brand)", border: "1px solid var(--admin-border-accent)" }
+          : { background: "var(--admin-success-bg)", color: "var(--admin-success)", border: "1px solid var(--admin-success)" }
+        }
+      >
+        {r.type === "logo" ? "Partner" : "Industry"}
+      </span>
+    ),
   },
   {
     key: "slug",
@@ -93,13 +102,37 @@ const columns = [
   },
 ];
 
+const filterBtnStyle = (active: boolean) => ({
+  background: active ? "var(--admin-brand)" : "var(--admin-surface-2)",
+  color: active ? "#fff" : "var(--admin-text-secondary)",
+  border: `1px solid ${active ? "var(--admin-brand)" : "var(--admin-border-strong)"}`,
+});
+
 export function PartnersTable({ partners }: { partners: Partner[] }) {
+  const [filter, setFilter] = useState<"all" | "logo" | "category">("all");
+  const filtered = filter === "all" ? partners : partners.filter((p) => p.type === filter);
+
   return (
-    <AdminTable
-      rows={partners}
-      getRowKey={(r) => r.id}
-      emptyMessage="No partners yet."
-      columns={columns}
-    />
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center gap-2 px-4 pt-4">
+        {(["all", "logo", "category"] as const).map((f) => (
+          <button
+            key={f}
+            type="button"
+            onClick={() => setFilter(f)}
+            className="rounded-full px-3 py-1 font-technical text-[9px] uppercase tracking-[0.1em] transition-colors"
+            style={filterBtnStyle(filter === f)}
+          >
+            {f === "all" ? "All" : f === "logo" ? "Partners" : "Industries"}
+          </button>
+        ))}
+      </div>
+      <AdminTable
+        rows={filtered}
+        getRowKey={(r) => r.id}
+        emptyMessage="No partners yet."
+        columns={columns}
+      />
+    </div>
   );
 }
