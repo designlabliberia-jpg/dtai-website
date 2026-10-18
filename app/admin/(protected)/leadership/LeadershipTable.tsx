@@ -4,11 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTransition, useState } from "react";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, UserPlus } from "lucide-react";
 import { AdminTable } from "@/components/admin/AdminTable";
 import { PublishToggle } from "@/components/admin/PublishToggle";
 import { ApprovalToast } from "@/components/admin/ApprovalToast";
-import { toggleLeadershipPublished, deleteLeadershipMember } from "@/lib/actions/leadership";
+import { toggleLeadershipPublished, deleteLeadershipMember, provisionLeadershipAccount } from "@/lib/actions/leadership";
 
 type Member = {
   id: string;
@@ -18,9 +18,93 @@ type Member = {
   published: boolean;
   imageUrl: string | null;
   approvalStatus: "pending" | "rejected" | null;
+  hasUser: boolean;
 };
 
-function MemberActions({ id }: { id: string }) {
+function ProvisionButton({ id }: { id: string }) {
+  const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [pending, startTransition] = useTransition();
+  const router = useRouter();
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    startTransition(async () => {
+      const result = await provisionLeadershipAccount(id, email, password);
+      if (result.error) { setError(result.error); return; }
+      setOpen(false);
+      setEmail("");
+      setPassword("");
+      router.refresh();
+    });
+  }
+
+  if (!open) {
+    return (
+      <button
+        type="button"
+        title="Provision Account"
+        onClick={() => setOpen(true)}
+        className="transition-colors"
+        style={{ color: "var(--admin-text-muted)" }}
+        onMouseEnter={(e) => (e.currentTarget.style.color = "var(--admin-brand)")}
+        onMouseLeave={(e) => (e.currentTarget.style.color = "var(--admin-text-muted)")}
+      >
+        <UserPlus size={13} />
+      </button>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col gap-2 min-w-[220px]">
+      {error && (
+        <p className="font-technical text-[10px]" style={{ color: "var(--admin-danger)" }}>{error}</p>
+      )}
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+        className="rounded-[var(--radius-sm)] px-2 py-1 font-technical text-[11px]"
+        style={{ background: "var(--admin-surface)", border: "1px solid var(--admin-border-strong)", color: "var(--admin-text-primary)", outline: "none" }}
+      />
+      <input
+        type="password"
+        placeholder="Password (min 8)"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+        minLength={8}
+        className="rounded-[var(--radius-sm)] px-2 py-1 font-technical text-[11px]"
+        style={{ background: "var(--admin-surface)", border: "1px solid var(--admin-border-strong)", color: "var(--admin-text-primary)", outline: "none" }}
+      />
+      <div className="flex gap-2">
+        <button
+          type="submit"
+          disabled={pending}
+          className="rounded-[var(--radius-sm)] px-3 py-1 font-technical text-[10px] uppercase tracking-[0.08em] disabled:opacity-60"
+          style={{ background: "var(--admin-brand)", color: "#fff" }}
+        >
+          {pending ? "Creating…" : "Create"}
+        </button>
+        <button
+          type="button"
+          onClick={() => { setOpen(false); setError(null); }}
+          className="font-technical text-[10px] uppercase tracking-[0.08em]"
+          style={{ color: "var(--admin-text-muted)" }}
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  );
+}
+
+function MemberActions({ id, hasUser }: { id: string; hasUser: boolean }) {
   const [pending, startTransition] = useTransition();
   const router = useRouter();
   return (
@@ -31,6 +115,7 @@ function MemberActions({ id }: { id: string }) {
         onMouseLeave={(e) => (e.currentTarget.style.color = "var(--admin-text-muted)")}>
         <Pencil size={13} />
       </Link>
+      {!hasUser && <ProvisionButton id={id} />}
       <button type="button" disabled={pending}
         onClick={() => startTransition(async () => { await deleteLeadershipMember(id); router.refresh(); })}
         title="Archive" className="transition-colors disabled:opacity-40"
@@ -74,7 +159,14 @@ export function LeadershipTable({ members }: { members: Member[] }) {
                     </span>
                   )}
                 </div>
-                {r.name}
+                <span>
+                  {r.name}
+                  {r.hasUser && (
+                    <span className="ml-2 font-technical text-[9px] uppercase tracking-[0.08em]" style={{ color: "var(--admin-brand)" }}>
+                      · account
+                    </span>
+                  )}
+                </span>
               </Link>
             ),
           },
@@ -113,8 +205,8 @@ export function LeadershipTable({ members }: { members: Member[] }) {
           {
             key: "actions",
             header: "Actions",
-            width: "80px",
-            render: (r) => <MemberActions id={r.id} />,
+            width: "100px",
+            render: (r) => <MemberActions id={r.id} hasUser={r.hasUser} />,
           },
         ]}
       />

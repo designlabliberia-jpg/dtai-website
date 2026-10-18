@@ -8,7 +8,10 @@ export default async function LeadershipMemberPage({ params }: Props) {
   const { id } = await params;
   if (id === "new") return <LeadershipForm />;
 
-  const member = await db.leadershipMember.findUnique({ where: { id, deletedAt: null } });
+  const member = await db.leadershipMember.findUnique({
+    where: { id, deletedAt: null },
+    include: { adminUser: { select: { id: true } } },
+  });
   if (!member) notFound();
-  return <LeadershipForm member={member} />;
+  return <LeadershipForm member={member} hasUser={!!member.adminUser} />;
 }

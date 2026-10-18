@@ -22,7 +22,6 @@ export async function createUser(
     email: formData.get("email"),
     password: formData.get("password"),
     roleId: formData.get("roleId"),
-    leadershipMemberId: formData.get("leadershipMemberId") || null,
   });
 
   if (!parsed.success) {
@@ -39,7 +38,6 @@ export async function createUser(
       email: parsed.data.email,
       passwordHash,
       roleId: parsed.data.roleId,
-      leadershipMemberId: parsed.data.leadershipMemberId ?? null,
     },
   });
 
@@ -60,7 +58,6 @@ export async function updateUser(
     email: formData.get("email"),
     roleId: formData.get("roleId"),
     password: formData.get("password") || undefined,
-    leadershipMemberId: formData.get("leadershipMemberId") || null,
   });
 
   if (!parsed.success) {
@@ -75,7 +72,6 @@ export async function updateUser(
   const data: Record<string, unknown> = {
     name: parsed.data.name,
     email: parsed.data.email,
-    leadershipMemberId: parsed.data.leadershipMemberId ?? null,
     ...(session.adminId !== id && { roleId: parsed.data.roleId }),
   };
   if (parsed.data.password) {

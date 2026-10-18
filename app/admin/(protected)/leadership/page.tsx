@@ -10,10 +10,11 @@ export default async function LeadershipPage() {
   const members = await db.leadershipMember.findMany({
     where: { deletedAt: null },
     orderBy: [{ order: "asc" }, { createdAt: "asc" }],
+    include: { adminUser: { select: { id: true } } },
   });
 
   const approvalMap = await getApprovalMap("leadership", members.map((m) => m.id));
-  const rows = members.map((m) => ({ ...m, approvalStatus: approvalMap[m.id] ?? null }));
+  const rows = members.map((m) => ({ ...m, approvalStatus: approvalMap[m.id] ?? null, hasUser: !!m.adminUser }));
 
   return (
     <div className="flex flex-col gap-6">

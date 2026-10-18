@@ -10,7 +10,6 @@ export const createUserSchema = z.object({
     .transform((v) => v.toLowerCase().trim()),
   password: str("Password is required").pipe(z.string().min(8, "Password must be at least 8 characters").max(128)),
   roleId: str("Please select a role"),
-  leadershipMemberId: z.preprocess((v) => v || null, z.string().nullable().optional()),
 });
 
 export const updateUserSchema = z.object({
@@ -20,7 +19,6 @@ export const updateUserSchema = z.object({
     .transform((v) => v.toLowerCase().trim()),
   roleId: str("Please select a role"),
   password: z.preprocess((v) => v || undefined, z.string().min(8, "Password must be at least 8 characters").max(128).optional()),
-  leadershipMemberId: z.preprocess((v) => v || null, z.string().nullable().optional()),
 });
 
 export type CreateUserInput = z.infer<typeof createUserSchema>;

@@ -12,30 +12,22 @@ export default async function UserPage({ params }: Props) {
   await requirePermission("users:write");
   const { id } = await params;
 
-  const [roles, leadershipMembers] = await Promise.all([
-    db.role.findMany({ orderBy: { label: "asc" }, select: { id: true, name: true, label: true } }),
-    db.leadershipMember.findMany({
-      where: { deletedAt: null },
-      select: { id: true, name: true, title: true },
-      orderBy: { name: "asc" },
-    }),
-  ]);
+  const roles = await db.role.findMany({ orderBy: { label: "asc" }, select: { id: true, name: true, label: true } });
 
   const session = await getSession();
 
-  if (id === "new") return <UserForm roles={roles} leadershipMembers={leadershipMembers} />;
+  if (id === "new") return <UserForm roles={roles} />;
 
   const user = await db.adminUser.findUnique({
     where: { id },
-    select: { id: true, name: true, email: true, roleId: true, leadershipMemberId: true },
+    select: { id: true, name: true, email: true, roleId: true },
   });
   if (!user) notFound();
 
   return (
     <UserForm
       roles={roles}
-      leadershipMembers={leadershipMembers}
-      user={{ id: user.id, name: user.name, email: user.email, roleId: user.roleId ?? "", leadershipMemberId: user.leadershipMemberId }}
+      user={{ id: user.id, name: user.name, email: user.email, roleId: user.roleId ?? "" }}
       isSelf={session.adminId === user.id}
     />
   );

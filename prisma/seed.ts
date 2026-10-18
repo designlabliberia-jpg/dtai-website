@@ -48,6 +48,13 @@ const SYSTEM_ROLES = [
       "contact:read": true, "contact:write": true,
     },
   },
+  {
+    name: "leadership",
+    label: "Leadership",
+    permissions: {
+      "leadership:read": true,
+    },
+  },
 ];
 
 async function main() {

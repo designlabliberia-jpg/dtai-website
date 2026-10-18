@@ -17,6 +17,7 @@ interface LeadershipFormProps {
     division: string; focus: string; bio: string;
     imageUrl: string | null; linkedin: string | null;
   };
+  hasUser?: boolean;
 }
 
 const init: LeadershipActionState = { success: false, error: "" };
@@ -32,9 +33,10 @@ const selectStyle = {
   outline: "none",
 } as const;
 
-export function LeadershipForm({ member: m }: LeadershipFormProps) {
+export function LeadershipForm({ member: m, hasUser }: LeadershipFormProps) {
   const router = useRouter();
   const isEdit = !!m;
+  const [createAccount, setCreateAccount] = useState(false);
 
   const action = isEdit
     ? updateLeadershipMember.bind(null, m.id)
@@ -157,6 +159,37 @@ export function LeadershipForm({ member: m }: LeadershipFormProps) {
               />
             </div>
           </div>
+        </Panel>
+        <Panel accent title="Admin Account">
+          {isEdit ? (
+            <p className="font-technical text-[11px]" style={{ color: hasUser ? "var(--admin-brand)" : "var(--admin-text-muted)" }}>
+              {hasUser ? "✓ Admin account linked" : "No admin account — provision one from the leadership table."}
+            </p>
+          ) : (
+            <div className="flex flex-col gap-4">
+              <label className="flex items-center gap-2 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  name="createAccount"
+                  value="1"
+                  checked={createAccount}
+                  onChange={(e) => setCreateAccount(e.target.checked)}
+                />
+                <span className="font-technical text-[11px]" style={{ color: "var(--admin-text-secondary)" }}>
+                  Create admin account for this member
+                </span>
+              </label>
+              {createAccount && (
+                <div className="flex flex-col gap-4">
+                  <FormField label="Email" name="accountEmail" required
+                    inputProps={{ type: "email", autoComplete: "off" }} />
+                  <FormField label="Password" name="accountPassword" required
+                    hint="Minimum 8 characters"
+                    inputProps={{ type: "password", autoComplete: "new-password" }} />
+                </div>
+              )}
+            </div>
+          )}
         </Panel>
       </form>
     </AdminFormShell>
