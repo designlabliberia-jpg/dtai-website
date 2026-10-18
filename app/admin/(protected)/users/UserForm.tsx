@@ -10,10 +10,12 @@ import { createUser, updateUser } from "@/lib/actions/users";
 import type { UserActionState } from "@/lib/actions/users";
 
 type RoleOption = { id: string; name: string; label: string };
+type LeadershipOption = { id: string; name: string; title: string };
 
 interface UserFormProps {
   roles: RoleOption[];
-  user?: { id: string; name: string; email: string; roleId: string };
+  leadershipMembers: LeadershipOption[];
+  user?: { id: string; name: string; email: string; roleId: string; leadershipMemberId?: string | null };
   isSelf?: boolean;
 }
 
@@ -30,7 +32,7 @@ const selectStyle = {
   width: "100%",
 } as const;
 
-export function UserForm({ roles, user, isSelf }: UserFormProps) {
+export function UserForm({ roles, leadershipMembers, user, isSelf }: UserFormProps) {
   const router = useRouter();
   const isEdit = !!user;
 
@@ -111,6 +113,7 @@ export function UserForm({ roles, user, isSelf }: UserFormProps) {
             >
               Role <span style={{ color: "var(--admin-danger)" }}>*</span>
             </label>
+            {isSelf && <input type="hidden" name="roleId" value={user?.roleId ?? ""} />}
             <select id="roleId" name="roleId" defaultValue={user?.roleId ?? ""} disabled={isSelf} style={{ ...selectStyle, ...(isSelf ? { opacity: 0.5, cursor: "not-allowed" } : {}) }}>
               <option value="">Select a role…</option>
               {roles.map((r) => (
@@ -123,6 +126,27 @@ export function UserForm({ roles, user, isSelf }: UserFormProps) {
             {fe.roleId && (
               <p className="font-technical text-[10px]" style={{ color: "var(--admin-danger)" }}>{fe.roleId[0]}</p>
             )}
+          </div>
+        </Panel>
+
+        <Panel accent title="Leadership Profile">
+          <div className="flex flex-col gap-1.5">
+            <label
+              htmlFor="leadershipMemberId"
+              className="font-technical text-[10px] uppercase tracking-[0.1em]"
+              style={{ color: "var(--admin-text-secondary)" }}
+            >
+              Linked Profile <span className="font-technical text-[10px] normal-case tracking-normal" style={{ color: "var(--admin-text-muted)" }}>(optional)</span>
+            </label>
+            <select id="leadershipMemberId" name="leadershipMemberId" defaultValue={user?.leadershipMemberId ?? ""} style={selectStyle}>
+              <option value="">None</option>
+              {leadershipMembers.map((m) => (
+                <option key={m.id} value={m.id}>{m.name} — {m.title}</option>
+              ))}
+            </select>
+            <p className="font-technical text-[10px]" style={{ color: "var(--admin-text-muted)" }}>
+              Links this user to their public leadership profile, including title, division, and bio.
+            </p>
           </div>
         </Panel>
       </form>

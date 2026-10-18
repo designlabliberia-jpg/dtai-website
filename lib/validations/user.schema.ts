@@ -1,30 +1,26 @@
 import { z } from "zod";
 
+const str = (msg: string) =>
+  z.preprocess((v) => (v == null ? "" : v), z.string({ invalid_type_error: msg }).min(1, msg));
+
 export const createUserSchema = z.object({
-  name: z.string().min(2, "Name is required").max(100),
-  email: z
-    .string()
-    .min(1, "Email is required")
-    .max(254)
-    .check(z.email("Enter a valid email"))
+  name: str("Name is required").pipe(z.string().max(100)),
+  email: str("Email is required")
+    .pipe(z.string().max(254).check(z.email("Enter a valid email")))
     .transform((v) => v.toLowerCase().trim()),
-  password: z
-    .string()
-    .min(8, "Password must be at least 8 characters")
-    .max(128),
-  roleId: z.string().min(1, "Role is required"),
+  password: str("Password is required").pipe(z.string().min(8, "Password must be at least 8 characters").max(128)),
+  roleId: str("Please select a role"),
+  leadershipMemberId: z.preprocess((v) => v || null, z.string().nullable().optional()),
 });
 
 export const updateUserSchema = z.object({
-  name: z.string().min(2, "Name is required").max(100),
-  email: z
-    .string()
-    .min(1, "Email is required")
-    .max(254)
-    .check(z.email("Enter a valid email"))
+  name: str("Name is required").pipe(z.string().max(100)),
+  email: str("Email is required")
+    .pipe(z.string().max(254).check(z.email("Enter a valid email")))
     .transform((v) => v.toLowerCase().trim()),
-  roleId: z.string().min(1, "Role is required"),
-  password: z.string().max(128).optional(),
+  roleId: str("Please select a role"),
+  password: z.preprocess((v) => v || undefined, z.string().min(8, "Password must be at least 8 characters").max(128).optional()),
+  leadershipMemberId: z.preprocess((v) => v || null, z.string().nullable().optional()),
 });
 
 export type CreateUserInput = z.infer<typeof createUserSchema>;

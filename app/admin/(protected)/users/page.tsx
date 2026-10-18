@@ -14,6 +14,7 @@ export default async function UsersPage() {
     select: {
       id: true, name: true, email: true, active: true, roleId: true, createdAt: true,
       role: { select: { name: true, label: true } },
+      leadershipMember: { select: { title: true, division: true } },
     },
   });
 

@@ -11,6 +11,7 @@ export type UserRow = {
   active: boolean;
   createdAt: Date;
   role: { name: string; label: string };
+  leadershipMember: { title: string; division: string } | null;
 };
 
 const columns = [
@@ -25,6 +26,11 @@ const columns = [
         <span className="font-technical text-[10px]" style={{ color: "var(--admin-text-muted)" }}>
           {u.email}
         </span>
+        {u.leadershipMember && (
+          <span className="font-technical text-[10px]" style={{ color: "var(--admin-brand)" }}>
+            {u.leadershipMember.title} · {u.leadershipMember.division}
+          </span>
+        )}
       </div>
     ),
   },

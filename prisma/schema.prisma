@@ -21,15 +21,17 @@ model Role {
 }
 
 model AdminUser {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  passwordHash String
-  name         String
-  active       Boolean  @default(true)
-  roleId       String
-  role         Role     @relation(fields: [roleId], references: [id])
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id                 String            @id @default(cuid())
+  email              String            @unique
+  passwordHash       String
+  name               String
+  active             Boolean           @default(true)
+  roleId             String
+  role               Role              @relation(fields: [roleId], references: [id])
+  leadershipMemberId String?           @unique
+  leadershipMember   LeadershipMember? @relation(fields: [leadershipMemberId], references: [id])
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
 
   @@index([roleId])
 }
@@ -276,8 +278,8 @@ enum AppStatus {
 // ─── Leadership ──────────────────────────────────────────────────────────────
 
 model LeadershipMember {
-  id        String    @id @default(cuid())
-  memberId  String    @unique
+  id        String     @id @default(cuid())
+  memberId  String     @unique
   name      String
   title     String
   division  String
@@ -285,11 +287,12 @@ model LeadershipMember {
   bio       String
   imageUrl  String?
   linkedin  String?
-  order     Int       @default(0)
-  published Boolean   @default(false)
+  order     Int        @default(0)
+  published Boolean    @default(false)
   deletedAt DateTime?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  adminUser AdminUser?
 }
 
 // ─── Partners ────────────────────────────────────────────────────────────────

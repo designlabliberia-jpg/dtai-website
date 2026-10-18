@@ -23,7 +23,11 @@ export default async function RolePage({ params }: Props) {
         name: role.name,
         label: role.label,
         isSystem: role.isSystem,
-        permissions: (role.permissions ?? {}) as Record<string, boolean>,
+        permissions: Object.fromEntries(
+          Object.entries((role.permissions as Record<string, unknown>) ?? {}).map(
+            ([k, v]) => [k, v === true]
+          )
+        ),
       }}
     />
   );
