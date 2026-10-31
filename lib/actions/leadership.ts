@@ -31,23 +31,37 @@ export async function createLeadershipMember(
 ): Promise<LeadershipActionState> {
   const user = await requirePermission("leadership:write");
   const parsed = parseMember(formData);
-  if (!parsed.success) return { success: false, error: "Please fix the errors below.", fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]> };
+  if (!parsed.success) {
+    return { 
+      success: false, 
+      error: "Please fix the errors below.", 
+      fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]> 
+    };
+  }
+
   const canPublish = can(user, "leadership:publish");
+  const wantsPublish = formData.get("published") === "true";
 
   const createAccount = formData.get("createAccount") === "1";
   const email = (formData.get("accountEmail") as string | null)?.toLowerCase().trim();
   const password = formData.get("accountPassword") as string | null;
 
   if (createAccount) {
-    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email ?? "");
-    if (!emailValid) return { success: false, error: "Enter a valid email address for the admin account." };
-    if (!password || password.length < 8) return { success: false, error: "Password must be at least 8 characters." };
-    const exists = await db.adminUser.findUnique({ where: { email: email! } });
+    if (!email || !password || password.length < 8) {
+      return { success: false, error: "Email and a password of at least 8 characters are required." };
+    }
+    const exists = await db.adminUser.findUnique({ where: { email } });
     if (exists) return { success: false, error: "An admin account with that email already exists." };
   }
 
   const member = await db.$transaction(async (tx) => {
-    const m = await tx.leadershipMember.create({ data: { ...parsed.data, published: canPublish ? (parsed.data.published ?? false) : false } });
+    const m = await tx.leadershipMember.create({ 
+      data: { 
+        ...parsed.data, 
+        published: canPublish ? wantsPublish : false 
+      } 
+    });
+
     if (createAccount) {
       const leadershipRole = await tx.role.findUnique({ where: { name: "leadership" } });
       if (!leadershipRole) throw new Error("Leadership role not found. Run the seed first.");
@@ -59,11 +73,12 @@ export async function createLeadershipMember(
     return m;
   });
 
-  if (!canPublish && (parsed.data.published ?? false)) {
+  if (!canPublish && wantsPublish) {
     await submitForApproval("leadership", member.id, parsed.data.name);
     revalidatePath("/admin/leadership");
     return { success: true, id: member.id, pendingApproval: true };
   }
+
   revalidatePath("/admin/leadership");
   return { success: true, id: member.id };
 }
@@ -75,14 +90,31 @@ export async function updateLeadershipMember(
 ): Promise<LeadershipActionState> {
   const user = await requirePermission("leadership:write");
   const parsed = parseMember(formData);
-  if (!parsed.success) return { success: false, error: "Please fix the errors below.", fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]> };
+  if (!parsed.success) {
+    return { 
+      success: false, 
+      error: "Please fix the errors below.", 
+      fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]> 
+    };
+  }
+
   const canPublish = can(user, "leadership:publish");
-  await db.leadershipMember.update({ where: { id }, data: { ...parsed.data, published: canPublish ? (parsed.data.published ?? false) : false } });
-  if (!canPublish && (parsed.data.published ?? false)) {
+  const wantsPublish = formData.get("published") === "true";
+
+  await db.leadershipMember.update({ 
+    where: { id }, 
+    data: { 
+      ...parsed.data, 
+      published: canPublish ? wantsPublish : false 
+    } 
+  });
+
+  if (!canPublish && wantsPublish) {
     await submitForApproval("leadership", id, parsed.data.name);
     revalidatePath("/admin/leadership");
     return { success: true, pendingApproval: true };
   }
+
   revalidatePath("/admin/leadership");
   return { success: true };
 }
