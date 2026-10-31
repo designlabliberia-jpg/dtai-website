@@ -32,8 +32,12 @@ function ProvisionButton({ id }: { id: string }) {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    const trimmedEmail = email.trim();
+    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(trimmedEmail);
+    if (!emailValid) { setError("Enter a valid email address."); return; }
+    if (password.length < 8) { setError("Password must be at least 8 characters."); return; }
     startTransition(async () => {
-      const result = await provisionLeadershipAccount(id, email, password);
+      const result = await provisionLeadershipAccount(id, trimmedEmail, password);
       if (result.error) { setError(result.error); return; }
       setOpen(false);
       setEmail("");

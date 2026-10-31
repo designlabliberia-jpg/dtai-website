@@ -39,10 +39,10 @@ export async function createLeadershipMember(
   const password = formData.get("accountPassword") as string | null;
 
   if (createAccount) {
-    if (!email || !password || password.length < 8) {
-      return { success: false, error: "Email and a password of at least 8 characters are required to create an account." };
-    }
-    const exists = await db.adminUser.findUnique({ where: { email } });
+    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email ?? "");
+    if (!emailValid) return { success: false, error: "Enter a valid email address for the admin account." };
+    if (!password || password.length < 8) return { success: false, error: "Password must be at least 8 characters." };
+    const exists = await db.adminUser.findUnique({ where: { email: email! } });
     if (exists) return { success: false, error: "An admin account with that email already exists." };
   }
 
@@ -144,7 +144,9 @@ export async function provisionLeadershipAccount(
 ): Promise<{ error?: string }> {
   await requirePermission("users:write");
   email = email.toLowerCase().trim();
-  if (!email || password.length < 8) return { error: "Email and a password of at least 8 characters are required." };
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+  if (!emailValid) return { error: "Enter a valid email address." };
+  if (password.length < 8) return { error: "Password must be at least 8 characters." };
 
   const member = await db.leadershipMember.findUnique({ where: { id }, select: { name: true, adminUser: { select: { id: true } } } });
   if (!member) return { error: "Member not found." };
